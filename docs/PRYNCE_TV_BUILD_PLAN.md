@@ -6,7 +6,7 @@ Last verified: 3 November 2026
 
 - Migration commit: `29dbd77d28bf8180558d5f45166d76059965badc`; [GitHub Actions run 41617047320](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41617047320).
 - Passed in CI: AGP 8.9.1 / compileSdk 36 / targetSdk 36 migration step, Android SDK 36 installation, Ghana directory validation, phone/TV launcher checks, updater configuration, branding and navigation integration.
-- The automated test and APK/AAB build step remains in progress. There is no verified API 36 artifact yet.
+- The automated tests and APK/AAB build completed successfully in run `41617047320`; artifact ID `13222900025` was uploaded. APK SHA-256 `db59de9f5e7ac6157dd934b0e127366cb75b34b674e3b6ee6e11489bc766f731`; AAB SHA-256 `d5a537f900acfb8f23d1a10c1e9a06aeb4b039f5de641286c7cdbc27d742e257`. Package is target API 36 but debug-signed, not production-signed.
 - Previous API 35 test APK remains available as fallback only; it is not a Play-ready phone/tablet package.
 - Next action: recheck workflow and artifacts, diagnose only from actual build logs, then independently verify package metadata, signature, checksums and 16 KB native alignment. Physical-device acceptance remains separate.
 
