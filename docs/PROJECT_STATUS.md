@@ -42,6 +42,15 @@ PRYNCE TV is a player, not a broadcaster or channel subscription service. Users 
 
 The current OpenTV foundation remains the best fit for the stated one-app phone + TV requirement and the lowest-risk path because it is already integrated and building. OpenIPTV and OwnTV remain reference alternatives only; neither has demonstrated a reason to replace the current engine. The current decision and trade-offs are documented in `docs/OPEN_SOURCE_ALTERNATIVES_REVIEW.md`.
 
+## Universal update workstream — architecture selected, implementation pending
+
+- Added `docs/UNIVERSAL_UPDATE_ARCHITECTURE.md` and linked it from the README.
+- Phones/tablets: plan official Google Play flexible updates for routine releases and immediate updates only for critical releases when allowed.
+- Android TV: use Google Play store-managed delivery; the official Play in-app update API is documented for phones, tablets and ChromeOS, not Android TV.
+- Fire TV: use the store channel through which the app is distributed; do not assume Google Play services are present.
+- All devices: remotely refresh only validated, non-executable content/configuration; native player changes still require a signed app release.
+- **Not yet implemented:** no in-app update code, remote manifest client, store release configuration or device update tests have been added. This remains a planned workstream until source integration and device evidence exist.
+
 ## Acceptance status
 
 | Area | Evidence | Status |
@@ -52,7 +61,7 @@ The current OpenTV foundation remains the best fit for the stated one-app phone 
 | APK and AAB archive integrity | Independent ZIP checks passed | Verified |
 | APK/AAB checksums | Match recorded SHA-256 values | Verified |
 | APK native 16 KB alignment | Native LOAD segments inspected | Verified for APK |
-| AAB native 16 KB alignment | Not independently inspected | Pending |
+| AAB native 16 KB alignment | Not independently inspected | Pending |\n| Phone in-app update integration | Architecture documented; code not integrated | Pending |\n| Android TV store update path | Architecture documented; store/device validation pending | Pending |\n| Fire TV store update path | Architecture documented; store/device validation pending | Pending |\n| Remote content/config manifest | Architecture documented; client/server not integrated | Pending |
 | Phone launcher declaration/resources | CI manifest/resource checks passed | CI only; device pending |
 | Android TV launcher declaration/banner resources | CI checks passed | CI only; visual device check pending |
 | Physical Android phone installation | No recorded device result | Pending |
