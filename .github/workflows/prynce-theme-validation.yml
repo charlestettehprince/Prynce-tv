@@ -71,8 +71,8 @@ jobs:
         shell: bash
         run: |
           patch="$GITHUB_WORKSPACE/branding/patches/prynce-yellow-black-theme.patch"
-          git -C android/upstream apply --check "$patch"
-          git -C android/upstream apply "$patch"
+          git -C android/upstream apply --recount --check "$patch"
+          git -C android/upstream apply --recount "$patch"
           git -C android/upstream diff --check
           git -C android/upstream diff -- app/src/main/java/app/opentv/ui/theme/Theme.kt
 
