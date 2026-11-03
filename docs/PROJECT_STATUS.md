@@ -91,7 +91,11 @@ The current OpenTV foundation remains the best fit for the stated one-app phone 
 | APK and AAB archive integrity | Independent ZIP checks passed | Verified |
 | APK/AAB checksums | Match recorded SHA-256 values | Verified |
 | APK native 16 KB alignment | Native LOAD segments inspected | Verified for APK |
-| AAB native 16 KB alignment | Not independently inspected | Pending |\n| Phone sideload update integration | Existing updater configured in CI for PRYNCE releases; build/device test pending | In progress |\n| Android TV store update path | Store-managed architecture documented; store/device validation pending | Pending |\n| Fire TV store update path | Architecture documented; store/device validation pending | Pending |\n| Remote content/config manifest | Architecture documented; client/server not integrated | Pending |
+| AAB native 16 KB alignment | Not independently inspected | Pending |
+| Phone sideload update integration | Existing updater configured in CI for PRYNCE releases; build/device test pending | In progress |
+| Android TV store update path | Store-managed architecture documented; store/device validation pending | Pending |
+| Fire TV store update path | Architecture documented; store/device validation pending | Pending |
+| Remote content/config manifest | Architecture documented; client/server not integrated | Pending |
 | Phone launcher declaration/resources | CI manifest/resource checks passed | CI only; device pending |
 | Android TV launcher declaration/banner resources | CI checks passed | CI only; visual device check pending |
 | Physical Android phone installation | No recorded device result | Pending |
@@ -121,3 +125,12 @@ A feature is complete only with reproducible evidence: automated test output, ar
 - Do not store provider credentials, signing keys, passwords or private API tokens in source control.
 - Keep signing keys outside the repository and use a secure release process.
 - Preserve authentication, DRM, subscription, broadcaster and regional restrictions.
+
+
+## 3 November 2026 — TV navigation source audit
+
+- Inspected the pinned upstream Kotlin files for main navigation, Live TV, guide grid, search and player controls at commit `443811904b6437720d37bb1064c0830906c3515f`.
+- Static inspection found existing Compose focus groups, FocusRequesters, focus restoration for the Live TV category rail, player-root focus handling, D-pad channel zapping, guide-cell focusability, and a custom on-screen search keyboard.
+- This is source inspection only; it does not prove focus behavior on physical TV hardware.
+- Decision: do not add Media3 Compose UI or upgrade Media3 merely to introduce focus support. Keep the existing Media3 1.5.0 baseline while device acceptance is pending.
+- Findings recorded in GitHub Issue #2. No source changes or new APK build resulted from this audit.
