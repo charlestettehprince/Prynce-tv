@@ -3,12 +3,12 @@
 **Last consolidated:** 3 November 2026  
 **Repository:** `charlestettehprince/Prynce-tv`  
 **Primary Android engine:** OpenTV v0.11.10, pinned upstream commit `443811904b6437720d37bb1064c0830906c3515f`  
-**Latest verified CI commit:** `8ea86e1a1221ca74a24dd6488457fe127be3d51b`  
+**Latest verified CI commit:** `85755852ecb5dbb285578bf4ce7d42469b7c33cb`  
 **Project estimate:** **90%** (rough planning estimate, not a measured completion score)
 
 ## Executive summary
 
-PRYNCE TV is a single Android media-player project for compatible phones/tablets and Android TV/Fire TV devices. The branded debug APK and release AAB have been built successfully by CI and independently checked for archive integrity and matching SHA-256 checksums. The APK's native libraries were inspected for 16 KB LOAD-segment alignment. Physical-device acceptance, AAB native-library alignment review, production signing and release compliance remain outstanding.
+PRYNCE TV is a single Android media-player project for compatible phones/tablets and Android TV/Fire TV devices. The branded debug APK and release AAB have been built successfully by CI. The current workflow artifact was downloaded and independently checked: both archives pass ZIP integrity checks, both checksums match the workflow checksum file, and native LOAD segments in both APK and AAB use 16 KB alignment. Physical-device acceptance, production signing and release compliance remain outstanding.
 
 PRYNCE TV is a player, not a broadcaster or channel subscription service. Users must supply sources they are authorised to access. The app must not circumvent DRM, authentication, subscriptions, geographic restrictions or broadcaster controls.
 
@@ -26,15 +26,15 @@ PRYNCE TV is a player, not a broadcaster or channel subscription service. Users 
 - OpenTV is pinned as a Git submodule at `android/upstream`.
 - Upstream commit: `443811904b6437720d37bb1064c0830906c3515f`.
 - CI workflow: `.github/workflows/android-baseline.yml`.
-- Latest successful workflow run: [41600670820](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41600670820).
-- Workflow job: `125798380153`.
-- Build commit: `8ea86e1a1221ca74a24dd6488457fe127be3d51b`.
+- Latest successful workflow run: [41608997572](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41608997572).
+- Workflow job: Build PRYNCE TV branded Android app (all steps succeeded).
+- Build commit: `85755852ecb5dbb285578bf4ce7d42469b7c33cb`.
 - All workflow steps succeeded, including original SVG artwork rendering, Android resource/launcher validation, tests, debug APK and release AAB builds, checksum generation and artifact upload.
-- Artifact: `prynce-tv-v0.11.10-test-packages`, 38,763,553 bytes; created 3 November 2026 and expires 1 February 2027.
-- APK SHA-256: `99b787f280ea885a26df193072d00defbf352c3774b1155b2df56afdd4cffa6a`.
-- AAB SHA-256: `40275243402a52288cf9d6f96f44c902cba7c337ab07d92d350ede725e335a44`.
-- APK and AAB ZIP integrity checks passed; computed checksums match the workflow checksum file.
-- APK contains ARM64, ARMv7, x86 and x86_64 native libraries. The APK's native LOAD segments were inspected and use 16 KB alignment. Do not extend this claim to the AAB until its embedded native libraries are independently inspected.
+- Artifact: `prynce-tv-v0.11.10-test-packages` (ID `13218217574`), 38,794,916 bytes; created 3 November 2026 and expires 1 February 2027. Artifact SHA-256: `b0c83c219468987e36caf9a20901d54770b6dfcbd98a29177d7bf9b40394ef2e`.
+- APK SHA-256: `259ff4b0ae159061990d8a6e42d9f419e20ec3994e3c44e4d03983feabf898b0`.
+- AAB SHA-256: `be554bca6a2efd57d1ea4cf1c529c6a8a82d857c6f285d06ea3e97dc152bb39e`.
+- APK and AAB ZIP integrity checks passed; computed checksums match the included workflow checksum file.
+- APK contains ARM64, ARMv7, x86 and x86_64 native libraries. The APK's native LOAD segments were inspected and use 16 KB alignment. The AAB's embedded native libraries were also extracted and inspected; all LOAD segments across ARM64, ARMv7, x86 and x86_64 libraries use 16 KB alignment.
 - CI checks both standard `LAUNCHER` and `LEANBACK_LAUNCHER` categories and validates launcher artwork resources.
 - The debug APK is for controlled testing, not production distribution. The AAB is for Play submission preparation, not direct installation.
 
@@ -78,7 +78,7 @@ The current OpenTV foundation remains the best fit for the stated one-app phone 
 1. Install the debug APK on a physical Android 11+ phone/tablet. Record device model, Android version, app launch, navigation, stability and authorised-source playback.
 2. Test Android TV D-pad navigation, launcher icon/banner visibility and playback on real TV hardware; test Fire TV separately if intended.
 3. Exercise source import, invalid-source handling, XMLTV guide, favourites, history, search, audio/subtitle selection and network recovery.
-4. Inspect AAB embedded native libraries separately for 16 KB compatibility.
+4. Complete package ID, SDK, permission and signing inspection; the AAB's embedded native libraries now pass 16 KB LOAD alignment inspection.
 5. Review package ID, min/target SDK, permissions, privacy disclosures, support route and store requirements.
 6. Complete GPL-3.0-or-later notices and corresponding-source obligations, dependency licence review and secure production signing before any public distribution.
 
