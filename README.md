@@ -41,7 +41,7 @@ The intended public experience is one clearly labelled APK download from this re
 
 PRYNCE TV will not ask users to disable Google Play Protect, turn off Android security checks, grant broad storage/accessibility/SMS permissions for installation, or approve silent installs. Android's normal package-installer confirmation must remain enabled. If Android or Play Protect raises a warning, stop and investigate the exact build rather than bypassing the warning.
 
-A public release is blocked until production signing, source/dependency review, security checks, GPL source/notice publication and physical-device installation tests are complete. Track this gate in [Safe public installer checklist](https://github.com/charlestettehprince/Prynce-tv/issues/undefined).
+A public release is blocked until production signing, source/dependency review, security checks, GPL source/notice publication and physical-device installation tests are complete. Track this gate in [Safe public installer checklist](https://github.com/charlestettehprince/Prynce-tv/issues/5).
 
 ## Test the Android build
 
