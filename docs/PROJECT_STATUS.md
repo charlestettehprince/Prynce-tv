@@ -4,6 +4,7 @@
 **Repository:** `charlestettehprince/Prynce-tv`  
 **Primary Android engine:** OpenTV v0.11.10, pinned upstream commit `443811904b6437720d37bb1064c0830906c3515f`  
 **Latest verified CI commit:** `85755852ecb5dbb285578bf4ce7d42469b7c33cb`  
+**Latest CI change (not yet verified):** `1f8c134936bace129c25425ccfd84e73d400ae6a`  
 **Project estimate:** **90%** (rough planning estimate, not a measured completion score)
 
 ## Executive summary
@@ -42,6 +43,13 @@ PRYNCE TV is a player, not a broadcaster or channel subscription service. Users 
 
 The current OpenTV foundation remains the best fit for the stated one-app phone + TV requirement and the lowest-risk path because it is already integrated and building. OpenIPTV and OwnTV remain reference alternatives only; neither has demonstrated a reason to replace the current engine. The current decision and trade-offs are documented in `docs/OPEN_SOURCE_ALTERNATIVES_REVIEW.md`.
 
+## Build metadata and signing report — CI implementation added, verification pending
+
+- The workflow now runs Android `aapt dump badging` against the debug APK and records package ID, SDK declarations and launchable activity.
+- It runs `apksigner verify --verbose --print-certs` and archives the debug signing certificate identity.
+- The report is included in the test artifact. This change is not yet verified: the workflow run for commit `1f8c134936bace129c25425ccfd84e73d400ae6a` was queued at the last status check.
+- This is debug-build inspection only; production signing remains pending.
+
 ## Universal update workstream — architecture selected, implementation pending
 
 - Added `docs/UNIVERSAL_UPDATE_ARCHITECTURE.md` and linked it from the README.
@@ -78,7 +86,7 @@ The current OpenTV foundation remains the best fit for the stated one-app phone 
 1. Install the debug APK on a physical Android 11+ phone/tablet. Record device model, Android version, app launch, navigation, stability and authorised-source playback.
 2. Test Android TV D-pad navigation, launcher icon/banner visibility and playback on real TV hardware; test Fire TV separately if intended.
 3. Exercise source import, invalid-source handling, XMLTV guide, favourites, history, search, audio/subtitle selection and network recovery.
-4. Complete package ID, SDK, permission and signing inspection; the AAB's embedded native libraries now pass 16 KB LOAD alignment inspection.
+4. Review the archived package ID, SDK, permission and debug-signing report once the new CI run succeeds; the AAB's embedded native libraries pass 16 KB LOAD alignment inspection.
 5. Review package ID, min/target SDK, permissions, privacy disclosures, support route and store requirements.
 6. Complete GPL-3.0-or-later notices and corresponding-source obligations, dependency licence review and secure production signing before any public distribution.
 
