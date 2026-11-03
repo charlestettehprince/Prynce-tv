@@ -1,0 +1,91 @@
+diff --git a/app/src/main/java/app/opentv/ui/theme/Theme.kt b/app/src/main/java/app/opentv/ui/theme/Theme.kt
+index 7a78d8af5d46458828223956ac7073b1ff72868b..0000000000000000000000000000000000000000 100644
+--- a/app/src/main/java/app/opentv/ui/theme/Theme.kt
++++ b/app/src/main/java/app/opentv/ui/theme/Theme.kt
+@@ -15,35 +15,43 @@ import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.unit.sp
+ 
+ /**
+- * A deliberately dark, low-chroma palette.
++ * PRYNCE Y'ello-inspired palette.
+  *
+- * This is a living-room app: it is looked at in a dark room, from three metres away, often
+- * for hours. Bright surfaces and saturated accents that read well on a phone in daylight are
+- * actively unpleasant on a 55" panel at night, so everything here is anchored near-black with
+- * a single restrained accent used only for focus and selection.
++ * Uses a high-contrast yellow / black / white system inspired by MTN Ghana's
++ * publicly documented yellow (#FFCC00) and black identity. PRYNCE retains its
++ * own name, logo, iconography and layouts; this is not an MTN-branded app.
++ *
++ * Yellow is reserved for primary actions, selection and focus. Large reading
++ * surfaces remain near-black so the interface stays comfortable at TV distance.
+  */
+-private val Accent = Color(0xFF7C93FF)
+-private val AccentDim = Color(0xFF4B5DB8)
++private val PrynceYellow = Color(0xFFFFCC00)
++private val PrynceYellowDeep = Color(0xFFE0B400)
++private val Ink = Color(0xFF090909)
++private val Surface = Color(0xFF171717)
++private val SurfaceRaised = Color(0xFF222222)
++private val Paper = Color(0xFFFFFFFF)
+ 
+ private val DarkScheme = darkColorScheme(
+-    primary = Accent,
+-    onPrimary = Color(0xFF0A0C14),
+-    primaryContainer = AccentDim,
+-    onPrimaryContainer = Color(0xFFE6EAFF),
+-    secondary = Color(0xFF9AA3C0),
+-    background = Color(0xFF07080C),
+-    onBackground = Color(0xFFE8EAF0),
+-    surface = Color(0xFF0D0F16),
+-    onSurface = Color(0xFFE8EAF0),
+-    surfaceVariant = Color(0xFF171A24),
+-    onSurfaceVariant = Color(0xFFA8AEC0),
+-    outline = Color(0xFF2A2F3D),
++    primary = PrynceYellow,
++    onPrimary = Ink,
++    primaryContainer = PrynceYellowDeep,
++    onPrimaryContainer = Ink,
++    secondary = Paper,
++    onSecondary = Ink,
++    background = Ink,
++    onBackground = Paper,
++    surface = Surface,
++    onSurface = Paper,
++    surfaceVariant = SurfaceRaised,
++    onSurfaceVariant = Color(0xFFE0E0E0),
++    outline = Color(0xFF666666),
+     error = Color(0xFFFF6B6B),
+-    onError = Color(0xFF1A0505),
++    onError = Ink,
+ )
+ 
+ /**
+@@ -53,15 +61,18 @@ private val DarkScheme = darkColorScheme(
+  */
+ private val LightScheme = lightColorScheme(
+-    primary = Color(0xFF3B4FCC),
+-    onPrimary = Color.White,
+-    background = Color(0xFFFBFBFE),
+-    onBackground = Color(0xFF13141A),
+-    surface = Color.White,
+-    onSurface = Color(0xFF13141A),
+-    surfaceVariant = Color(0xFFEEF0F6),
+-    onSurfaceVariant = Color(0xFF4A4F60),
+-    outline = Color(0xFFD3D7E2),
++    primary = Color(0xFF1A1A1A),
++    onPrimary = Paper,
++    primaryContainer = PrynceYellow,
++    onPrimaryContainer = Ink,
++    secondary = PrynceYellowDeep,
++    onSecondary = Ink,
++    background = Paper,
++    onBackground = Ink,
++    surface = Color(0xFFF7F7F7),
++    onSurface = Ink,
++    surfaceVariant = Color(0xFFECECEC),
++    onSurfaceVariant = Color(0xFF383838),
++    outline = Color(0xFF777777),
+ )
+ 
+ /** Scaled up from the Material defaults: ten-foot viewing needs bigger text than a phone. */
