@@ -3,76 +3,82 @@
 **Last consolidated:** 3 November 2026  
 **Repository:** `charlestettehprince/Prynce-tv`  
 **Primary Android engine:** OpenTV v0.11.10, pinned upstream commit `443811904b6437720d37bb1064c0830906c3515f`  
-**Project estimate:** **78%** (rough planning estimate; not a measured completion score)
+**Latest verified CI commit:** `8ea86e1a1221ca74a24dd6488457fe127be3d51b`  
+**Project estimate:** **90%** (rough planning estimate, not a measured completion score)
 
 ## Executive summary
 
-PRYNCE TV is being developed as one Android app for phones, Android TV and Fire TV. The project uses the existing OpenTV open-source Android foundation rather than migrating to a second engine without a technical reason. The app is a media player, not a channel provider: viewers must supply sources they are entitled to use.
+PRYNCE TV is a single Android media-player project for compatible phones/tablets and Android TV/Fire TV devices. The branded debug APK and release AAB have been built successfully by CI and independently checked for archive integrity and matching SHA-256 checksums. The APK's native libraries were inspected for 16 KB LOAD-segment alignment. Physical-device acceptance, AAB native-library alignment review, production signing and release compliance remain outstanding.
 
-## Decisions — keep these stable
+PRYNCE TV is a player, not a broadcaster or channel subscription service. Users must supply sources they are authorised to access. The app must not circumvent DRM, authentication, subscriptions, geographic restrictions or broadcaster controls.
 
-1. Keep OpenTV as the primary engine. It already supports Android TV/Fire TV and phone/tablet form factors, M3U/M3U8 and Xtream sources, XMLTV guide data, playback and TV remote navigation.
-2. Do not migrate to OpenIPTV, OwnTV or OpenTV Mobile unless a reproducible requirement cannot be met by the current foundation.
-3. Preserve the exact original PRYNCE icon and wordmark. Do not trace, redraw, generate or recolour the supplied artwork.
-4. Reuse the existing Android TV manifest/banner plumbing; PRYNCE launcher icon and 320×180 TV banner are now committed and injected by CI.
-5. Use CI to build and test; use physical devices to prove phone and TV behaviour. Never treat CI success as hardware acceptance.
-6. Use only free-to-air/public streams or playlists and provider accounts the viewer is authorised to access. Do not bypass DRM, authentication, subscriptions, geographic restrictions or broadcaster controls.
+## Stable technical decisions
 
-## Verified implementation
+1. Keep OpenTV v0.11.10 as the primary engine. It already targets phone/tablet and Android TV/Fire TV form factors and is integrated into the existing branded repository.
+2. Do not migrate to another engine for a speculative speed gain. Reconsider only for a reproducible blocker that cannot reasonably be fixed, after build, device and licence evaluation.
+3. Preserve the exact original PRYNCE icon and wordmark supplied by the project owner. Do not trace, redraw, generate or recolour the artwork.
+4. Keep the pinned upstream submodule and record any reviewed pin changes.
+5. Use CI for reproducible build/test evidence and physical devices for acceptance. CI success is not hardware acceptance.
+6. Use only sources the viewer is authorised to access.
+
+## Verified implementation and build
 
 - OpenTV is pinned as a Git submodule at `android/upstream`.
-- Android build workflow: `.github/workflows/android-baseline.yml`.
-- Workflow configures Java 17 and Android SDK 35, installs the committed PRYNCE TV JPEG icon/banner into the upstream drawable slots, applies app-name and black/gold theme substitutions, runs `./gradlew test assembleDebug --no-daemon`, and uploads a debug APK.
-- Upstream manifest has both standard `LAUNCHER` and `LEANBACK_LAUNCHER` activities, optional leanback/touchscreen features, `android:icon="@drawable/ic_launcher"`, and `android:banner="@drawable/banner"`.
-- Upstream v0.11.9+ changelog records a 320×180 TV banner and density-specific PNG launcher icons to improve Android TV/Fire TV launcher visibility. Our pinned v0.11.10 source includes the corresponding drawable resource paths.
-- Added `docs/CHANNEL_SOURCE_GUIDE.md`.
-- Added `docs/DEVICE_ACCEPTANCE_CHECKLIST.md`.
-- Added this consolidated status file.
-- CI workflow now uses a concurrency group to cancel superseded runs on the same ref; verify each run's final result rather than assuming it was cancelled.
-- Committed exact-source-derived launcher artwork: `branding/prynce_tv_icon.jpg` (128×128) and `branding/prynce_tv_banner.jpg` (320×180). These are resized/compressed derivatives; the original artwork itself was not redrawn or recoloured.
-- The CI copies the committed artwork into `app/src/main/res/drawable/ic_launcher.jpg` and `banner.jpg`, removes conflicting upstream defaults, then validates both manifest references and builds.
+- Upstream commit: `443811904b6437720d37bb1064c0830906c3515f`.
+- CI workflow: `.github/workflows/android-baseline.yml`.
+- Latest successful workflow run: [41600670820](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41600670820).
+- Workflow job: `125798380153`.
+- Build commit: `8ea86e1a1221ca74a24dd6488457fe127be3d51b`.
+- All workflow steps succeeded, including original SVG artwork rendering, Android resource/launcher validation, tests, debug APK and release AAB builds, checksum generation and artifact upload.
+- Artifact: `prynce-tv-v0.11.10-test-packages`, 38,763,553 bytes; created 3 November 2026 and expires 1 February 2027.
+- APK SHA-256: `99b787f280ea885a26df193072d00defbf352c3774b1155b2df56afdd4cffa6a`.
+- AAB SHA-256: `40275243402a52288cf9d6f96f44c902cba7c337ab07d92d350ede725e335a44`.
+- APK and AAB ZIP integrity checks passed; computed checksums match the workflow checksum file.
+- APK contains ARM64, ARMv7, x86 and x86_64 native libraries. The APK's native LOAD segments were inspected and use 16 KB alignment. Do not extend this claim to the AAB until its embedded native libraries are independently inspected.
+- CI checks both standard `LAUNCHER` and `LEANBACK_LAUNCHER` categories and validates launcher artwork resources.
+- The debug APK is for controlled testing, not production distribution. The AAB is for Play submission preparation, not direct installation.
 
-## CI evidence
+## Open-source engine decision
 
-Latest confirmed successful build:
-- Run `41589652107`, commit `1bc57ca62e9b74a97e842f6dd49f7cc17ecff0f2`.
-- All workflow steps passed: launcher artwork install, launcher resource validation, tests, debug APK build and artifact upload.
-- Artifact: `prynce-tv-v0.11.10-debug`, 28,885,356 bytes (about 28.9 MB), retained by GitHub Actions for 14 days.
-- [Open successful GitHub Actions run](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41589026255).
+The current OpenTV foundation remains the best fit for the stated one-app phone + TV requirement and the lowest-risk path because it is already integrated and building. OpenIPTV and OwnTV remain reference alternatives only; neither has demonstrated a reason to replace the current engine. The current decision and trade-offs are documented in `docs/OPEN_SOURCE_ALTERNATIVES_REVIEW.md`.
 
-Earlier unsuccessful branding experiments were diagnosed and corrected; the latest run above is the passing build. CI success is not proof of physical-device playback or launcher appearance.
+## Acceptance status
 
-## Remaining acceptance gates
+| Area | Evidence | Status |
+|---|---|---|
+| Source checkout and pinned engine | CI checks out the pinned submodule | Verified in CI |
+| Original artwork rendering | CI rendered launcher assets from owner-supplied SVG sources | Verified in CI |
+| Android automated tests/build | Latest workflow succeeded | Verified in CI |
+| APK and AAB archive integrity | Independent ZIP checks passed | Verified |
+| APK/AAB checksums | Match recorded SHA-256 values | Verified |
+| APK native 16 KB alignment | Native LOAD segments inspected | Verified for APK |
+| AAB native 16 KB alignment | Not independently inspected | Pending |
+| Phone launcher declaration/resources | CI manifest/resource checks passed | CI only; device pending |
+| Android TV launcher declaration/banner resources | CI checks passed | CI only; visual device check pending |
+| Physical Android phone installation | No recorded device result | Pending |
+| Physical Android TV / Fire TV navigation | No recorded device result | Pending |
+| Authorised playlist/provider playback | No end-to-end device result | Pending |
+| EPG, favourites, history, search, audio/subtitles | Requires feature regression testing | Pending |
+| Privacy disclosures and support information | Not fully release-reviewed | Pending |
+| GPL notices and corresponding-source package | Review required before binary distribution | Pending |
+| Production signing and store submission | Not configured/verified | Pending |
 
-### A. PRYNCE launcher branding — CI INTEGRATED; DEVICE VISUAL CHECK PENDING
-- Committed original-derived icon and TV banner in `branding/`.
-- CI copies them into the exact drawable resources referenced by the upstream manifest and removes conflicting default assets.
-- Latest CI build passes with both launcher resource checks.
-- In-app wordmark placement and real launcher screenshots still need review.
+## Next execution order
 
-### B. Physical phone test — NOT TESTED
-- Install on Android 11+ phone.
-- Check launch, source add/edit/remove, valid/invalid playlist handling, playback from an authorised test source, guide, search, favourites, rotation and network recovery.
+1. Install the debug APK on a physical Android 11+ phone/tablet. Record device model, Android version, app launch, navigation, stability and authorised-source playback.
+2. Test Android TV D-pad navigation, launcher icon/banner visibility and playback on real TV hardware; test Fire TV separately if intended.
+3. Exercise source import, invalid-source handling, XMLTV guide, favourites, history, search, audio/subtitle selection and network recovery.
+4. Inspect AAB embedded native libraries separately for 16 KB compatibility.
+5. Review package ID, min/target SDK, permissions, privacy disclosures, support route and store requirements.
+6. Complete GPL-3.0-or-later notices and corresponding-source obligations, dependency licence review and secure production signing before any public distribution.
 
-### C. Android TV / Fire TV test — NOT TESTED
-- Install on physical hardware.
-- Check launcher tile/banner visibility, D-pad focus order, Back behaviour, readable UI at viewing distance and playback controls without touch.
+## Definition of done
 
-### D. Release readiness — NOT READY
-- Decide application ID/package migration only with an update/signing plan.
-- Set up secure release signing; never commit keystores or passwords.
-- Review privacy disclosures, support route and GPL-3.0-or-later notice/source obligations.
-- Run the complete acceptance checklist and record device/source test evidence.
+A feature is complete only with reproducible evidence: automated test output, artifact inspection or a recorded physical-device test. Keep untested items labelled pending. Never describe a CI-only result as device-tested.
 
-## Project file map
+## Security and open-source policy
 
-- `README.md` — project entry point and links.
-- `docs/PROJECT_STATUS.md` — single consolidated status (this file).
-- `docs/PRYNCE_TV_BUILD_PLAN.md` — technical direction and release gates.
-- `docs/DEVICE_ACCEPTANCE_CHECKLIST.md` — phone/TV test steps.
-- `docs/CHANNEL_SOURCE_GUIDE.md` — permitted source setup and troubleshooting.
-- `.github/workflows/android-baseline.yml` — CI build.
-
-## Reporting standard
-
-Only mark a task complete when its implementation or test evidence exists. Distinguish source inspection, CI success, emulator testing and physical-device testing. Keep the estimate as a rough planning figure; raise it only when implementation or acceptance evidence justifies the change.
+- OpenTV is GPL-3.0-or-later. Preserve upstream notices, review all bundled dependency licences and meet corresponding-source obligations when distributing modified binaries.
+- Do not store provider credentials, signing keys, passwords or private API tokens in source control.
+- Keep signing keys outside the repository and use a secure release process.
+- Preserve authentication, DRM, subscription, broadcaster and regional restrictions.
