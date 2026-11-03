@@ -30,10 +30,10 @@ def add_locale_import(path: Path) -> None:
     text = path.read_text()
     if "import java.util.Locale" in text:
         return
-    package_end = text.find("\\n\\n", text.find("package "))
+    package_end = text.find("\n\n", text.find("package "))
     if package_end < 0:
         raise SystemExit(f"Package declaration not found in {path}")
-    text = text[:package_end + 2] + "import java.util.Locale\\n" + text[package_end + 2:]
+    text = text[:package_end + 2] + "import java.util.Locale\n" + text[package_end + 2:]
     path.write_text(text)
 
 
