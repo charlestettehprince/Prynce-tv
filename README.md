@@ -51,3 +51,6 @@ Use the [phone and TV device acceptance checklist](docs/DEVICE_ACCEPTANCE_CHECKL
 ## Project status
 
 See [the consolidated PRYNCE TV project status](docs/PROJECT_STATUS.md) for the current technical decisions, verified CI evidence, remaining acceptance gates and project estimate.
+
+
+- [Brand asset integration guide](docs/BRANDING_ASSET_INTEGRATION.md)
