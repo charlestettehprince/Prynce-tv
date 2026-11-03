@@ -14,6 +14,10 @@ FILES = {
     "activity": ROOT / "java/app/opentv/MainActivity.kt",
     "recording_settings": ROOT / "java/app/opentv/ui/settings/RecordingSettingsScreen.kt",
     "recordings_screen": ROOT / "java/app/opentv/ui/recordings/RecordingsScreen.kt",
+    "guide_grid": ROOT / "java/app/opentv/ui/channels/GuideGrid.kt",
+    "guide_preview": ROOT / "java/app/opentv/ui/channels/GuidePreview.kt",
+    "search_screen": ROOT / "java/app/opentv/ui/channels/SearchScreen.kt",
+    "home_screen": ROOT / "java/app/opentv/ui/channels/HomeScreen.kt",
 }
 
 
@@ -114,4 +118,53 @@ replace_once(
     else String.format(Locale.ROOT, "%.0f MB", mb)""",
 )
 
-print("Applied and verified Android notification-permission, PiP API and locale-stable size-formatting patches.")
+
+# Avoid capturing the device's default locale in static formatter instances. Build each
+# formatter at call time so a runtime locale change is reflected by subsequent UI updates.
+replace_once(
+    FILES["guide_grid"],
+    'private val clockFormat = SimpleDateFormat("HH:mm", Locale.getDefault())',
+    'private fun clockFormat(date: Date): String = SimpleDateFormat("HH:mm", Locale.getDefault()).format(date)',
+)
+for old, new in (
+    ('clockFormat.format(Date(it.startUtcMillis))', 'clockFormat(Date(it.startUtcMillis))'),
+    ('clockFormat.format(Date(next.startUtcMillis))', 'clockFormat(Date(next.startUtcMillis))'),
+    ('clockFormat.format(Date(slotStart))', 'clockFormat(Date(slotStart))'),
+):
+    text = FILES["guide_grid"].read_text()
+    if old in text:
+        FILES["guide_grid"].write_text(text.replace(old, new))
+
+replace_once(
+    FILES["guide_preview"],
+    'private val previewTimeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())',
+    'private fun previewTimeFormat(date: Date): String = SimpleDateFormat("HH:mm", Locale.getDefault()).format(date)',
+)
+replace_once(
+    FILES["guide_preview"],
+    'private fun formatTime(utcMillis: Long): String = previewTimeFormat.format(Date(utcMillis))',
+    'private fun formatTime(utcMillis: Long): String = previewTimeFormat(Date(utcMillis))',
+)
+replace_once(
+    FILES["search_screen"],
+    'private val searchTimeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())',
+    'private fun searchTimeFormat(date: Date): String = SimpleDateFormat("HH:mm", Locale.getDefault()).format(date)',
+)
+replace_once(
+    FILES["search_screen"],
+    'private fun searchTime(utcMillis: Long): String = searchTimeFormat.format(Date(utcMillis))',
+    'private fun searchTime(utcMillis: Long): String = searchTimeFormat(Date(utcMillis))',
+)
+replace_once(
+    FILES["home_screen"],
+    'private val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())',
+    'private fun timeFormat(date: Date): String = SimpleDateFormat("HH:mm", Locale.getDefault()).format(date)',
+)
+replace_once(
+    FILES["home_screen"],
+    'private fun formatTime(utcMillis: Long): String = timeFormat.format(Date(utcMillis))',
+    'private fun formatTime(utcMillis: Long): String = timeFormat(Date(utcMillis))',
+)
+
+
+print("Applied notification-permission, PiP API and runtime-locale formatter patches.")
