@@ -144,3 +144,14 @@ A feature is complete only with reproducible evidence: automated test output, ar
 - The workflow copies both screens into the pinned upstream app and compiles them as part of the successful API 36 build.
 - Static review confirms the intended integration paths are present. It does not yet prove D-pad focus quality, browser handoff, local-file playback across codecs, or persistence of URI grants on real devices; those remain acceptance tests.
 - No source or binary changes were made during this audit.
+
+
+## 3 November 2026 — Android manifest and privacy/security review
+
+- Inspected the pinned OpenTV manifest and its upstream privacy/release documentation at the project's pinned engine baseline.
+- Confirmed manifest declares both phone LAUNCHER and TV LEANBACK_LAUNCHER; Leanback and touchscreen hardware features are both marked not required. This supports one APK being offered to phone and TV form factors; it does not guarantee every device supports every codec or feature.
+- Manifest declares INTERNET, network state, wake lock, foreground media playback, notifications, boot reception, exact-alarm, battery-optimisation exemption request, full-screen-intent and package-install request permissions. Several relate to optional recording, reminders and self-update functionality. Before public release, confirm each feature is required, user-facing and explained in store disclosures; remove unused capabilities only after source-level dependency checks and regression tests.
+- Manifest has android:allowBackup=true and android:usesCleartextTraffic=true. Upstream privacy documentation explains that provider credentials and traffic sent to HTTP-only provider endpoints are not encrypted in transit. Recommend HTTPS provider endpoints wherever offered. Public release review should decide whether backup exclusions are needed for sensitive provider credentials and validate the resulting restore behaviour.
+- The self-updater requests package-install permission and uses the Android system installer flow; it does not silently install updates. Keep Android's normal security prompts and user confirmation.
+- Upstream release documentation confirms the current fallback signing key is the Android debug key. A production signing identity must be configured before public distribution; changing signing identity later can prevent in-place upgrades from debug-signed installs.
+- No permission or manifest change was made in this audit. No new build was produced. These findings are release-review items, not proof of a vulnerability or of physical-device behaviour.
