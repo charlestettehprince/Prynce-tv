@@ -259,3 +259,14 @@ A feature is complete only with reproducible evidence: automated test output, ar
 - Positive static finding: the inspected FileProvider is non-exported and scoped to the update cache path. This is not a runtime security certification.
 - No Android source, APK, AAB, permissions or security settings were changed. No penetration test, SBOM vulnerability scan, backup test or device test was performed.
 - Public distribution remains blocked pending credential/backup review, an explicit HTTP-provider policy, production signing/package identity, GPL notices and corresponding source, exact-binary privacy review, and physical-device acceptance.
+
+
+## 3 November 2026 — Credential storage and backup review
+
+- Inspected the pinned OpenTV source entities, Room database builder, settings preferences and Android manifest.
+- Confirmed provider username/password and Stalker MAC are stored as ordinary Room entity fields; SMB username/password and the TMDB API key are ordinary strings in the app-private `opentv_settings` preferences file. Token-bearing M3U/add-on URLs may also contain sensitive values.
+- The pinned Room builder uses the standard Room database builder; no SQLCipher or application-level encryption wrapper was found in the inspected source. Android's app sandbox still protects private files from ordinary sandboxed apps, but at-rest encryption and backup exposure need a deliberate policy.
+- The manifest enables `allowBackup=true` and does not reference explicit backup/data-extraction rules. Actual backup/transfer behavior is OS/OEM-dependent and has not been tested.
+- Added `docs/CREDENTIAL_STORAGE_BACKUP_REVIEW.md` with the data map, recommended Keystore-backed vault approach, migration safeguards and test matrix.
+- Recommended policy: exclude credential-bearing database/settings from automatic platform backup, then consider a separate encrypted export/import flow. This would also exclude non-secret catalogue/preferences stored in those files, so it is a product/data-recovery decision.
+- No source code, database, manifest, backup settings, credentials or APKs were changed. Awaiting an explicit decision before changing backup behavior. No runtime backup/restore test was performed.
