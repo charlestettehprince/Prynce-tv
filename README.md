@@ -12,8 +12,8 @@ Core upstream capabilities include M3U/M3U8 playlists, Xtream-compatible provide
 
 - App name: **PRYNCE TV**
 - Visual direction: near-black/navy with restrained gold accents.
-- Launcher icon: `branding/prynce_tv_icon.jpg`
-- Android TV banner: `branding/prynce_tv_banner.jpg`
+- Launcher icon: `branding/prynce_tv_icon.png`
+- Android TV banner: `branding/prynce_tv_banner.png`
 - Branding integration and CI installation: [Branding asset integration guide](docs/BRANDING_ASSET_INTEGRATION.md).
 
 The committed artwork is derived from the original assets supplied by the project owner. It is resized/compressed for Android use, not redrawn or recoloured.
