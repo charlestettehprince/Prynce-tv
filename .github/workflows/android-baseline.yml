@@ -123,7 +123,7 @@ jobs:
 
           (res / "values").mkdir(parents=True, exist_ok=True)
           (res / "values" / "prynce_icon_colors.xml").write_text(
-              '<?xml version="1.0" encoding="utf-8"?>\\n<resources><color name="prynce_icon_background">#07162F</color></resources>\\n'
+              '<?xml version="1.0" encoding="utf-8"?>\n<resources><color name="prynce_icon_background">#07162F</color></resources>\n'
           )
           adaptive = res / "mipmap-anydpi-v26"
           adaptive.mkdir(parents=True, exist_ok=True)
@@ -150,7 +150,7 @@ jobs:
           elif new not in text:
               raise SystemExit("Could not find the app launcher icon attribute in AndroidManifest.xml.")
           if 'android:roundIcon=' not in text:
-              text = text.replace(new, new + '\\n        android:roundIcon="@mipmap/ic_launcher"', 1)
+              text = text.replace(new, new + '\n        android:roundIcon="@mipmap/ic_launcher"', 1)
           manifest.write_text(text)
 
           # Replace only notification small-icon references; keep app navigation art separate.
