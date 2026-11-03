@@ -196,3 +196,14 @@ A feature is complete only with reproducible evidence: automated test output, ar
 - AAB SHA-256: `c428e42d9da6aac20bea29084660869cd98dde83959dfcb4d71894ae748c66bc`.
 - This is a successful CI test build, not a public production release. Physical phone/TV/Fire TV acceptance, provider playback regression, privacy/backup decisions, GPL/source-notice review and permanent production signing remain release gates.
 - No Android security prompts, installer confirmation, DRM, provider authentication or licensing restrictions were bypassed.
+
+
+## 3 November 2026 — PRYNCE identity integration expansion
+
+- Updated the Android baseline CI workflow at commit `c9acd096f444429e3e483e3f372fa205e918df82` to preserve the original PRYNCE icon and wordmark as separate generated app resources.
+- The build recipe now patches the expanded in-app navigation rail to show the PRYNCE icon and original white wordmark, rather than the upstream OpenTV logo/text.
+- The existing workflow also renders the PRYNCE launcher icon and Android TV banner from the committed SVG source artwork, applies the PRYNCE TV app label and gold theme accents, and validates the launcher resource references.
+- Updated `docs/BRANDING_ASSET_INTEGRATION.md` and the README to distinguish implemented brand placements from remaining work.
+- A new Android CI run was triggered by the workflow change: run `41624556618`. At the time of this update it was still running; no successful result is claimed yet.
+- Remaining brand tasks: dedicated monochrome notification icon, adaptive/themed launcher icon variants, and physical phone/Android TV/Fire TV screenshot review. Do not claim the brand is literally present in every UI surface until these are checked.
+- This is a build-time patch against the pinned upstream submodule; upstream source notices are preserved. No production release or device acceptance is claimed.
