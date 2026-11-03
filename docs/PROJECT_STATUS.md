@@ -3,21 +3,21 @@
 **Last consolidated:** 3 November 2026  
 **Repository:** `charlestettehprince/Prynce-tv`  
 **Primary Android engine:** OpenTV v0.11.10, pinned upstream commit `443811904b6437720d37bb1064c0830906c3515f`  
-**Latest verified CI commit:** `f7c58dfe0520644151266d158b26b17aae11659a`  
-**Latest status-documentation commits:** `5455814a30fdbed4af3bdef359b83941f2762aec`  
-**Project estimate:** **92%** (rough planning estimate, not a measured completion score)
+**Latest verified CI commit:** `eb7af7bcb8892ccde353dc6ac7c966c6543501a2`  
+**Latest status-documentation commits:** `66133b00fae56689769ea0a04fa441bf16c15ac5`  
+**Project estimate:** **70%** (rough planning estimate; build automation and branding are progressing, but device acceptance, privacy/licence review and production release remain open)
 
-## Latest branding build — 3 November 2026 (supersedes earlier pending notes)
+## Latest verified build #107 — 3 November 2026 (supersedes earlier build notes)
 
-- Latest CI run: [41625818584](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41625818584); commit `f7c58dfe0520644151266d158b26b17aae11659a`; conclusion: **success**.
-- Build artifact: `prynce-tv-v0.11.10-test-packages`, ID `13226525916`, size 39,041,436 bytes; artifact SHA-256 `04da2dce25fd3e85696f0d8108786d5ed2ea3ba49bd069a033cc2cf562b77b60`.
-- APK: `app.opentv.debug`, version `0.11.10`, versionCode `22`, min SDK 23, compile/target SDK 36. APK SHA-256: `5fac9671ee89d245f50e5deb924c74a4e3a1fa64f766f8fd011767279ba7be88`.
-- AAB SHA-256: `05c9a557ddd2daa422945d9440a502a1065725913294954d65fffec0be562abc`.
-- APK and AAB archives passed integrity checks; APK signature verified with v1/v2 schemes. Signer remains the Android Debug certificate, not a production key.
-- Adaptive launcher foreground/background, monochrome themed icon, legacy density fallbacks and PRYNCE notification glyph are generated and wired. CI build and static resource checks passed.
-- Android Lint: 0 errors, 188 warnings, 3 informational findings. Reports artifact ID `13225353950`. Warnings remain for review.
-- Founder portrait assets located in the owner's private Library: `1000114846.png` (headshot), `1000118820.jpg` (navy-suit portrait), `1000119037.jpg` (seated casual portrait). They are not included in this public repository or APK. Add an About/Founder portrait surface only after confirming the selected photo's public-use destination.
-- The master cross-project brand rules are in `docs/PRYNCE_MASTER_BRAND_STANDARD.md`.
+- Latest CI run: [41629319388](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41629319388); commit `eb7af7bcb8892ccde353dc6ac7c966c6543501a2`; conclusion: **success**.
+- All 17 workflow steps completed, including tests, APK/AAB compilation, package metadata/signing capture, checksums, artifact uploads, Android Gradle Lint and lint-report upload.
+- Build artifact ID: `13228535438`; lint report artifact ID: `13227652811`.
+- APK: `app.opentv.debug`, version `0.11.10`, versionCode `22`, min SDK 23, compile/target SDK 36. APK SHA-256: `2c653ce3ff06e8a9fe32ca2eb53395b3f2b352c6fdc1cdb74aab57bae796a9c1`.
+- AAB SHA-256: `e3f0411fbed5e6d98736b58ebc5282a3fa8a5609ef0be8076846235798ec907e`.
+- Both downloaded ZIP artifacts passed integrity checks. APK signature verifies with v1/v2; signer is the Android Debug certificate, not a production key.
+- Android Lint: 187 findings total — 184 warnings and 3 informational, zero errors/fatal. Dependency/KTX, translations, unused resources and other quality warnings still need triage.
+- PR #8 (`fix/locale-formatting-lint`) remains an open draft; do not treat it as merged.
+- This is a successful CI test build, not a production release. No physical phone/TV playback or updater test is claimed.
 
 ## Current Android 16 migration — authoritative latest status
 
