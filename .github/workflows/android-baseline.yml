@@ -215,31 +215,28 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import re
 
           screen = Path("app/src/main/java/app/opentv/ui/MainScreen.kt")
           text = screen.read_text()
-          text = text.replace(
-              "painterResource(R.drawable.ic_opentv_logo)",
+          text, icon_count = re.subn(
+              r"painterResource\\(R\\.drawable\\.ic_opentv_logo\\)",
               "painterResource(R.drawable.ic_prynce_brand)",
+              text,
+              count=1,
           )
           text = text.replace('contentDescription = "OpenTV"', 'contentDescription = "PRYNCE TV"')
-          old = """                Text(
-                    "PRYNCE TV",
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )"""
-          new = """                Image(
+          wordmark = """                Image(
                     painter = painterResource(R.drawable.ic_prynce_wordmark),
                     contentDescription = "PRYNCE TV wordmark",
                     modifier = Modifier.size(width = 96.dp, height = 30.dp),
                 )"""
-          if old in text:
-              text = text.replace(old, new, 1)
-          elif "R.drawable.ic_prynce_wordmark" not in text:
-              raise SystemExit("Could not find the expanded navigation brand label to replace.")
+          pattern = r'Text\\(\\s*"PRYNCE TV",\\s*style = MaterialTheme\\.typography\\.titleLarge,.*?overflow = TextOverflow\\.Ellipsis,\\s*\\)'
+          text, wordmark_count = re.subn(pattern, lambda _: wordmark, text, count=1, flags=re.S)
+          if icon_count != 1:
+              raise SystemExit(f"Expected one upstream rail icon reference; replaced {icon_count}.")
+          if wordmark_count != 1 and "R.drawable.ic_prynce_wordmark" not in text:
+              raise SystemExit("Could not locate the expanded navigation wordmark slot.")
           if "R.drawable.ic_prynce_brand" not in text or "R.drawable.ic_prynce_wordmark" not in text:
               raise SystemExit("PRYNCE icon/wordmark integration did not validate.")
           screen.write_text(text)
