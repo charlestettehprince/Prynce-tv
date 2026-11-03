@@ -73,3 +73,54 @@ The public application ID, production signing identity, physical-device acceptan
 - https://github.com/charlestettehprince/Prynce-tv/issues/3
 - https://github.com/charlestettehprince/Prynce-tv/issues/4
 - https://github.com/charlestettehprince/Prynce-tv/issues/5
+
+
+## Latest available test package — Build #107
+
+- Workflow run: [41629319388](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41629319388) — completed successfully.
+- Commit: `eb7af7bcb8892ccde353dc6ac7c966c6543501a2`.
+- Artifact: `prynce-tv-v0.11.10-test-packages` (artifact ID `13228535438`).
+- APK application ID: `app.opentv.debug`; version `0.11.10`, versionCode `22`; min SDK `23`, target/compile SDK `36`.
+- APK SHA-256: `2c653ce3ff06e8a9fe32ca2eb53395b3f2b352c6fdc1cdb74aab57bae796a9c1`.
+- The APK uses the Android Debug certificate. It is for controlled testing only, not a production release.
+- CI tests/build, package integrity, checksum and APK signature checks passed. Android Lint completed with 187 findings (184 warnings, 3 informational; zero errors/fatal).
+- Artifact expiry: 1 February 2027. Confirm availability before distributing.
+
+## Device acceptance checklist
+
+Record a result for each target form factor separately; do not infer Android TV or Fire TV acceptance from a phone test.
+
+### Android phone/tablet
+1. Install the debug APK using Android's normal installer flow; keep Play Protect and system security protections enabled.
+2. Launch PRYNCE TV and confirm startup, app identity and navigation.
+3. Open the Ghana TV directory and verify that a selected official HTTPS destination opens in the expected browser/app.
+4. Test local video by selecting a user-owned sample through the system file picker; note whether audio/video and seeking work.
+5. Exercise search, favourites, history, guide, audio/subtitle selection where available, background/resume and network loss/recovery.
+6. Record crashes, blank screens, excessive heat/battery use, and exact reproduction steps.
+
+### Android TV / Google TV
+1. Install only through an authorised test route and launch from the TV home screen.
+2. Navigate using the physical remote only: D-pad, Select, Back and playback keys.
+3. Confirm visible focus at every step, sensible focus restoration, no keyboard/touch-only dead ends, and readable text at normal viewing distance.
+4. Open an official broadcaster destination and verify the TV's browser/app handoff.
+5. Test authorised media playback, pause/resume, channel navigation and network recovery.
+
+### Fire TV (separate acceptance)
+1. Test only on a Fire TV device and record Fire OS version.
+2. Verify remote-only focus, app launch, browser handoff and authorised media playback.
+3. Do not assume Google Play services or Play in-app updates are available.
+
+### Tester report template
+- Device model:
+- OS / Android TV / Fire OS version:
+- App version and build:
+- Install and launch: Pass / Fail
+- Remote/touch navigation: Pass / Fail / N/A
+- Official channel link handoff: Pass / Fail
+- User-owned local video: Pass / Fail / N/A
+- Playback, audio and subtitles: Pass / Fail / N/A
+- Network recovery: Pass / Fail
+- Crash or issue reproduction steps:
+- Screenshot/video evidence (remove personal data first):
+
+Do not include passwords, provider credentials, personal account details or private playlist URLs in reports.
