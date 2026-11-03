@@ -61,7 +61,7 @@ index 7a78d8af5d46458828223956ac7073b1ff72868b..00000000000000000000000000000000
  )
  
  /**
-@@ -53,15 +61,18 @@ private val DarkScheme = darkColorScheme(
+@@ -52,15 +60,18 @@ private val DarkScheme = darkColorScheme(
   */
  private val LightScheme = lightColorScheme(
 -    primary = Color(0xFF3B4FCC),
