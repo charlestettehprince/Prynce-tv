@@ -31,9 +31,13 @@ The GitHub Actions workflow checks out the pinned OpenTV submodule, installs the
 
 **CI success is not device acceptance.** Physical Android phone, Android TV and Fire TV testing, authorised-source playback, launcher visual inspection, AAB native-library inspection, privacy/licence review and production signing remain required before public release.
 
+## Updates across phone and TV
+
+The selected update architecture is documented in [Universal update architecture](docs/UNIVERSAL_UPDATE_ARCHITECTURE.md). The intended design uses Play in-app updates on supported phones/tablets, store-managed updates for Android TV and Fire TV, and a secure remote manifest for non-executable feature/content configuration. Update code is **not yet integrated**; platform-specific implementation and physical-device tests remain release gates.
+
 ## Project documentation
 
-- [Project status and remaining acceptance gates](docs/PROJECT_STATUS.md)
+- [Universal update architecture](docs/UNIVERSAL_UPDATE_ARCHITECTURE.md)\n- [Project status and remaining acceptance gates](docs/PROJECT_STATUS.md)
 - [Build plan](docs/PRYNCE_TV_BUILD_PLAN.md)
 - [Device acceptance checklist](docs/DEVICE_ACCEPTANCE_CHECKLIST.md)
 - [Channel source setup and troubleshooting](docs/CHANNEL_SOURCE_GUIDE.md)
