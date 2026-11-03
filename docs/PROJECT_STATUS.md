@@ -25,7 +25,7 @@
 - Error triage: 2 notification-permission findings in recording/reminder alarm receivers; 4 API-level findings around Android 8.0 picture-in-picture calls while the app supports Android 6.0+; and 18 incomplete-translation findings across the upstream resource set.
 - Added reproducible build-time source patches in `scripts/apply_android_lint_fixes.py`: explicit Android 13+ notification permission checks before notification posting, and a local Android 8.0+ guard around picture-in-picture calls. The pinned upstream submodule remains unchanged.
 - Added `android/patches/lint.xml` to keep incomplete upstream translations visible as warnings rather than compilation-blocking errors. The check is **not disabled**; translation coverage remains a quality backlog.
-- CI workflow applies the reviewed patch script and lint policy before building and runs `./gradlew lint`, then uploads the XML/HTML reports. The first validation run after these changes is queued as workflow run `41622174882`; **its result is not yet verified**.
+- CI workflow applies the reviewed patch script and lint policy before building and runs `./gradlew lint`, then uploads the XML/HTML reports. Validation workflow run `41622174882` has started. Its checkout, Android 16 configuration, launcher artwork, Ghana TV directory, branding, and reviewed lint-patch application have passed; the test/build step is currently running. Lint has not run yet, so **the remediation result is not yet verified**.
 - Do not treat the lint gate as passed until that run completes. The 157 warnings from the initial report also remain to be reviewed; the severity adjustment only concerns `MissingTranslation`.
 
 ## Executive summary
