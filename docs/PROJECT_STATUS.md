@@ -242,3 +242,10 @@ A feature is complete only with reproducible evidence: automated test output, ar
 - Added `docs/ANDROID_LINT_TRIAGE.md` with every issue group, counts, risk-based execution order and guardrails. No Android source or binary was changed during this triage.
 - Next implementation milestone: inspect the exact PiP/orientation and locale source locations, then make only narrow, evidence-backed fixes with a fresh CI run. Do not bulk-upgrade dependencies, silence warnings, or remove resources without compatibility/reference checks.
 - Real phone/Android TV acceptance, PiP behavior, launcher appearance, and actual playback remain unverified on physical devices.
+
+
+## 3 November 2026 — Lint triage clarification
+
+- The latest #107 lint XML has no remaining DefaultLocale findings; PR #8 adds explicit Locale.ROOT to the two recording-size formatters. Four ConstantLocale findings remain.
+- The single orientation advisory points to screenOrientation=fullUser in the pinned upstream manifest. That setting allows user-selected orientations; it is not a fixed portrait or landscape lock. Do not remove it blindly.
+- See docs/ANDROID_LINT_TRIAGE.md for the reconciled 187-finding breakdown and next review order.
