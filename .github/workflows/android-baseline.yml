@@ -28,24 +28,37 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install PRYNCE TV launcher artwork
+      - name: Install PRYNCE TV launcher artwork from original vector sources
         run: |
           mkdir -p android/upstream/app/src/main/res/drawable
           rm -f android/upstream/app/src/main/res/drawable/ic_launcher.png android/upstream/app/src/main/res/drawable/banner.png
           python3 -m venv /tmp/prynce-art-venv
-          /tmp/prynce-art-venv/bin/pip install --quiet Pillow
+          /tmp/prynce-art-venv/bin/pip install --quiet CairoSVG
           /tmp/prynce-art-venv/bin/python - <<'PY'
-          from PIL import Image, ImageOps
           from pathlib import Path
+          from base64 import b64encode
+          import cairosvg
+
           out = Path("android/upstream/app/src/main/res/drawable")
-          icon = Image.open("branding/prynce_tv_icon.png").convert("RGBA")
-          icon = ImageOps.fit(icon, (512, 512), method=Image.Resampling.LANCZOS)
-          icon.save(out / "ic_launcher.png", optimize=True)
-          banner = Image.open("branding/prynce_tv_banner.png").convert("RGBA")
-          banner = ImageOps.fit(banner, (320, 180), method=Image.Resampling.LANCZOS)
-          background = Image.new("RGB", (320, 180), "#080B14")
-          background.paste(banner, mask=banner.getchannel("A"))
-          background.save(out / "banner.png", optimize=True)
+          icon_source = Path("branding/prynce_icon.svg")
+          wordmark_source = Path("branding/prynce_wordmark.svg")
+          for source in (icon_source, wordmark_source):
+              if not source.is_file() or "<svg" not in source.read_text():
+                  raise SystemExit(f"Missing or invalid original vector artwork: {source}")
+
+          icon_png = cairosvg.svg2png(url=str(icon_source), output_width=512, output_height=512)
+          wordmark_png = cairosvg.svg2png(url=str(wordmark_source), output_width=165, output_height=52)
+          (out / "ic_launcher.png").write_bytes(icon_png)
+
+          icon_uri = "data:image/png;base64," + b64encode(icon_png).decode("ascii")
+          wordmark_uri = "data:image/png;base64," + b64encode(wordmark_png).decode("ascii")
+          banner_svg = f"""<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+            <rect width="320" height="180" fill="#080B14"/>
+            <image href="{icon_uri}" x="8" y="8" width="164" height="164"/>
+            <image href="{wordmark_uri}" x="150" y="64" width="160" height="51"/>
+            <path d="M178 126H300" stroke="#D4AF37" stroke-opacity=".7" stroke-width="2"/>
+          </svg>"""
+          cairosvg.svg2png(bytestring=banner_svg.encode(), write_to=str(out / "banner.png"))
           PY
 
       - name: Set up Java 17
