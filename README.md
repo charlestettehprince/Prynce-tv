@@ -19,6 +19,7 @@ The selected foundation is [OpenTV](https://github.com/opentvproject/opentv). It
 
 - [Android build plan](docs/PRYNCE_TV_BUILD_PLAN.md)
 - [Open-source engine decision and fallback](docs/OPEN_SOURCE_ENGINE_DECISION.md)
+- [Channel source guide and reliability checklist](docs/CHANNEL_SOURCE_GUIDE.md)
 
 ## Licensing
 
