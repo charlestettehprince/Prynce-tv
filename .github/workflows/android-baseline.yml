@@ -75,6 +75,12 @@ jobs:
           manifest = Path("app/src/main/AndroidManifest.xml")
           text = manifest.read_text().replace('android:icon="@drawable/ic_launcher"', 'android:icon="@drawable/ic_opentv_logo"')
           manifest.write_text(text)
+
+          # Keep the in-app navigation brand consistent with the launcher and app label.
+          main_screen = Path("app/src/main/java/app/opentv/ui/MainScreen.kt")
+          text = main_screen.read_text()
+          text = text.replace('"OpenTV"', '"PRYNCE TV"')
+          main_screen.write_text(text)
           PY
 
       - name: Run tests and build PRYNCE TV debug APK
