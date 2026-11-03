@@ -155,3 +155,12 @@ A feature is complete only with reproducible evidence: automated test output, ar
 - The self-updater requests package-install permission and uses the Android system installer flow; it does not silently install updates. Keep Android's normal security prompts and user confirmation.
 - Upstream release documentation confirms the current fallback signing key is the Android debug key. A production signing identity must be configured before public distribution; changing signing identity later can prevent in-place upgrades from debug-signed installs.
 - No permission or manifest change was made in this audit. No new build was produced. These findings are release-review items, not proof of a vulnerability or of physical-device behaviour.
+
+
+## 3 November 2026 — updater and release identity audit
+
+- Inspected the pinned updater source: it queries GitHub's latest-release API, ignores drafts/prereleases, selects a release APK asset, compares dotted version tags against the installed versionName, downloads the APK and hands installation to Android's system installer.
+- The PRYNCE build workflow rewrites the upstream repository slug and user-facing update text during CI. This confirms configuration in the build recipe, not an end-to-end release update.
+- Created GitHub Issue #3 to track the release workflow, exact APK asset naming, tag/versionCode consistency, stable application ID, permanent signing identity, recovery cases and separate phone/TV/Fire TV update tests.
+- Current API 36 APK/AAB remain debug-signed. No production release or real-device update test is claimed.
+- No application source code or binary was changed in this audit.
