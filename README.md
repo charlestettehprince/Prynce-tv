@@ -1,56 +1,55 @@
 # PRYNCE TV
 
-PRYNCE TV is a premium Android media-player project for Android phones, Android TV and Fire TV.
+**Beyond ordinary.** A branded Android media player for Android phones, Android TV and Fire TV, built on the pinned OpenTV v0.11.10 open-source foundation.
 
-**Visual direction:** near-black interface, restrained gold accents, clear touch controls and remote-first TV navigation.
+## Product scope
 
-## Verified build status — 3 November 2026
+PRYNCE TV is a player, not a broadcaster or channel subscription service. Viewers add playlists or provider details they are authorised to use. The app must not circumvent DRM, authentication, subscriptions, geographic restrictions or broadcaster controls.
 
-- Primary foundation: OpenTV v0.11.10, pinned as a Git submodule at `android/upstream`.
-- Pinned upstream commit: `443811904b6437720d37bb1064c0830906c3515f`.
-- Two latest documentation-triggered CI builds completed successfully:
-  - [Run 41566614327](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41566614327) — tests, debug APK build and artifact upload passed.
-  - [Run 41566629123](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41566629123) — tests, debug APK build and artifact upload passed.
-- Both produced `prynce-tv-v0.11.10-debug`, approximately 28.9 MB. The artifacts expire on 17 November 2026.
-- CI verifies compilation, automated tests and artifact upload. It does **not** verify physical-device installation, live-stream playback, Android TV/Fire TV behaviour, production signing or final logo correctness.
-- Exact website/app logo and icon still need to be installed and visually verified. The current upstream-derived launcher mark remains provisional.
+Core upstream capabilities include M3U/M3U8 playlists, Xtream-compatible provider connections, XMLTV programme guides, search, favourites, history and remote-friendly navigation. Availability of individual playback features depends on the provider and device.
 
-## Engine decision
+## PRYNCE branding
 
-Keep OpenTV as the primary foundation. It already supports the combined phone and TV target and provides source setup, M3U/M3U8 and provider login flows, guide data and playback features. Do not migrate just to try another engine while the current foundation builds.
+- App name: **PRYNCE TV**
+- Visual direction: near-black/navy with restrained gold accents.
+- Launcher icon: `branding/prynce_tv_icon.jpg`
+- Android TV banner: `branding/prynce_tv_banner.jpg`
+- Branding integration and CI installation: [Branding asset integration guide](docs/BRANDING_ASSET_INTEGRATION.md).
 
-Alternatives reviewed:
-- [OpenIPTV](https://github.com/Hunter-Clipper/OpenIPTV) — Flutter-based player; a possible future option if a cross-platform UI becomes a real requirement.
-- [OwnTV](https://github.com/ahXN00/OwnTV) — Android-TV-focused Kotlin player; useful as a TV UX reference, but not a better single foundation for the current phone-plus-TV target.
-- [OpenTV Mobile](https://github.com/opentv-mobile) — phone-oriented derivative; not a replacement for the combined Android TV target.
+The committed artwork is derived from the original assets supplied by the project owner. It is resized/compressed for Android use, not redrawn or recoloured.
 
-All are player foundations, not entitlements to broadcast content. PRYNCE TV must only play streams the viewer is authorised to access. No DRM, subscription, account or geographic restriction circumvention.
+## Build status
+
+The GitHub Actions workflow checks out the pinned OpenTV submodule, installs the PRYNCE icon/banner into the Android drawable resources, applies the PRYNCE TV app label and theme, runs automated tests, builds a debug APK and uploads the artifact.
+
+- [Latest workflow runs](https://github.com/charlestettehprince/Prynce-tv/actions)
+- [Latest confirmed successful branded build](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41589026255)
+- Artifact name: `prynce-tv-v0.11.10-debug` (approximately 28.9 MB; GitHub Actions retention is limited).
+
+**CI success is not device acceptance.** Physical Android phone, Android TV and Fire TV testing, actual authorised-source playback, launcher visual inspection and release signing remain required before public release.
 
 ## Project documentation
 
-- [Consolidated build plan and acceptance gates](docs/PRYNCE_TV_BUILD_PLAN.md)
+- [Project status and remaining acceptance gates](docs/PROJECT_STATUS.md)
+- [Build plan](docs/PRYNCE_TV_BUILD_PLAN.md)
+- [Device acceptance checklist](docs/DEVICE_ACCEPTANCE_CHECKLIST.md)
+- [Channel source setup and troubleshooting](docs/CHANNEL_SOURCE_GUIDE.md)
 - [Open-source engine decision](docs/OPEN_SOURCE_ENGINE_DECISION.md)
-- [Channel source guide and reliability checklist](docs/CHANNEL_SOURCE_GUIDE.md)
+- [Branding integration guide](docs/BRANDING_ASSET_INTEGRATION.md)
 
-## Next acceptance gates
+## Build locally
 
-1. Confirm the exact original logo/icon assets and integrate them without redrawing or substituting them.
-2. Install the debug APK on an Android 11+ phone and record the result.
-3. Test source setup, permitted stream playback, EPG, search, favourites and network-error recovery.
-4. Test remote focus/navigation on Android TV or Fire TV hardware.
-5. Complete release signing, versioning, privacy disclosures and GPL source/notice packaging before public distribution.
+The Android source is pinned as a Git submodule at `android/upstream`.
 
-## Licensing
+```bash
+git clone --recurse-submodules https://github.com/charlestettehprince/Prynce-tv.git
+cd Prynce-tv/android/upstream
+./gradlew test assembleDebug
+```
 
-OpenTV is GPL-3.0-or-later. Preserve upstream notices and meet the licence's corresponding-source requirements before distributing modified builds. Include applicable licence and attribution materials.
+Use Java 17 and the Android SDK versions specified in the CI workflow.
 
-## Device acceptance
+## Licensing and distribution
 
-Use the [phone and TV device acceptance checklist](docs/DEVICE_ACCEPTANCE_CHECKLIST.md) before calling a release candidate ready. CI success alone does not establish physical-device compatibility or real-stream playback.
+The OpenTV upstream foundation is GPL-3.0-or-later. Preserve all upstream notices and comply with the licence, including providing corresponding source and required notices when distributing modified binaries. Review the upstream licence and all bundled dependency licences before release. Do not publish a modified APK as a finished release until the source, notices, privacy information and signing process are ready.
 
-## Project status
-
-See [the consolidated PRYNCE TV project status](docs/PROJECT_STATUS.md) for the current technical decisions, verified CI evidence, remaining acceptance gates and project estimate.
-
-
-- [Brand asset integration guide](docs/BRANDING_ASSET_INTEGRATION.md)
