@@ -4,11 +4,12 @@
 PRYNCE TV is a premium, simple-to-use media player for Android phones, Android TV, and Fire TV. The visual direction is near-black with restrained gold accents, a gold TV/play launcher mark, clear typography, and remote-friendly navigation on television.
 
 ## Technical baseline
-- Starting point selected for evaluation: OpenTV (https://github.com/opentvproject/opentv).
+- Starting point: OpenTV v0.11.10, pinned as a Git submodule at `android/upstream`.
+- Upstream source commit: `443811904b6437720d37bb1064c0830906c3515f`.
 - License: GPL-3.0-or-later. Preserve upstream notices and meet source-availability obligations for any redistributed modified build.
-- Android compatibility target: Android 11 and newer.
+- Android compatibility baseline: upstream minSdk 23; target user-device testing starts at Android 11 and newer.
 - Initial build target: debug APK for controlled testing; production signing is a separate release task.
-- Keep the upstream application ID during the first rebrand unless a deliberate migration and update-signature plan is approved.
+- Keep upstream application ID `app.opentv` for now. The debug variant adds upstream's `.debug` suffix. A package rename requires a deliberate migration and update-signature plan.
 
 ## Product requirements
 - One app experience that adapts to touch devices and TV remotes.
@@ -18,22 +19,26 @@ PRYNCE TV is a premium, simple-to-use media player for Android phones, Android T
 - Use only media sources the user is authorised to access; the app does not bundle or provide channel content.
 
 ## Delivery phases and acceptance checks
-1. **Repository baseline:** import and pin a reviewed upstream release; record source tag and licence.
-2. **Branding:** apply PRYNCE TV name, black/gold palette, launcher icon, TV banner, and app copy without breaking resources.
-3. **Build automation:** add CI for unit tests and debug APK artifact generation.
-4. **Functional verification:** test startup, source setup, playback, search, favourites, guide, remote navigation, and error handling.
-5. **Device verification:** install and test on Android 11 phone, a newer Android phone, and Android TV/Fire TV where available.
-6. **Release readiness:** configure a persistent release signing key securely, versioning, privacy disclosures, and GPL source distribution.
+1. **Repository baseline — complete:** pin and track the reviewed upstream source; record source tag and licence.
+2. **CI source integration — implemented, validating:** checkout the repository recursively and build from the pinned submodule.
+3. **Branding — partial:** app name and initial black/gold theme substitutions are applied in CI. Launcher icon, TV banner, and detailed homepage polish remain.
+4. **Build automation — baseline passed; submodule build validating:** unit tests and debug APK artifact generation are configured. Confirm the current submodule-based run succeeds before treating this as complete.
+5. **Functional verification — pending:** test startup, source setup, playback, search, favourites, guide, remote navigation, and error handling.
+6. **Device verification — pending:** install and test on Android 11 phone, a newer Android phone, and Android TV/Fire TV where available.
+7. **Release readiness — pending:** configure a persistent release signing key securely, versioning, privacy disclosures, and GPL source distribution.
 
 ## Current verified status
-- GitHub repository access: available.
-- Repository baseline: currently contains only the starter README; no Android source tree is present yet.
-- OpenTV evaluation and technical direction: completed at planning level.
-- PRYNCE TV code integration: not started.
-- APK build: not started.
-- Physical-device testing: not started.
+- GitHub repository write access: working.
+- Pinned Android source: committed as a Git submodule at `android/upstream`.
+- CI successfully checked out the repository and submodule and completed Java/SDK setup and branding on run `41563754758`.
+- The submodule-based Gradle test/build step is still running; APK upload has not yet completed for that run.
+- A prior temporary-checkout upstream baseline build passed and produced a debug artifact. That is not proof that the new submodule-based workflow has passed.
+- No physical-device testing has been completed.
+- Launcher artwork and final branded homepage are not complete.
 
 ## Important constraints
-- Do not claim an APK or working app until a build succeeds and the artifact is checked.
+- Do not claim an APK or working app until the relevant build succeeds and the artifact is checked.
+- Do not claim device compatibility until installed and tested on the target hardware.
 - Do not replace licensing notices or remove upstream attribution.
 - Do not bypass platform permissions, provider access controls, or content restrictions.
+- Keep credentials out of source control and build logs.
