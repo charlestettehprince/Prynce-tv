@@ -316,3 +316,11 @@ A feature is complete only with reproducible evidence: automated test output, ar
 - This workflow does not yet generate a Baseline Profile or Macrobenchmark report. Those require a separate compatible benchmark module and verified dependency/plugin versions; no speed improvement is claimed.
 - No app runtime source, login/authentication flow, provider access, website or release signing was changed. No paid service or mandatory account was introduced.
 - Next: inspect the first successful CI timing artifact, collect multiple runs to understand variance, then add Baseline Profile/Macrobenchmark support in a separate tested change. Follow with physical low-end phone and Android TV acceptance.
+
+
+### Startup benchmark CI bootstrap correction — 3 November 2026
+
+- First workflow attempt `41682156895` failed during `android-actions/setup-android@v3`: its default SDK package list attempted to install the removed `tools` package. The Android build and emulator measurement steps were therefore skipped; no timing data was produced.
+- Corrected the workflow to explicitly request `platform-tools` from setup-android before installing API 35/build tools/emulator packages.
+- The corrected run `41682368813` was triggered automatically from commit `09a1e5976e20d011af6bcc564c1683791ffc9bc8`; checkout and Java setup passed, Android SDK setup was running at the time of this update.
+- Do not report benchmark timings until the corrected run completes and its measurement artifact is inspected.
