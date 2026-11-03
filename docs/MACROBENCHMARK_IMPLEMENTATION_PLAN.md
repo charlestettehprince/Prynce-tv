@@ -59,3 +59,30 @@ Reference: https://developer.android.com/topic/performance/benchmarking/macroben
 ## Next implementation gate
 
 Inspect the exact pinned Gradle wrapper and app dependency graph, then build a minimal separate harness against a known CI APK. Open a pull request for review before merging any benchmark infrastructure into `main`.
+
+
+## Verified pinned-toolchain findings (2026-11-03)
+
+The following values were read directly from the pinned OpenTV submodule commit
+`443811904b6437720d37bb1064c0830906c3515f`:
+
+- Gradle wrapper: **8.11.1**.
+- Android Gradle Plugin: **8.7.3**.
+- Kotlin: **2.0.21**; KSP: **2.0.21-1.0.28**.
+- Compile/target SDK: **35**; min SDK: **23**.
+- Java/Kotlin bytecode target: **17**.
+- App namespace/application ID: `app.opentv`; debug application ID: `app.opentv.debug`.
+- Launcher activity: `app.opentv.MainActivity`; debug launcher: `app.opentv.debug/app.opentv.MainActivity`.
+- Existing instrumentation runner: `androidx.test.runner.AndroidJUnitRunner`.
+- Project has one Android application module, `:app`, and uses a Gradle version catalog.
+- Existing dependencies do not declare AndroidX Macrobenchmark or ProfileInstaller.
+- The inspected application manifest does not currently declare `<profileable android:shell="true"/>`.
+- Release currently falls back to the debug signing key when `KEYSTORE_PATH` is absent. Therefore the existing release variant is **not** an acceptable benchmark target for production-like signing or public distribution evidence.
+
+## Updated implementation gate
+
+**Status: compatibility discovery complete; implementation remains blocked pending a safe target APK.**
+
+Do not point Macrobenchmark at the existing debug APK: Macrobenchmark requires a non-debuggable target. Do not treat the current debug-signed release fallback as production-signed. Before adding a harness, create or identify a dedicated benchmark target build that is non-debuggable, profileable, installable alongside/independently of the app, and uses the same code/minification configuration intended for the measured release. Keep signing identity out of benchmark artifacts and do not create or export a production private key for this work.
+
+The next low-risk step is to inspect the parent repository's branded build workflow and artifact naming, then add a small isolated benchmark project only after confirming how a benchmark-only profileable APK can be produced without changing the upstream submodule. If that cannot be done without a source patch, propose a minimal patch in a separate reviewable PR rather than silently moving the submodule pointer.
