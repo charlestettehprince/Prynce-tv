@@ -235,34 +235,39 @@ jobs:
           if "LOCAL_MEDIA(R.string.nav_local_media" not in text:
               text = text.replace(
                   "    GHANA_TV(R.string.nav_ghana_tv, Icons.Filled.Tv),",
-                  "    GHANA_TV(R.string.nav_ghana_tv, Icons.Filled.Tv),\\n    LOCAL_MEDIA(R.string.nav_local_media, Icons.Filled.FolderOpen),",
+                  "    GHANA_TV(R.string.nav_ghana_tv, Icons.Filled.Tv),\n    LOCAL_MEDIA(R.string.nav_local_media, Icons.Filled.FolderOpen),",
                   1,
               )
           if "onPlayLocalMedia: (android.net.Uri) -> Unit" not in text:
               text = text.replace(
                   "    onPlayRecording: (Recording) -> Unit,",
-                  "    onPlayRecording: (Recording) -> Unit,\\n    onPlayLocalMedia: (android.net.Uri) -> Unit,",
+                  "    onPlayRecording: (Recording) -> Unit,\n    onPlayLocalMedia: (android.net.Uri) -> Unit,",
                   1,
               )
           if "Tab.LOCAL_MEDIA -> LocalMediaScreen(onPlayLocalMedia)" not in text:
               text = text.replace(
                   "                Tab.GHANA_TV -> GhanaTvScreen()",
-                  "                Tab.GHANA_TV -> GhanaTvScreen()\\n                Tab.LOCAL_MEDIA -> LocalMediaScreen(onPlayLocalMedia)",
+                  "                Tab.GHANA_TV -> GhanaTvScreen()\n                Tab.LOCAL_MEDIA -> LocalMediaScreen(onPlayLocalMedia)",
                   1,
               )
-          text = text.replace("            add(Tab.GHANA_TV)\\n        }", "            add(Tab.GHANA_TV)\\n            add(Tab.LOCAL_MEDIA)\\n        }", 1)
+          text = text.replace("            add(Tab.GHANA_TV)\n        }", "            add(Tab.GHANA_TV)\n            add(Tab.LOCAL_MEDIA)\n        }", 1)
           main.write_text(text)
 
           strings_text = strings.read_text()
           if 'name="nav_local_media"' not in strings_text:
               pos = strings_text.rfind("</resources>")
-              strings_text = strings_text[:pos] + '    <string name="nav_local_media">My Videos</string>\\n' + strings_text[pos:]
+              strings_text = strings_text[:pos] + '    <string name="nav_local_media">My Videos</string>\n' + strings_text[pos:]
               strings.write_text(strings_text)
 
           activity = Path("app/src/main/java/app/opentv/MainActivity.kt")
           activity_text = activity.read_text()
           marker = "                    activeProfileName = activeProfileName,"
-          callback = marker + "\\n                    onPlayLocalMedia = { uri ->\\n                        navController.navigate(\\n                            Routes.vodPlayer(key = \\"local:\\" + uri.toString(), url = uri.toString(), title = uri.lastPathSegment ?: \\"Local video\\", ua = \\"\\"),\\n                        )\\n                    },"
+          callback = marker + """
+                    onPlayLocalMedia = { uri ->
+                        navController.navigate(
+                            Routes.vodPlayer(key = "local:" + uri.toString(), url = uri.toString(), title = uri.lastPathSegment ?: "Local video", ua = ""),
+                        )
+                    },"""
           if "onPlayLocalMedia = { uri ->" not in activity_text:
               if marker not in activity_text:
                   raise SystemExit("Could not find MainActivity home-screen callback insertion point")
