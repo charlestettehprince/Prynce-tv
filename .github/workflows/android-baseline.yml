@@ -85,20 +85,32 @@ jobs:
           # Use the user's exact horizontal wordmark when the rail expands.
           main_screen = Path("app/src/main/java/app/opentv/ui/MainScreen.kt")
           text = main_screen.read_text()
-          pattern = re.compile(
-              r'(?ms)^            Image\\(\\n                painter = painterResource\\(R\\.drawable\\.ic_opentv_logo\\),.*?(?=^        }\\n        Spacer\\(Modifier\\.height\\(8\\.dp\\)\\))'
-          )
+          old = """            Image(
+                painter = painterResource(R.drawable.ic_opentv_logo),
+                contentDescription = "OpenTV",
+                modifier = Modifier.size(34.dp),
+            )
+            if (expanded) {
+                Spacer(Modifier.width(12.dp))
+                Text(
+                    "OpenTV",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }"""
           new = """            Image(
                 painter = painterResource(if (expanded) R.drawable.prynce_wordmark else R.drawable.prynce_icon),
                 contentDescription = "PRYNCE",
                 modifier = Modifier
                     .width(if (expanded) 154.dp else 34.dp)
                     .height(if (expanded) 49.dp else 34.dp),
-            )
-          replaced, count = pattern.subn(lambda _: new, text, count=1)
-          if replaced != 1:
+            )"""
+          if old not in text:
               raise SystemExit("Expected navigation brand block not found; refusing unsafe replacement")
-          main_screen.write_text(text)
+          main_screen.write_text(text.replace(old, new, 1))
 
           PY
 
