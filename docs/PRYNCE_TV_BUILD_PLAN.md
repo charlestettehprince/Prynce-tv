@@ -25,6 +25,16 @@ A premium media-player experience for Android phones, Android TV and Fire TV. De
 5. **CI verification:** latest confirmed successful baseline is run 41567118208 (commit `d34010c`); Gradle tests, debug APK build and artifact upload passed. Artifact: `prynce-tv-v0.11.10-debug`, approximately 28.9 MB. The two documentation-only runs for the device checklist (41567633078 and README link update 41567642427) were still in progress at the last check on 3 November 2026. CI success proves the configured tests/build/artifact upload only.
 6. **Acceptance documentation:** added `docs/DEVICE_ACCEPTANCE_CHECKLIST.md` (commit `e923583`) and linked it from README (commit `ad9bf63`). It defines phone, TV, authorized-source playback, branding and release checks.
 
+## Android TV launcher audit (source-verified)
+
+The pinned OpenTV source already declares:
+- `android:banner="@drawable/banner"` and `android:icon="@drawable/ic_launcher"` on the application.
+- Both `LEANBACK_LAUNCHER` and standard `LAUNCHER` intent categories.
+- `android.software.leanback` and `android.hardware.touchscreen` as optional features, supporting a shared phone/TV APK.
+- PNG launcher and banner assets in drawable density folders.
+
+This means the Android TV banner plumbing is already present in the pinned source; a new manifest implementation is not needed. The remaining branding task is to replace the upstream artwork with the user's exact approved PRYNCE icon and wordmark, retaining the required Android TV banner dimensions and launcher resource paths. This source audit does not prove the artwork renders correctly on a physical TV.
+
 ## Work still open — acceptance gates
 
 ### A. Exact brand assets
