@@ -88,3 +88,14 @@ Completed: CI test build, build metadata/checksum capture, lint report capture, 
 Not completed and not claimed: production signing, permanent public app ID, physical-device acceptance, production privacy hardening, Firebase/Play distribution setup, public landing page/share button, stable public release, or store publication.
 
 This handoff intentionally records blockers instead of marking unverified work complete. No safety prompt, age gate, DRM, licensing rule, installer confirmation, or platform security check should be bypassed.
+
+
+## 3 November 2026 — PRYNCE brand coverage update
+
+- Original brand artwork is present in `branding/prynce_icon.svg` and `branding/prynce_wordmark.svg`; these source files are preserved.
+- Updated CI to generate separate in-app icon and wordmark resources from the original SVG artwork.
+- Intended branded surfaces now include the phone/tablet launcher icon, Android TV / Fire TV banner, in-app navigation rail icon, expanded navigation wordmark, app label, and gold theme accents.
+- Updated `README.md`, `docs/BRANDING_ASSET_INTEGRATION.md`, and `docs/PROJECT_STATUS.md` to record what is implemented and what remains.
+- Branding workflow commit: `c9acd096f444429e3e483e3f372fa205e918df82`. Its first CI attempt failed in the new navigation patch due to a script-pattern issue; the patch was corrected in commit `cffe1c52db8daab3a4ff480c0083698e38240ab6`.
+- Corrected CI run: `41624830375`, currently queued/pending at the time this note was written. Do not claim the new build passed until that run completes successfully.
+- Notification small icon remains upstream; a dedicated monochrome PRYNCE glyph is still needed. Adaptive/themed launcher variants and physical phone/TV screenshots also remain outstanding.
