@@ -7,7 +7,6 @@ on:
       - ".github/workflows/android-baseline.yml"
       - ".gitmodules"
       - "android/**"
-      - "branding/**"
       - "docs/**"
       - "README.md"
 
@@ -42,16 +41,6 @@ jobs:
           yes | sdkmanager --licenses
           sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
-      - name: Prepare supplied PRYNCE logo assets
-        run: |
-          python3 -m pip install --user cairosvg
-          mkdir -p android/upstream/app/src/main/res/drawable-nodpi
-          python3 - <<'PY'
-          import cairosvg
-          cairosvg.svg2png(url="branding/prynce_icon.svg", write_to="android/upstream/app/src/main/res/drawable-nodpi/prynce_icon.png", output_width=512, output_height=512)
-          cairosvg.svg2png(url="branding/prynce_wordmark.svg", write_to="android/upstream/app/src/main/res/drawable-nodpi/prynce_wordmark.png", output_width=1200, output_height=380)
-          PY
-
       - name: Apply PRYNCE TV black-and-gold branding
         working-directory: android/upstream
         run: |
@@ -76,32 +65,22 @@ jobs:
           text = text.replace("0xFF3B4FCC", "0xFF9A7820")
           theme.write_text(text)
 
-          # Use the user's supplied square Prynce mark as the launcher icon.
+          # Use the upstream vector logo as the launcher mark, recoloured for PRYNCE TV.
+          logo = Path("app/src/main/res/drawable/ic_opentv_logo.xml")
+          text = logo.read_text()
+          text = text.replace("#5B8DEF", "#D4AF37")
+          text = text.replace("#FFFFFF", "#111111")
+          logo.write_text(text)
+
           manifest = Path("app/src/main/AndroidManifest.xml")
-          text = manifest.read_text().replace('android:icon="@drawable/ic_launcher"', 'android:icon="@drawable/prynce_icon"')
+          text = manifest.read_text().replace('android:icon="@drawable/ic_launcher"', 'android:icon="@drawable/ic_opentv_logo"')
           manifest.write_text(text)
 
           # Keep the in-app navigation brand consistent with the launcher and app label.
-          # Use the user's exact horizontal wordmark when the rail expands.
           main_screen = Path("app/src/main/java/app/opentv/ui/MainScreen.kt")
           text = main_screen.read_text()
-          start = text.find("            Image(", text.find("// Brand:"))
-          end_marker = "        Spacer(Modifier.height(8.dp))"
-          end = text.find(end_marker, start)
-          if start < 0 or end < 0:
-              raise SystemExit("Navigation logo block not found; refusing unsafe replacement")
-          end += len(end_marker)
-          new = """            Image(
-                painter = painterResource(if (expanded) R.drawable.prynce_wordmark else R.drawable.prynce_icon),
-                contentDescription = "PRYNCE",
-                modifier = Modifier
-                    .width(if (expanded) 154.dp else 34.dp)
-                    .height(if (expanded) 49.dp else 34.dp),
-            )
-        }
-        Spacer(Modifier.height(8.dp))"""
-          main_screen.write_text(text[:start] + new + text[end:])
-
+          text = text.replace('"OpenTV"', '"PRYNCE TV"')
+          main_screen.write_text(text)
           PY
 
       - name: Run tests and build PRYNCE TV debug APK
