@@ -134,3 +134,13 @@ A feature is complete only with reproducible evidence: automated test output, ar
 - This is source inspection only; it does not prove focus behavior on physical TV hardware.
 - Decision: do not add Media3 Compose UI or upgrade Media3 merely to introduce focus support. Keep the existing Media3 1.5.0 baseline while device acceptance is pending.
 - Findings recorded in GitHub Issue #2. No source changes or new APK build resulted from this audit.
+
+
+## 3 November 2026 — Ghana directory and local-video integration audit
+
+- Inspected the committed `android/patches/GhanaTvScreen.kt` and `android/patches/LocalMediaScreen.kt` source files and the packaged `catalog/ghana-tv-directory.json`.
+- Ghana TV directory reads its bundled JSON asset and filters destinations to HTTPS before opening the broadcaster destination through Android's normal link handler. The directory explicitly describes broadcaster availability and access as provider-dependent; it does not embed extracted stream URLs.
+- Local video selection uses Android's Storage Access Framework (`OpenDocument`) with the `video/*` MIME filter. The screen does not request broad storage access and only opens a file selected by the user.
+- The workflow copies both screens into the pinned upstream app and compiles them as part of the successful API 36 build.
+- Static review confirms the intended integration paths are present. It does not yet prove D-pad focus quality, browser handoff, local-file playback across codecs, or persistence of URI grants on real devices; those remain acceptance tests.
+- No source or binary changes were made during this audit.
