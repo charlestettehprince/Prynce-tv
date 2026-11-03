@@ -33,6 +33,16 @@ The GitHub Actions workflow checks out the pinned OpenTV submodule, installs the
 
 **CI success is not device acceptance.** Physical Android phone, Android TV and Fire TV testing, authorised-source playback, launcher visual inspection, privacy/licence review and production signing remain required before public release.
 
+## Safe installation and release status
+
+**There is not yet a production-ready public installer.** The available API 36 APK is a debug-signed test build for controlled testing only. Do not treat it as a verified stable release or install a copy from an unofficial mirror.
+
+The intended public experience is one clearly labelled APK download from this repository's official Releases page, with its version, source commit, production signing-certificate fingerprint and SHA-256 checksum shown beside it. A ZIP, third-party installer, device cleaner or download manager should not be required.
+
+PRYNCE TV will not ask users to disable Google Play Protect, turn off Android security checks, grant broad storage/accessibility/SMS permissions for installation, or approve silent installs. Android's normal package-installer confirmation must remain enabled. If Android or Play Protect raises a warning, stop and investigate the exact build rather than bypassing the warning.
+
+A public release is blocked until production signing, source/dependency review, security checks, GPL source/notice publication and physical-device installation tests are complete. Track this gate in [Safe public installer checklist](https://github.com/charlestettehprince/Prynce-tv/issues/undefined).
+
 ## Test the Android build
 
 For straightforward phone installation and a short first-launch checklist, see the [Android test installation guide](docs/ANDROID_TEST_INSTALL_GUIDE.md). This is a debug-signed test build; Android's normal installation security prompts remain in effect.
