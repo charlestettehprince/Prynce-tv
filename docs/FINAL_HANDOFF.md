@@ -99,3 +99,12 @@ This handoff intentionally records blockers instead of marking unverified work c
 - Branding workflow commit: `c9acd096f444429e3e483e3f372fa205e918df82`. Its first CI attempt failed in the new navigation patch due to a script-pattern issue; the patch was corrected in commit `cffe1c52db8daab3a4ff480c0083698e38240ab6`.
 - Corrected CI run: `41624830375`, currently queued/pending at the time this note was written. Do not claim the new build passed until that run completes successfully.
 - Notification small icon remains upstream; a dedicated monochrome PRYNCE glyph is still needed. Adaptive/themed launcher variants and physical phone/TV screenshots also remain outstanding.
+
+
+## 3 November 2026 — Adaptive and notification icon follow-up
+
+- The Android CI workflow now generates adaptive launcher icon layers, a monochrome themed layer, legacy density fallbacks and a separate white notification glyph from the committed PRYNCE icon source.
+- The manifest is patched to reference the adaptive launcher icon and round-icon alias. Notification builders use the dedicated PRYNCE small icon.
+- Workflow commit: `f7c58dfe0520644151266d158b26b17aae11659a`.
+- Build run `41625818584` was pending/queued at the time of this handoff update. Treat these additions as source-integrated but not build-verified until the run succeeds.
+- Device screenshot checks, store artwork, production signing, package identity decision and public tester distribution remain release gates.
