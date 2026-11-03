@@ -24,16 +24,16 @@ The committed artwork is derived from the original assets supplied by the projec
 The GitHub Actions workflow checks out the pinned OpenTV submodule, installs the PRYNCE icon/banner into the Android drawable resources, applies the PRYNCE TV app label and theme, runs automated tests, builds a debug APK and uploads the artifact.
 
 - [Latest workflow runs](https://github.com/charlestettehprince/Prynce-tv/actions)
-- [Latest confirmed successful branded build](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41600670820)
-- Build commit: `8ea86e1a1221ca74a24dd6488457fe127be3d51b`.
+- [Latest confirmed successful branded build](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41608997572)
+- Build commit: `85755852ecb5dbb285578bf4ce7d42469b7c33cb`.
 - Artifact: `prynce-tv-v0.11.10-test-packages` (APK + AAB; GitHub Actions retention is temporary).
-- The APK and AAB passed independent archive-integrity and SHA-256 checks. The APK native libraries were inspected for 16 KB alignment; the AAB still needs separate native-library inspection.
+- The current APK and AAB passed independent archive-integrity and SHA-256 checks against the workflow checksum file. Both APK and AAB native libraries were inspected; all LOAD segments use 16 KB alignment across ARM64, ARMv7, x86 and x86_64.
 
 **CI success is not device acceptance.** Physical Android phone, Android TV and Fire TV testing, authorised-source playback, launcher visual inspection, AAB native-library inspection, privacy/licence review and production signing remain required before public release.
 
 ## Updates across phone and TV
 
-The selected update architecture is documented in [Universal update architecture](docs/UNIVERSAL_UPDATE_ARCHITECTURE.md). The intended design uses Play in-app updates on supported phones/tablets, store-managed updates for Android TV and Fire TV, and a secure remote manifest for non-executable feature/content configuration. Update code is **not yet integrated**; platform-specific implementation and physical-device tests remain release gates.
+The selected update architecture is documented in [Universal update architecture](docs/UNIVERSAL_UPDATE_ARCHITECTURE.md). The intended design uses Play in-app updates on supported phones/tablets, store-managed updates for Android TV and Fire TV, and a secure remote manifest for non-executable feature/content configuration. The pinned OpenTV updater is configured by CI to check the PRYNCE TV GitHub release repository and uses PRYNCE TV update prompts. This source integration has passed a CI build; actual update installation and platform-specific store flows still require physical-device and store testing.
 
 ## Project documentation
 
