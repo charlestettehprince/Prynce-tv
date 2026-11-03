@@ -89,3 +89,39 @@ index 7a78d8af5d46458828223956ac7073b1ff72868b..00000000000000000000000000000000
  )
  
  /** Scaled up from the Material defaults: ten-foot viewing needs bigger text than a phone. */
+
+diff --git a/app/src/main/java/app/opentv/recording/RecordingAlarmReceiver.kt b/app/src/main/java/app/opentv/recording/RecordingAlarmReceiver.kt
+--- a/app/src/main/java/app/opentv/recording/RecordingAlarmReceiver.kt
++++ b/app/src/main/java/app/opentv/recording/RecordingAlarmReceiver.kt
+@@ -8,6 +8,9 @@
+ package app.opentv.recording
+ 
++import android.Manifest
+ import android.app.Notification
+ import android.app.NotificationChannel
+ import android.app.NotificationManager
++import android.content.pm.PackageManager
+ import android.app.PendingIntent
+ import android.content.BroadcastReceiver
+ import android.content.Context
+@@ -17,6 +20,7 @@
+ import android.os.Build
+ import androidx.core.app.NotificationCompat
+ import androidx.core.app.NotificationManagerCompat
++import androidx.core.content.ContextCompat
+ import app.opentv.MainActivity
+ import app.opentv.R
+ import app.opentv.core.RecordingSignals
+@@ -157,7 +161,14 @@
+     private fun safeNotify(context: Context, id: Int, notification: Notification) {
++        if (
++            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
++            ContextCompat.checkSelfPermission(
++                context,
++                Manifest.permission.POST_NOTIFICATIONS,
++            ) != PackageManager.PERMISSION_GRANTED
++        ) return
++        if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) return
+         runCatching { NotificationManagerCompat.from(context).notify(id, notification) }
+     }
+ 
