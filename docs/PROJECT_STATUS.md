@@ -249,3 +249,13 @@ A feature is complete only with reproducible evidence: automated test output, ar
 - The latest #107 lint XML has no remaining DefaultLocale findings; PR #8 adds explicit Locale.ROOT to the two recording-size formatters. Four ConstantLocale findings remain.
 - The single orientation advisory points to screenOrientation=fullUser in the pinned upstream manifest. That setting allows user-selected orientations; it is not a fixed portrait or landscape lock. Do not remove it blindly.
 - See docs/ANDROID_LINT_TRIAGE.md for the reconciled 187-finding breakdown and next review order.
+
+
+## 3 November 2026 — Privacy, security and distribution gate audit
+
+- Completed a static source review of the pinned OpenTV Android manifest, Gradle release signing fallback, upstream privacy statement, FileProvider paths, updater HTTPS request, GPL licence and PRYNCE release documentation.
+- Added `docs/SECURITY_PRIVACY_AUDIT.md` with risk-ranked findings and an evidence-based release sequence.
+- Main release blockers confirmed: application-wide cleartext HTTP is enabled for provider compatibility; backup is enabled and credential backup/restore behavior still needs verification; sensitive permissions need feature-by-feature justification; current release signing falls back to the debug key unless a production keystore is configured; and a root-level PRYNCE licence/complete corresponding-source release bundle still needs preparation.
+- Positive static finding: the inspected FileProvider is non-exported and scoped to the update cache path. This is not a runtime security certification.
+- No Android source, APK, AAB, permissions or security settings were changed. No penetration test, SBOM vulnerability scan, backup test or device test was performed.
+- Public distribution remains blocked pending credential/backup review, an explicit HTTP-provider policy, production signing/package identity, GPL notices and corresponding source, exact-binary privacy review, and physical-device acceptance.
