@@ -1,0 +1,114 @@
+name: PRYNCE TV startup smoke benchmark
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/startup-smoke.yml"
+      - ".gitmodules"
+      - "android/upstream"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: prynce-tv-startup-smoke
+  cancel-in-progress: true
+
+jobs:
+  startup-smoke:
+    name: Measure Android first-frame launch timing
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Check out PRYNCE TV and pinned OpenTV engine
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+          cache-dependency-path: android/upstream/**/*.gradle*
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        run: |
+          yes | sdkmanager --licenses
+          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0" "emulator"
+
+      - name: Build the pinned app debug variant
+        working-directory: android/upstream
+        run: |
+          chmod +x gradlew
+          ./gradlew :app:assembleDebug --no-daemon
+          test -s app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Run repeatable startup samples on Android emulator
+        uses: ReactiveCircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: default
+          arch: x86_64
+          profile: pixel_2
+          disable-animations: true
+          script: |
+            set -euo pipefail
+            APK="android/upstream/app/build/outputs/apk/debug/app-debug.apk"
+            PACKAGE="app.opentv.debug"
+            ACTIVITY="app.opentv.MainActivity"
+            mkdir -p performance-results
+            adb install -r "$APK"
+            adb shell pm clear "$PACKAGE" >/dev/null
+
+            printf "sample,total_time_ms,wait_time_ms\n" > performance-results/startup.csv
+            for sample in 1 2 3 4 5; do
+              adb shell am force-stop "$PACKAGE" || true
+              sleep 2
+              output="$(adb shell am start -W -n "$PACKAGE/$ACTIVITY" 2>&1)"
+              printf "%s\n" "$output" >> performance-results/startup-raw.txt
+              total="$(printf "%s\n" "$output" | tr -d '\r' | awk -F': ' '/^TotalTime:/ {print $2; exit}')"
+              wait="$(printf "%s\n" "$output" | tr -d '\r' | awk -F': ' '/^WaitTime:/ {print $2; exit}')"
+              if [ -z "$total" ] || ! printf "%s" "$total" | grep -Eq '^[0-9]+$'; then
+                echo "Could not parse TotalTime from emulator launch output:"
+                printf "%s\n" "$output"
+                exit 1
+              fi
+              wait="${wait:-0}"
+              printf "%s,%s,%s\n" "$sample" "$total" "$wait" >> performance-results/startup.csv
+              adb shell am force-stop "$PACKAGE" || true
+            done
+
+            python3 - <<'PY'
+            import csv, json, statistics
+            from pathlib import Path
+            rows = list(csv.DictReader(Path("performance-results/startup.csv").open()))
+            values = [int(row["total_time_ms"]) for row in rows]
+            report = {
+                "device": "GitHub Actions Android Emulator / Pixel 2 profile / API 35 / x86_64",
+                "package": "app.opentv.debug",
+                "activity": "app.opentv.MainActivity",
+                "samples": len(values),
+                "total_time_ms": values,
+                "median_total_time_ms": statistics.median(values),
+                "minimum_total_time_ms": min(values),
+                "maximum_total_time_ms": max(values),
+                "measurement": "ActivityManager am start -W TotalTime; emulator smoke baseline only, not physical-device acceptance or a strict performance guarantee."
+            }
+            Path("performance-results/startup.json").write_text(json.dumps(report, indent=2) + "\n")
+            print(json.dumps(report, indent=2))
+            PY
+
+      - name: Upload startup measurements
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prynce-tv-startup-smoke-results
+          path: performance-results/
+          if-no-files-found: warn
+          retention-days: 30
