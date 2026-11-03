@@ -64,6 +64,17 @@ jobs:
           text = text.replace("0xFF4B5DB8", "0xFF8A6D1D")
           text = text.replace("0xFF3B4FCC", "0xFF9A7820")
           theme.write_text(text)
+
+          # Use the upstream vector logo as the launcher mark, recoloured for PRYNCE TV.
+          logo = Path("app/src/main/res/drawable/ic_opentv_logo.xml")
+          text = logo.read_text()
+          text = text.replace("#5B8DEF", "#D4AF37")
+          text = text.replace("#FFFFFF", "#111111")
+          logo.write_text(text)
+
+          manifest = Path("app/src/main/AndroidManifest.xml")
+          text = manifest.read_text().replace('android:icon="@drawable/ic_launcher"', 'android:icon="@drawable/ic_opentv_logo"')
+          manifest.write_text(text)
           PY
 
       - name: Run tests and build PRYNCE TV debug APK
