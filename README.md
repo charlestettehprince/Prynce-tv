@@ -23,7 +23,7 @@ The committed artwork is derived from the original assets supplied by the projec
 The GitHub Actions workflow checks out the pinned OpenTV submodule, installs the PRYNCE icon/banner into the Android drawable resources, applies the PRYNCE TV app label and theme, runs automated tests, builds a debug APK and uploads the artifact.
 
 - [Latest workflow runs](https://github.com/charlestettehprince/Prynce-tv/actions)
-- [Latest confirmed successful branded build](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41589026255)
+- [Latest confirmed successful branded build](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41589652107)
 - Artifact name: `prynce-tv-v0.11.10-debug` (approximately 28.9 MB; GitHub Actions retention is limited).
 
 **CI success is not device acceptance.** Physical Android phone, Android TV and Fire TV testing, actual authorised-source playback, launcher visual inspection and release signing remain required before public release.
