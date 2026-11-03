@@ -270,3 +270,12 @@ A feature is complete only with reproducible evidence: automated test output, ar
 - Added `docs/CREDENTIAL_STORAGE_BACKUP_REVIEW.md` with the data map, recommended Keystore-backed vault approach, migration safeguards and test matrix.
 - Recommended policy: exclude credential-bearing database/settings from automatic platform backup, then consider a separate encrypted export/import flow. This would also exclude non-secret catalogue/preferences stored in those files, so it is a product/data-recovery decision.
 - No source code, database, manifest, backup settings, credentials or APKs were changed. Awaiting an explicit decision before changing backup behavior. No runtime backup/restore test was performed.
+
+
+### Follow-up credential transport review — 3 November 2026
+
+- Further inspected pinned `ManagerServer.kt` and found its LAN web manager accepts provider username/password/MAC through `POST /source`, and NAS password through `POST /recording`.
+- The server uses plain HTTP, a private-address check, a random high port and a random session token. These controls limit access but do not encrypt traffic. A local-network observer may be able to capture the token and submitted credentials.
+- The class-level comment that the manager handles no credentials is inconsistent with its actual handlers.
+- Added this finding and safer design options to `docs/CREDENTIAL_STORAGE_BACKUP_REVIEW.md`. Recommended either HTTPS with a session trust mechanism or disabling credential-changing endpoints over HTTP if robust HTTPS cannot be made compatible.
+- No application source or network behavior changed; no runtime LAN interception or device test performed.
