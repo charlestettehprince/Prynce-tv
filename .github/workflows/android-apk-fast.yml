@@ -1,0 +1,128 @@
+name: PRYNCE TV APK fast build
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: prynce-tv-apk-fast
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  apk:
+    name: Build installable PRYNCE TV APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out PRYNCE TV and pinned OpenTV source
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Render original PRYNCE vector artwork
+        run: |
+          mkdir -p android/upstream/app/src/main/res/drawable
+          python3 -m venv /tmp/prynce-art-venv
+          /tmp/prynce-art-venv/bin/pip install --quiet CairoSVG Pillow
+          /tmp/prynce-art-venv/bin/python - <<'PY'
+          from pathlib import Path
+          from base64 import b64encode
+          import cairosvg
+
+          out = Path("android/upstream/app/src/main/res/drawable")
+          icon = Path("branding/prynce_icon.svg")
+          wordmark = Path("branding/prynce_wordmark.svg")
+          for source in (icon, wordmark):
+              if not source.is_file() or "<svg" not in source.read_text():
+                  raise SystemExit(f"Missing or invalid original vector: {source}")
+          icon_png = cairosvg.svg2png(url=str(icon), output_width=512, output_height=512)
+          wordmark_png = cairosvg.svg2png(url=str(wordmark), output_width=165, output_height=52)
+          (out / "ic_launcher.png").write_bytes(icon_png)
+          icon_uri = "data:image/png;base64," + b64encode(icon_png).decode("ascii")
+          wordmark_uri = "data:image/png;base64," + b64encode(wordmark_png).decode("ascii")
+          banner = f"""<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+          <rect width="320" height="180" fill="#080B14"/>
+          <image href="{icon_uri}" x="8" y="8" width="164" height="164"/>
+          <image href="{wordmark_uri}" x="150" y="64" width="160" height="51"/>
+          <path d="M178 126H300" stroke="#D4AF37" stroke-opacity=".7" stroke-width="2"/>
+          </svg>"""
+          cairosvg.svg2png(bytestring=banner.encode(), write_to=str(out / "banner.png"))
+          PY
+
+      - name: Set up Java 17 and Gradle cache
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+          cache-dependency-path: android/upstream/**/*.gradle*
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android build tools
+        run: |
+          yes | sdkmanager --licenses
+          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Apply PRYNCE TV app branding
+        working-directory: android/upstream
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          strings = Path("app/src/main/res/values/strings.xml")
+          value = strings.read_text()
+          value = re.sub(r'(<string name="app_name">).*?(</string>)', r'\1PRYNCE TV\2', value, count=1)
+          value = re.sub(r'(<string name="exit_title">).*?(</string>)', r'\1Leave PRYNCE TV?\2', value, count=1)
+          strings.write_text(value)
+          colors = Path("app/src/main/res/values/colors.xml")
+          colors.write_text(colors.read_text().replace("#FF7C93FF", "#FFD4AF37"))
+          theme = Path("app/src/main/java/app/opentv/ui/theme/Theme.kt")
+          value = theme.read_text()
+          for old, new in (("0xFF7C93FF", "0xFFD4AF37"), ("0xFF4B5DB8", "0xFF8A6D1D"), ("0xFF3B4FCC", "0xFF9A7820")):
+              value = value.replace(old, new)
+          theme.write_text(value)
+          main = Path("app/src/main/java/app/opentv/ui/MainScreen.kt")
+          main.write_text(main.read_text().replace('"OpenTV"', '"PRYNCE TV"'))
+          PY
+
+      - name: Validate launcher artwork
+        run: |
+          /tmp/prynce-art-venv/bin/python - <<'PY'
+          from PIL import Image
+          from pathlib import Path
+          base = Path("android/upstream/app/src/main/res/drawable")
+          icon = Image.open(base / "ic_launcher.png")
+          banner = Image.open(base / "banner.png")
+          assert icon.size == (512, 512), icon.size
+          assert banner.size == (320, 180), banner.size
+          assert banner.mode in ("RGB", "RGBA"), banner.mode
+          assert banner.getextrema()[-1] == (255, 255) if banner.mode == "RGBA" else True
+          print("Original PRYNCE artwork dimensions and banner opacity verified.")
+          PY
+
+      - name: Build debug APK only
+        working-directory: android/upstream
+        run: |
+          chmod +x gradlew
+          ./gradlew :app:assembleDebug --no-daemon --stacktrace
+
+      - name: Verify APK and write SHA-256
+        run: |
+          APK="android/upstream/app/build/outputs/apk/debug/app-debug.apk"
+          test -s "$APK"
+          file "$APK"
+          sha256sum "$APK" | tee android/upstream/app/build/outputs/apk/debug/SHA256SUMS.txt
+
+      - name: Upload installable APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: PRYNCE-TV-Android-APK
+          path: |
+            android/upstream/app/build/outputs/apk/debug/app-debug.apk
+            android/upstream/app/build/outputs/apk/debug/SHA256SUMS.txt
+          if-no-files-found: error
+          retention-days: 90
