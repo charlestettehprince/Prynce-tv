@@ -23,8 +23,9 @@ The source SVGs are rendered to PNG during CI. Generated files are build outputs
 
 ## Brand placement still requiring separate work
 
-- Notification small icons still use the upstream notification glyph. Android notification icons need a purpose-built simple monochrome asset; do not reuse the full-colour launcher tile as a notification glyph.
-- Adaptive launcher icon layers and monochrome themed-icon variant have not yet been implemented. The current launcher artwork is wired through the app's existing drawable reference; do not claim adaptive/themed icon support until implemented and checked.
+- CI now generates a dedicated white PRYNCE notification glyph and updates the app's notification builders to use it.
+- CI now generates Android adaptive launcher foreground/background layers, a monochrome themed layer, and legacy density-specific fallback icons. The manifest points to the adaptive icon and its round-icon alias.
+- These new resource changes are wired into CI but must pass the current build before being treated as build-verified.
 - Store listing artwork and a public download page have not been published.
 - Actual screenshots from a physical Android phone and Android TV / Fire TV device have not yet been reviewed.
 
@@ -42,8 +43,9 @@ A passing CI build verifies compilation and static resource wiring. It does not 
 - [x] Android TV banner uses PRYNCE icon and wordmark.
 - [x] In-app navigation rail uses PRYNCE icon and original wordmark.
 - [x] App label and gold theme accents use PRYNCE identity.
-- [ ] Add a purpose-built monochrome PRYNCE notification icon.
-- [ ] Add and validate adaptive launcher and themed monochrome icon assets.
+- [x] Generate a purpose-built monochrome PRYNCE notification icon and wire notification builders to it.
+- [x] Generate adaptive launcher layers, monochrome themed icon, and legacy density fallbacks in CI.
+- [ ] Pass the updated CI build and inspect the resulting icons on real Android launchers.
 - [ ] Review phone, Android TV and Fire TV screenshots.
 - [ ] Publish approved store artwork and a public tester/release landing page.
 
