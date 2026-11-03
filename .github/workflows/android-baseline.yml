@@ -79,6 +79,25 @@ jobs:
           yes | sdkmanager --licenses
           sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
+      - name: Package and validate the official Ghana TV directory
+        run: |
+          mkdir -p android/upstream/app/src/main/assets
+          cp catalog/ghana-tv-directory.json android/upstream/app/src/main/assets/prynce-ghana-tv-directory.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("android/upstream/app/src/main/assets/prynce-ghana-tv-directory.json")
+          data = json.loads(p.read_text())
+          assert data["product"] == "PRYNCE TV"
+          assert data["policy"]["playerOnly"] is True
+          assert data["policy"]["noScrapedStreams"] is True
+          for item in data["entries"]:
+              assert item["destination"].startswith("https://"), item["id"]
+              assert item["destinationType"].startswith("official_"), item["id"]
+              assert item["verifiedOn"], item["id"]
+          print(f"Validated and packaged {len(data['entries'])} official Ghana TV destinations.")
+          PY
+
       - name: Verify Android phone and TV launcher resources
         working-directory: android/upstream
         run: |
