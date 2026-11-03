@@ -187,6 +187,43 @@ jobs:
           main_screen.write_text(text)
           PY
 
+      - name: Integrate the PRYNCE TV Ghana directory screen
+        working-directory: android/upstream
+        run: |
+          set -euo pipefail
+          mkdir -p app/src/main/java/app/opentv/ui
+          cp ../../android/patches/GhanaTvScreen.kt app/src/main/java/app/opentv/ui/GhanaTvScreen.kt
+          python3 - <<'PY'
+          from pathlib import Path
+          main = Path("app/src/main/java/app/opentv/ui/MainScreen.kt")
+          text = main.read_text()
+          old = "    RECORDINGS(R.string.nav_recordings, Icons.Filled.FiberManualRecord),\\n}"
+          new = "    RECORDINGS(R.string.nav_recordings, Icons.Filled.FiberManualRecord),\\n    GHANA_TV(R.string.nav_ghana_tv, Icons.Filled.Tv),\\n}"
+          if "GHANA_TV(R.string.nav_ghana_tv" not in text:
+              if old not in text:
+                  raise SystemExit("Could not find Tab enum insertion point")
+              text = text.replace(old, new, 1)
+          old_case = "                Tab.RECORDINGS -> RecordingsScreen(onPlay = onPlayRecording)"
+          new_case = old_case + "\\n                Tab.GHANA_TV -> GhanaTvScreen()"
+          if "Tab.GHANA_TV -> GhanaTvScreen()" not in text:
+              if old_case not in text:
+                  raise SystemExit("Could not find main tab content insertion point")
+              text = text.replace(old_case, new_case, 1)
+          main.write_text(text)
+
+          strings = Path("app/src/main/res/values/strings.xml")
+          xml = strings.read_text()
+          if 'name="nav_ghana_tv"' not in xml:
+              pos = xml.rfind("</resources>")
+              if pos < 0:
+                  raise SystemExit("strings.xml closing resources tag missing")
+              xml = xml[:pos] + '    <string name="nav_ghana_tv">Ghana TV</string>\\n' + xml[pos:]
+          strings.write_text(xml)
+          assert "Tab.GHANA_TV -> GhanaTvScreen()" in main.read_text()
+          assert 'name="nav_ghana_tv"' in strings.read_text()
+          print("Ghana TV screen connected to the app navigation.")
+          PY
+
       - name: Validate committed artwork dimensions and opacity
         run: |
           /tmp/prynce-art-venv/bin/python - <<'PY'
