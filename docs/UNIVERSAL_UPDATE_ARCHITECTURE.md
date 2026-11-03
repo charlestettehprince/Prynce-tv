@@ -65,7 +65,7 @@ There is no legitimate universal Android API that silently installs a new applic
 
 ## Current implementation status
 
-This document records the selected architecture, not a claim that update code has already been integrated. The current repository CI builds the branded APK/AAB from a pinned OpenTV submodule, but the actual Android app source is provided through that submodule and the existing workflow currently applies branding changes during CI. The update feature must be implemented against the inspected app source and then proven by a new successful build and device tests.
+The pinned OpenTV source already contains an update checker, APK downloader, Android system-installer handoff, update dialog and a top-level update gate. The PRYNCE build workflow now rewrites the upstream release-check repository to `charlestettehprince/Prynce-tv` and changes the update prompt branding to PRYNCE TV during the reproducible CI build. This is an initial integration, not yet a verified working update: a new CI build, a correctly signed PRYNCE release, and phone/TV/Fire TV acceptance tests are still required. The upstream updater's sideload install flow hands installation to Android's system installer and requires user approval; it does not silently install.
 
 ## Official references
 
