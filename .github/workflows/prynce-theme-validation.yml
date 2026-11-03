@@ -53,7 +53,9 @@ jobs:
       - name: Install Android SDK packages
         shell: bash
         run: |
+          set +o pipefail
           yes | sdkmanager --licenses
+          set -o pipefail
           sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
       - name: Validate and apply PRYNCE theme patch
