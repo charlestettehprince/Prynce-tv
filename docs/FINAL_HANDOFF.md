@@ -7,25 +7,24 @@ Engine baseline: OpenTV v0.11.10, pinned upstream commit `443811904b6437720d37bb
 
 ## Executive status
 
-**Build #100 is a successful CI test build, not a production release.** Automated tests, APK/AAB compilation, package metadata and checksum capture, Android Gradle Lint, and report upload completed. The APK is debug-signed. There is no verified public installer page or public share button yet.
+**Build 105 is a successful CI test build, not a production release.** The latest workflow completed tests, APK/AAB compilation, adaptive and monochrome icon generation, notification icon integration, metadata/checksum capture, Android Gradle Lint and report upload.
 
-Build run: https://github.com/charlestettehprince/Prynce-tv/actions/runs/41622174882  
-Build commit: `c48149b243dd51ab05bac8b09a5aa495a715cd8a`
+Build run: https://github.com/charlestettehprince/Prynce-tv/actions/runs/41625818584  
+Build commit: `f7c58dfe0520644151266d158b26b17aae11659a`  
+Artifact: `prynce-tv-v0.11.10-test-packages`, ID `13226525916`.
 
-## Verified build outputs
+## Verified Build 105 outputs
 
-- APK: `app.opentv.debug`, version `0.11.10`, versionCode `22`
-- Minimum Android: API 23 (Android 6.0); target API 36
-- ABIs: `arm64-v8a`, `armeabi-v7a`, `x86`, `x86_64`
-- APK SHA-256: `6e372d251d5e8a81b2a3bc2f2920941598bf4a7a7394389c278a5c855db5a2ed`
-- AAB SHA-256: `c428e42d9da6aac20bea29084660869cd98dde83959dfcb4d71894ae748c66bc`
-- Build artifact: `prynce-tv-v0.11.10-test-packages`, ID `13225000857`
-- Lint artifact: `prynce-tv-android-lint-reports`, ID `13223903422`
-- APK signature checks and ZIP integrity passed; signer is the Android Debug certificate, not a permanent production key.
-- Native 16 KB alignment was checked.
-- Lint: 178 findings (175 warnings, 3 informational), zero errors. Warnings remain and should be triaged rather than hidden.
+- APK: `app.opentv.debug`, version `0.11.10`, versionCode `22`.
+- Minimum Android: API 23 (Android 6.0); compile/target API 36.
+- APK SHA-256: `5fac9671ee89d245f50e5deb924c74a4e3a1fa64f766f8fd011767279ba7be88`.
+- AAB SHA-256: `05c9a557ddd2daa422945d9440a502a1065725913294954d65fffec0be562abc`.
+- Artifact ZIP SHA-256: `04da2dce25fd3e85696f0d8108786d5ed2ea3ba49bd069a033cc2cf562b77b60`.
+- APK and AAB archive integrity passed; APK signature verification passed with v1/v2. Signer is the Android Debug certificate, not a permanent production key.
+- Lint: 0 errors, 188 warnings and 3 informational findings. Reports artifact ID `13225353950`.
+- Adaptive launcher foreground/background, monochrome themed icon, legacy density fallbacks and dedicated notification glyph are generated and wired in the successful CI build.
 
-Workflow artifacts are temporary and may require GitHub access. The build artifact expires 1 February 2027; the Lint artifact expires 3 December 2026. These are not anonymous permanent download links.
+The GitHub Actions artifacts are temporary and may require repository access. They are not anonymous permanent download links. The APK is a controlled test artifact, not a production installer; the AAB is a Play submission preparation artifact, not directly installable by ordinary users.
 
 ## App integration reviewed
 
@@ -108,3 +107,10 @@ This handoff intentionally records blockers instead of marking unverified work c
 - Workflow commit: `f7c58dfe0520644151266d158b26b17aae11659a`.
 - Build run `41625818584` was pending/queued at the time of this handoff update. Treat these additions as source-integrated but not build-verified until the run succeeds.
 - Device screenshot checks, store artwork, production signing, package identity decision and public tester distribution remain release gates.
+
+## 3 November 2026 — Master founder brand standard
+
+- Added `docs/PRYNCE_MASTER_BRAND_STANDARD.md` as the reusable identity guide for PRYNCE-owned websites, apps, media, documents and presentations.
+- It requires the original Prynce logo/wordmark on primary brand surfaces, accurate `Prince Charles Tetteh` founder credit where relevant, the “Beyond ordinary.” tagline, and the navy/white/restrained-gold system.
+- The private Library portrait set was located: `1000114846.png` (executive headshot), `1000118820.jpg` (navy-suit portrait), `1000119037.jpg` (seated casual professional portrait). No portrait has been copied into this public repo or app binary. The correct app placement is an About/Founder surface, not the launcher icon or playback screens; public embedding awaits confirmation of the specific image and destination.
+- README and branding guide now link to the master standard and record Build 105 as verified.
