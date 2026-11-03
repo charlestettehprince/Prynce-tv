@@ -1,4 +1,4 @@
-name: PRYNCE TV Android baseline
+name: PRYNCE TV Android build
 
 on:
   workflow_dispatch:
@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   build-upstream-baseline:
-    name: Build reviewed OpenTV baseline
+    name: Build PRYNCE TV branded Android app
     runs-on: ubuntu-latest
     steps:
       - name: Check out PRYNCE TV project
@@ -44,6 +44,31 @@ jobs:
           yes | sdkmanager --licenses
           sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
+      - name: Apply PRYNCE TV black-and-gold branding
+        working-directory: upstream
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          strings = Path("app/src/main/res/values/strings.xml")
+          text = strings.read_text()
+          text = re.sub(r'(<string name="app_name">).*?(</string>)', r'\\1PRYNCE TV\\2', text, count=1)
+          text = re.sub(r'(<string name="exit_title">).*?(</string>)', r'\\1Leave PRYNCE TV?\\2', text, count=1)
+          strings.write_text(text)
+
+          colors = Path("app/src/main/res/values/colors.xml")
+          text = colors.read_text().replace("#FF7C93FF", "#FFD4AF37")
+          colors.write_text(text)
+
+          theme = Path("app/src/main/java/app/opentv/ui/theme/Theme.kt")
+          text = theme.read_text()
+          text = text.replace("0xFF7C93FF", "0xFFD4AF37")
+          text = text.replace("0xFF4B5DB8", "0xFF8A6D1D")
+          text = text.replace("0xFF3B4FCC", "0xFF9A7820")
+          theme.write_text(text)
+          PY
+
       - name: Run tests and build baseline debug APK
         working-directory: upstream
         run: |
@@ -53,7 +78,7 @@ jobs:
       - name: Upload baseline APK
         uses: actions/upload-artifact@v4
         with:
-          name: opentv-v0.11.10-baseline-debug
+          name: prynce-tv-v0.11.10-debug
           path: upstream/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
           retention-days: 14
