@@ -292,3 +292,16 @@ A feature is complete only with reproducible evidence: automated test output, ar
 - Added `docs/UPDATER_AUTHENTICITY_AUDIT.md` with evidence, risk register, release asset contract, signer verification design, key-custody safeguards and test matrix.
 - No source code, workflow, signing config, keystore, APK/AAB or release was changed. No updater runtime or physical-device test was performed.
 - Next: finalise production package ID and key custody with the authorised owner, then implement strict digest + package/version/signer checks and remove debug-key fallback from production release tasks. Keep Android's system installer confirmation; never bypass signature checks or Play Protect.
+
+
+## 3 November 2026 — Free access, onboarding and performance audit
+
+- Reviewed pinned OpenTV app startup, Compose navigation, source onboarding, service locator, image loader, app Gradle configuration and manifest.
+- Confirmed the reviewed app flow does not require a PRYNCE account to launch or browse; first-time users configure a source, while returning users proceed to the home screen. Profiles are local app profiles, not cloud sign-in.
+- Confirmed PRYNCE's intended product policy: free app/basic use, no mandatory PRYNCE membership or paywall, and public website/TV directory accessible without sign-in. Third-party TV providers may independently require paid plans or credentials; PRYNCE must not describe their protected content as free.
+- Found existing performance foundations: lazy service graph, background maintenance/EPG work, Coil memory/disk caching with no crossfade and RGB_565 for opaque art, and R8/resource shrinking enabled for release.
+- Identified missing performance evidence and opportunities: no Baseline Profile plugin or dedicated Macrobenchmark module found in the inspected Gradle configuration; no cold-start/TTID/TTFD, frame-jank, low-memory or physical-device benchmark was available. Image-cache sizing and background startup load need measurement before tuning.
+- Added docs/FREE_ACCESS_PERFORMANCE_UX_AUDIT.md with product access policy, current source findings, simple first-run design, accessibility/navigation requirements, performance plan and acceptance targets.
+- Updated README with the free-use/no-mandatory-PRYNCE-login policy and clear separation between PRYNCE and third-party provider charges.
+- No app source, UI, authentication, website, credentials or binary was changed. No device test or benchmark was run.
+- Next: implement and CI-test Baseline Profiles/Macrobenchmark coverage, then measure first-run and returning-user startup on a low-end phone and Android TV device. Keep guest access and the existing Wix website; do not add paid infrastructure or a mandatory account gate.
