@@ -164,3 +164,13 @@ A feature is complete only with reproducible evidence: automated test output, ar
 - Created GitHub Issue #3 to track the release workflow, exact APK asset naming, tag/versionCode consistency, stable application ID, permanent signing identity, recovery cases and separate phone/TV/Fire TV update tests.
 - Current API 36 APK/AAB remain debug-signed. No production release or real-device update test is claimed.
 - No application source code or binary was changed in this audit.
+
+
+## 3 November 2026 — privacy configuration review
+
+- Reviewed pinned upstream Android manifest and privacy documentation. Manifest declares `android:allowBackup="true"` and does not specify `android:fullBackupContent` or `android:dataExtractionRules`.
+- Upstream privacy documentation states provider address, username and password are stored in the app's private SQLite database. Backup and device-transfer behavior therefore needs explicit verification and a tested exclusion policy before public release.
+- Manifest declares `android:usesCleartextTraffic="true"`. Upstream documentation describes this as a compatibility choice for HTTP-only provider panels and warns that credentials sent over HTTP are unencrypted. Preserve compatibility only with clear user disclosure while evaluating narrower network security controls.
+- Reviewed FileProvider configuration: access is scoped to the app cache `updates/` directory for the installer handoff.
+- No source code, manifest, permissions or binaries were changed. This was a source-level review, not a device backup/restore test.
+- Follow-up tracked in GitHub Issue #4: privacy hardening, credential backup and cleartext provider connections.
