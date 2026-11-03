@@ -98,6 +98,7 @@ jobs:
                     .width(if (expanded) 154.dp else 34.dp)
                     .height(if (expanded) 49.dp else 34.dp),
             )
+        }
         Spacer(Modifier.height(8.dp))"""
           main_screen.write_text(text[:start] + new + text[end:])
 
