@@ -22,11 +22,8 @@ A premium media-player experience for Android phones, Android TV and Fire TV. De
 2. **Build automation:** GitHub Actions checks out the submodule, configures Java 17 and Android SDK 35, applies current black/gold build-time changes, runs Gradle tests and builds a debug APK.
 3. **Channel-source groundwork:** source guide documents authorised M3U/M3U8 and provider sources, EPG, error states, credential handling and reliability checks.
 4. **Engine evaluation:** reviewed OpenTV, OpenIPTV, OwnTV and OpenTV Mobile. OpenTV remains the best current single foundation for phone + TV; no migration is justified while it builds.
-5. **CI verification:** both latest runs completed successfully:
-   - Run 41566614327: all steps passed; artifact `prynce-tv-v0.11.10-debug`, 28,885,069 bytes.
-   - Run 41566629123: all steps passed; artifact `prynce-tv-v0.11.10-debug`, 28,885,068 bytes.
-   - Both artifacts expire 17 November 2026.
-   - The successful run proves tests/build/artifact upload in CI only.
+5. **CI verification:** latest confirmed successful baseline is run 41567118208 (commit `d34010c`); Gradle tests, debug APK build and artifact upload passed. Artifact: `prynce-tv-v0.11.10-debug`, approximately 28.9 MB. The two documentation-only runs for the device checklist (41567633078 and README link update 41567642427) were still in progress at the last check on 3 November 2026. CI success proves the configured tests/build/artifact upload only.
+6. **Acceptance documentation:** added `docs/DEVICE_ACCEPTANCE_CHECKLIST.md` (commit `e923583`) and linked it from README (commit `ad9bf63`). It defines phone, TV, authorized-source playback, branding and release checks.
 
 ## Work still open — acceptance gates
 
@@ -66,3 +63,4 @@ PRYNCE TV is a player, not a channel supplier. It must not bundle unauthorised p
 - A written plan is not an implemented feature.
 - Report each acceptance gate as complete only when its evidence exists.
 - Do not claim universal channel availability.
+- Current user-supplied rough progress estimate: **68%**. This is a planning estimate, not a measured completion score.
