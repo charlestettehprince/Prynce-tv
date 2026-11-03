@@ -32,8 +32,9 @@ jobs:
         run: |
           mkdir -p android/upstream/app/src/main/res/drawable
           rm -f android/upstream/app/src/main/res/drawable/ic_launcher.png android/upstream/app/src/main/res/drawable/banner.png
-          python3 -m pip install --quiet Pillow
-          python3 - <<'PY'
+          python3 -m venv /tmp/prynce-art-venv
+          /tmp/prynce-art-venv/bin/pip install --quiet Pillow
+          /tmp/prynce-art-venv/bin/python - <<'PY'
           from PIL import Image, ImageOps
           from pathlib import Path
           out = Path("android/upstream/app/src/main/res/drawable")
