@@ -117,16 +117,38 @@ jobs:
           main_screen.write_text(text)
           PY
 
-      - name: Run tests and build PRYNCE TV debug APK
+      - name: Validate committed artwork dimensions and opacity
+        run: |
+          python3 -m pip install --quiet Pillow
+          python3 - <<'PY'
+          from PIL import Image
+          from pathlib import Path
+          icon = Image.open("branding/prynce_tv_icon.png")
+          banner = Image.open("branding/prynce_tv_banner.png")
+          assert icon.size == (512, 512), f"Store icon must be 512x512; found {icon.size}"
+          assert banner.size == (320, 180), f"TV banner must be 320x180; found {banner.size}"
+          assert banner.mode in ("RGB", "L"), f"TV banner must be opaque; found mode {banner.mode}"
+          print("Store icon and opaque Android TV banner dimensions passed.")
+          PY
+
+      - name: Run tests and build installable APK plus Play-format AAB
         working-directory: android/upstream
         run: |
           chmod +x gradlew
-          ./gradlew test assembleDebug --no-daemon
+          ./gradlew test assembleDebug bundleRelease --no-daemon
 
-      - name: Upload PRYNCE TV debug APK
+      - name: Record package checksums
+        run: |
+          cd android/upstream/app/build/outputs
+          find apk/debug bundle/release -type f \\( -name '*.apk' -o -name '*.aab' \\) -print0 | sort -z | xargs -0 sha256sum | tee prynce-tv-checksums.txt
+
+      - name: Upload public-test APK and Play-format AAB
         uses: actions/upload-artifact@v4
         with:
-          name: prynce-tv-v0.11.10-debug
-          path: android/upstream/app/build/outputs/apk/debug/*.apk
+          name: prynce-tv-v0.11.10-test-packages
+          path: |
+            android/upstream/app/build/outputs/apk/debug/*.apk
+            android/upstream/app/build/outputs/bundle/release/*.aab
+            android/upstream/app/build/outputs/prynce-tv-checksums.txt
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 90
