@@ -1,43 +1,68 @@
-# PRYNCE TV — Android App Build Plan
+# PRYNCE TV — Consolidated Build Plan
+
+Last verified: 3 November 2026
 
 ## Product direction
-PRYNCE TV is a premium, simple-to-use media player for Android phones, Android TV, and Fire TV. The visual direction is near-black with restrained gold accents, a gold TV/play launcher mark, clear typography, and remote-friendly navigation on television.
+
+A premium media-player experience for Android phones, Android TV and Fire TV. Design direction: near-black surfaces, restrained gold accents, readable typography, accessible touch targets and reliable remote navigation.
 
 ## Technical baseline
-- Starting point: OpenTV v0.11.10, pinned as a Git submodule at `android/upstream`.
-- Upstream source commit: `443811904b6437720d37bb1064c0830906c3515f`.
-- License: GPL-3.0-or-later. Preserve upstream notices and meet source-availability obligations for any redistributed modified build.
-- Android compatibility baseline: upstream minSdk 23; target user-device testing starts at Android 11 and newer.
-- Initial build target: debug APK for controlled testing; production signing is a separate release task.
-- Keep upstream application ID `app.opentv` for now. The debug variant adds upstream's `.debug` suffix. A package rename requires a deliberate migration and update-signature plan.
 
-## Product requirements
-- One app experience that adapts to touch devices and TV remotes.
-- Keep playback, search, categories, favourites, guide, history, and other useful upstream capabilities intact.
-- Premium black/gold branding, app name, launcher icon, and TV banner.
-- Clear first-run setup and accessible navigation.
-- Use only media sources the user is authorised to access; the app does not bundle or provide channel content.
+- Primary engine: OpenTV v0.11.10.
+- Pinned upstream commit: `443811904b6437720d37bb1064c0830906c3515f`.
+- Tracked at `android/upstream` as a Git submodule.
+- Upstream licence: GPL-3.0-or-later. Preserve notices and comply with corresponding-source obligations for distributed modifications.
+- Upstream minimum SDK: 23. The first physical-device target is Android 11+.
+- Current deliverable: CI-built debug APK for controlled testing. This is not a production-signed release.
+- Keep the upstream application ID until a deliberate package migration and signing/update plan is approved.
 
-## Delivery phases and acceptance checks
-1. **Repository baseline — complete:** pin and track the reviewed upstream source; record source tag and licence.
-2. **CI source integration — verified:** checkout the repository recursively and build from the pinned submodule; run `41563974420` completed successfully.
-3. **Branding — partial:** app name, black/gold theme substitutions, and gold launcher icon are applied in CI. In-app navigation wordmark update is committed and awaiting its own build verification; TV banner and detailed homepage polish remain.
-4. **Build automation — submodule build passed:** run `41563974420` completed tests/build and uploaded `prynce-tv-v0.11.10-debug` (28,884,976 bytes). This is a debug APK, not a signed public release.
-5. **Functional verification — pending:** test startup, source setup, playback, search, favourites, guide, remote navigation, and error handling.
-6. **Device verification — pending:** install and test on Android 11 phone, a newer Android phone, and Android TV/Fire TV where available.
-7. **Release readiness — pending:** configure a persistent release signing key securely, versioning, privacy disclosures, and GPL source distribution.
+## Verified work completed
 
-## Current verified status
-- GitHub repository write access: working.
-- Pinned Android source: committed as a Git submodule at `android/upstream`.
-- CI run `41563974420` successfully checked out the pinned submodule, applied black/gold branding and launcher icon, completed Gradle tests/build, and uploaded `prynce-tv-v0.11.10-debug` (28,884,976 bytes; artifact expires 17 November 2026).
-- A subsequent in-app navigation wordmark change is committed; its run `41564141621` was still in progress at the last check, so that change is not yet build-verified.
-- No physical-device testing has been completed.
-- Gold launcher artwork is applied through CI; custom TV banner and final branded homepage are not complete.
+1. **Source foundation:** pinned OpenTV submodule is tracked in the PRYNCE TV repository.
+2. **Build automation:** GitHub Actions checks out the submodule, configures Java 17 and Android SDK 35, applies current black/gold build-time changes, runs Gradle tests and builds a debug APK.
+3. **Channel-source groundwork:** source guide documents authorised M3U/M3U8 and provider sources, EPG, error states, credential handling and reliability checks.
+4. **Engine evaluation:** reviewed OpenTV, OpenIPTV, OwnTV and OpenTV Mobile. OpenTV remains the best current single foundation for phone + TV; no migration is justified while it builds.
+5. **CI verification:** both latest runs completed successfully:
+   - Run 41566614327: all steps passed; artifact `prynce-tv-v0.11.10-debug`, 28,885,069 bytes.
+   - Run 41566629123: all steps passed; artifact `prynce-tv-v0.11.10-debug`, 28,885,068 bytes.
+   - Both artifacts expire 17 November 2026.
+   - The successful run proves tests/build/artifact upload in CI only.
 
-## Important constraints
-- Do not claim an APK or working app until the relevant build succeeds and the artifact is checked.
-- Do not claim device compatibility until installed and tested on the target hardware.
-- Do not replace licensing notices or remove upstream attribution.
-- Do not bypass platform permissions, provider access controls, or content restrictions.
-- Keep credentials out of source control and build logs.
+## Work still open — acceptance gates
+
+### A. Exact brand assets
+- Use the original icon and horizontal logo supplied by the user; do not redraw, trace, generate or substitute them.
+- Integrate the exact icon into Android adaptive and legacy launcher resources.
+- Prepare a separate Android TV banner using the same original brand artwork.
+- Inspect the resulting launcher, splash and in-app brand on actual device screenshots.
+- Current status: **not complete**. The current upstream-derived launcher mark is provisional.
+
+### B. Phone validation
+- Install on an Android 11+ phone.
+- Verify first launch, add-source flow, M3U import, permitted provider login, channel playback, search, favourites, EPG, back navigation and recovery from network failures.
+- Record device model, Android version, test source type (no passwords), outcome and reproducible issues.
+- Current status: **not tested on physical hardware**.
+
+### C. TV validation
+- Install on Android TV or Fire TV hardware.
+- Test remote focus order, visible focus states, back/exit behaviour, readable distance, overscan/layout, source setup and playback.
+- Current status: **not tested on physical hardware**.
+
+### D. Release readiness
+- Create a secure persistent release-signing key; never commit the key or passwords.
+- Set versioning and upgrade strategy.
+- Prepare privacy disclosures and a support route.
+- Package GPL notices and corresponding source for any distributed modified build.
+- Current status: **not release-ready**.
+
+## Content and security boundary
+
+PRYNCE TV is a player, not a channel supplier. It must not bundle unauthorised playlists or bypass DRM, subscriptions, provider authentication, account controls or geographic restrictions. Use official free-to-air streams or other sources the viewer is entitled to access. Keep provider credentials out of logs and analytics.
+
+## Project status reporting rules
+
+- CI success is not physical-device success.
+- A feature in upstream source is not proof it has been tested in the PRYNCE TV branded build.
+- A written plan is not an implemented feature.
+- Report each acceptance gate as complete only when its evidence exists.
+- Do not claim universal channel availability.
