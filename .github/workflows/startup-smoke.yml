@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   startup-smoke:
-    name: Measure Android first-frame launch timing
+    name: Measure Android activity launch timing
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
@@ -60,7 +60,7 @@ jobs:
           profile: pixel_2
           disable-animations: true
           script: |
-            set -euo pipefail
+            set -eu
             APK="android/upstream/app/build/outputs/apk/debug/app-debug.apk"
             PACKAGE="app.opentv.debug"
             ACTIVITY="app.opentv.MainActivity"
@@ -100,7 +100,7 @@ jobs:
                 "median_total_time_ms": statistics.median(values),
                 "minimum_total_time_ms": min(values),
                 "maximum_total_time_ms": max(values),
-                "measurement": "ActivityManager am start -W TotalTime; emulator smoke baseline only, not physical-device acceptance or a strict performance guarantee."
+                "measurement": "ActivityManager am start -W TotalTime; emulator activity-launch smoke baseline only, not first-frame timing or physical-device acceptance."
             }
             Path("performance-results/startup.json").write_text(json.dumps(report, indent=2) + "\n")
             print(json.dumps(report, indent=2))
