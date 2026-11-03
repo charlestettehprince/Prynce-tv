@@ -231,3 +231,14 @@ A feature is complete only with reproducible evidence: automated test output, ar
 - Build run `41625818584` was queued/pending at the time of this update. The earlier branding-only build `41624830375` was still in progress on the prior workflow revision; neither result is represented as a successful build here.
 - Documentation updated in commits `1f7eee6116aece875a18686666dde729277be669` and `c263f62b2c5d5191df68f8f4b525e7e3dae07a88`.
 - Real-device phone/Android TV/Fire TV visual acceptance, public store artwork, production signing and public distribution remain outstanding.
+
+
+## 3 November 2026 — Latest Android Lint artifact triaged
+
+- Downloaded and independently parsed the lint XML/HTML artifact from successful workflow run [#107 / 41629319388](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41629319388), artifact ID `13227652811`.
+- The archived report contains **187 findings: 184 warnings, 3 informational findings, and zero errors/fatal findings**. The CI lint task passed; this is not a claim that all warnings are resolved.
+- The largest groups are 73 dependency update advisories, 37 KTX recommendations, 18 incomplete-translation findings, 14 unused-resource findings, 8 pluralization candidates, 7 bitmap-density warnings, and 5 round-launcher-icon shape warnings.
+- Higher-priority behavior review: one PiP guidance finding, one fixed-orientation warning, four default-locale formatting findings, four static default-locale captures, and one app-bundle locale-configuration finding.
+- Added `docs/ANDROID_LINT_TRIAGE.md` with every issue group, counts, risk-based execution order and guardrails. No Android source or binary was changed during this triage.
+- Next implementation milestone: inspect the exact PiP/orientation and locale source locations, then make only narrow, evidence-backed fixes with a fresh CI run. Do not bulk-upgrade dependencies, silence warnings, or remove resources without compatibility/reference checks.
+- Real phone/Android TV acceptance, PiP behavior, launcher appearance, and actual playback remain unverified on physical devices.
