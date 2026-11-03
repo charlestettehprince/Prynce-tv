@@ -235,7 +235,7 @@ jobs:
           if "LOCAL_MEDIA(R.string.nav_local_media" not in text:
               text = text.replace(
                   "    GHANA_TV(R.string.nav_ghana_tv, Icons.Filled.Tv),",
-                  "    GHANA_TV(R.string.nav_ghana_tv, Icons.Filled.Tv),\n    LOCAL_MEDIA(R.string.nav_local_media, Icons.Filled.FolderOpen),",
+                  "    GHANA_TV(R.string.nav_ghana_tv, Icons.Filled.Tv),\n    LOCAL_MEDIA(R.string.nav_local_media, Icons.Filled.Movie),",
                   1,
               )
           if "onPlayLocalMedia: (android.net.Uri) -> Unit" not in text:
