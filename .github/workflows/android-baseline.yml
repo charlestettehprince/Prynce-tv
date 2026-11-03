@@ -110,6 +110,31 @@ jobs:
           print("Phone and Android TV launcher declarations and referenced artwork are present.")
           PY
 
+      - name: Configure the built-in updater for PRYNCE TV releases
+        working-directory: android/upstream
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          checker = Path("app/src/main/java/app/opentv/update/UpdateChecker.kt")
+          text = checker.read_text()
+          old = 'const val REPO_SLUG = "opentvproject/opentv"'
+          new = 'const val REPO_SLUG = "charlestettehprince/Prynce-tv"'
+          if old not in text:
+              raise SystemExit("Expected upstream updater repository setting was not found; review source before building.")
+          checker.write_text(text.replace(old, new, 1))
+
+          screen = Path("app/src/main/java/app/opentv/update/UpdateScreen.kt")
+          text = screen.read_text()
+          text = text.replace("OpenTV ${s.update.versionName} is available.", "PRYNCE TV ${s.update.versionName} is available.")
+          text = text.replace("Could not download the update.", "Could not download the PRYNCE TV update.")
+          screen.write_text(text)
+
+          assert 'const val REPO_SLUG = "charlestettehprince/Prynce-tv"' in checker.read_text()
+          assert "PRYNCE TV" in screen.read_text()
+          print("Updater now checks the PRYNCE TV release repository.")
+          PY
+
       - name: Apply PRYNCE TV black-and-gold branding
         working-directory: android/upstream
         run: |
