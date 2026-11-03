@@ -279,3 +279,16 @@ A feature is complete only with reproducible evidence: automated test output, ar
 - The class-level comment that the manager handles no credentials is inconsistent with its actual handlers.
 - Added this finding and safer design options to `docs/CREDENTIAL_STORAGE_BACKUP_REVIEW.md`. Recommended either HTTPS with a session trust mechanism or disabling credential-changing endpoints over HTTP if robust HTTPS cannot be made compatible.
 - No application source or network behavior changed; no runtime LAN interception or device test performed.
+
+
+## 3 November 2026 — APK updater authenticity audit
+
+- Inspected pinned upstream `UpdateChecker.kt`, `ApkInstaller.kt`, `GitHubReleaseApi.kt`, `app/build.gradle.kts`, and PRYNCE's Android build workflow.
+- Confirmed updater calls GitHub Releases API over HTTPS and launches Android's system installer through a FileProvider URI; it does not silently install.
+- Identified static release-authenticity gaps: updater selects the first `.apk` asset, parses no asset digest, performs no strict downloaded-size check, does not constrain the metadata-supplied APK URL, and does not inspect package/version/signer before installer handoff.
+- Android's package installer remains a final signature enforcement layer for updates to an existing package, but PRYNCE lacks app-side pre-install signer pinning and first-install signer assurance.
+- Confirmed upstream release Gradle config falls back to the Android debug key when `KEYSTORE_PATH` is absent. Existing PRYNCE test artifacts are debug-signed; this remains a production-release blocker.
+- PRYNCE's build workflow rewrites the updater repository slug to `charlestettehprince/Prynce-tv` before build. No digest-verification patch was present in the inspected workflow.
+- Added `docs/UPDATER_AUTHENTICITY_AUDIT.md` with evidence, risk register, release asset contract, signer verification design, key-custody safeguards and test matrix.
+- No source code, workflow, signing config, keystore, APK/AAB or release was changed. No updater runtime or physical-device test was performed.
+- Next: finalise production package ID and key custody with the authorised owner, then implement strict digest + package/version/signer checks and remove debug-key fallback from production release tasks. Keep Android's system installer confirmation; never bypass signature checks or Play Protect.
