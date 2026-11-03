@@ -20,6 +20,7 @@ The archived XML contains **187 findings: 184 warnings, 3 informational findings
 | UnusedResources | 14 | Verify generated/dynamic references and build-time injected resources before removal. |
 | IconLocation | 7 | Bitmap-density placement warnings for branding assets. Confirm intended scaling and density behavior before moving resources. |
 | IconLauncherShape | 5 | Round launcher icon shape warnings. Review adaptive/round icon behavior on real launchers before changing owner-approved artwork. |
+| IconDuplicates | 1 | Two icon files have identical contents; check whether both are intentionally referenced before deduplication. |
 | PluralsCandidate | 8 | Convert count-bearing strings to Android plurals with correct locale rules and call-site updates. |
 | ModifierParameter | 4 | Compose API consistency cleanup; low risk but verify call sites. |
 | ConstantLocale | 4 | Avoid capturing the default locale in static/final values if runtime locale changes must be reflected. |
@@ -30,7 +31,6 @@ The archived XML contains **187 findings: 184 warnings, 3 informational findings
 | AppBundleLocaleChanges | 1 | Decide whether dynamic language changes require Play language-split configuration; validate the intended distribution model. |
 | PictureInPictureIssue | 1 | **Higher priority:** review PiP auto-entry and source-rectangle behavior on supported Android versions; test phone and TV behavior. |
 | DiscouragedApi | 1 | **Higher priority:** fixed orientation restriction may letterbox or constrain other form factors. Review the manifest and preserve intended TV landscape behavior without unnecessarily locking phone/tablet layouts. |
-| DefaultLocale | 4 | **Higher priority:** use explicit locale-aware formatting where user-visible numbers/text are formatted. |
 | UsableSpace | 1 | Review storage-space checks and whether allocatable-space APIs improve recording/storage decisions. |
 | LocaleFolder | 1 | Review the legacy Indonesian resource qualifier naming and migration impact. |
 | Typos | 1 | Verify the reported repeated word in the Turkish translation before editing. |
@@ -56,4 +56,4 @@ The archived XML contains **187 findings: 184 warnings, 3 informational findings
 
 ## Evidence
 
-The report was downloaded from GitHub Actions artifact `13227652811` for workflow run `41629319388`. The XML was parsed independently and grouped by lint issue ID and severity. Android's official guidance describes lint as static analysis and recommends fixing relevant findings before publishing: [Android lint documentation](https://developer.android.com/studio/write/lint).
+The report was downloaded from GitHub Actions artifact `13227652811` for workflow run `41629319388`. The XML was parsed independently and grouped by lint issue ID and severity. Reconciliation against the pinned source confirmed the orientation advisory is attached to `screenOrientation="fullUser"`, which is not a fixed portrait/landscape lock. The latest report has no `DefaultLocale` findings after the two recording-size formatter patches in PR #8. Android's official guidance describes lint as static analysis and recommends fixing relevant findings before publishing: [Android lint documentation](https://developer.android.com/studio/write/lint).
