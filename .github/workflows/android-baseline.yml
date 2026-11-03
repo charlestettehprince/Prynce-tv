@@ -220,7 +220,7 @@ jobs:
           screen = Path("app/src/main/java/app/opentv/ui/MainScreen.kt")
           text = screen.read_text()
           text, icon_count = re.subn(
-              r"painterResource\\(R\\.drawable\\.ic_opentv_logo\\)",
+              r"painterResource\(R\.drawable\.ic_opentv_logo\)",
               "painterResource(R.drawable.ic_prynce_brand)",
               text,
               count=1,
@@ -231,7 +231,7 @@ jobs:
                     contentDescription = "PRYNCE TV wordmark",
                     modifier = Modifier.size(width = 96.dp, height = 30.dp),
                 )"""
-          pattern = r'Text\\(\\s*"PRYNCE TV",\\s*style = MaterialTheme\\.typography\\.titleLarge,.*?overflow = TextOverflow\\.Ellipsis,\\s*\\)'
+          pattern = r'Text\(\s*"PRYNCE TV",\s*style = MaterialTheme\.typography\.titleLarge,.*?overflow = TextOverflow\.Ellipsis,\s*\)'
           text, wordmark_count = re.subn(pattern, lambda _: wordmark, text, count=1, flags=re.S)
           if icon_count != 1:
               raise SystemExit(f"Expected one upstream rail icon reference; replaced {icon_count}.")
