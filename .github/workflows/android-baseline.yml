@@ -85,32 +85,24 @@ jobs:
           # Use the user's exact horizontal wordmark when the rail expands.
           main_screen = Path("app/src/main/java/app/opentv/ui/MainScreen.kt")
           text = main_screen.read_text()
-          old = """            Image(
-                painter = painterResource(R.drawable.ic_opentv_logo),
-                contentDescription = "OpenTV",
-                modifier = Modifier.size(34.dp),
-            )
-            if (expanded) {
-                Spacer(Modifier.width(12.dp))
-                Text(
-                    "OpenTV",
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }"""
+          import re
+          pattern = re.compile(
+              r'            Image\\(\\n.*?            \\}\\n        \\}\\n        Spacer\\(Modifier\\.height\\(8\\.dp\\)\\)',
+              re.DOTALL,
+          )
           new = """            Image(
-                painter = painterResource(if (expanded) R.drawable.prynce_wordmark else R.drawable.prynce_icon),
-                contentDescription = "PRYNCE",
-                modifier = Modifier
-                    .width(if (expanded) 154.dp else 34.dp)
-                    .height(if (expanded) 49.dp else 34.dp),
-            )"""
-          if old not in text:
-              raise SystemExit("Expected navigation brand block not found; refusing unsafe replacement")
-          main_screen.write_text(text.replace(old, new, 1))
+                  painter = painterResource(if (expanded) R.drawable.prynce_wordmark else R.drawable.prynce_icon),
+                  contentDescription = "PRYNCE",
+                  modifier = Modifier
+                      .width(if (expanded) 154.dp else 34.dp)
+                      .height(if (expanded) 49.dp else 34.dp),
+              )
+          }
+          Spacer(Modifier.height(8.dp))"""
+          updated, count = pattern.subn(lambda _: new, text, count=1)
+          if count != 1:
+              raise SystemExit("Navigation logo block not found; refusing unsafe replacement")
+          main_screen.write_text(updated)
 
           PY
 
