@@ -20,9 +20,9 @@ PRYNCE TV is a premium, simple-to-use media player for Android phones, Android T
 
 ## Delivery phases and acceptance checks
 1. **Repository baseline — complete:** pin and track the reviewed upstream source; record source tag and licence.
-2. **CI source integration — implemented, validating:** checkout the repository recursively and build from the pinned submodule.
-3. **Branding — partial:** app name and initial black/gold theme substitutions are applied in CI. Launcher icon, TV banner, and detailed homepage polish remain.
-4. **Build automation — baseline passed; submodule build validating:** unit tests and debug APK artifact generation are configured. Confirm the current submodule-based run succeeds before treating this as complete.
+2. **CI source integration — verified:** checkout the repository recursively and build from the pinned submodule; run `41563974420` completed successfully.
+3. **Branding — partial:** app name, black/gold theme substitutions, and gold launcher icon are applied in CI. In-app navigation wordmark update is committed and awaiting its own build verification; TV banner and detailed homepage polish remain.
+4. **Build automation — submodule build passed:** run `41563974420` completed tests/build and uploaded `prynce-tv-v0.11.10-debug` (28,884,976 bytes). This is a debug APK, not a signed public release.
 5. **Functional verification — pending:** test startup, source setup, playback, search, favourites, guide, remote navigation, and error handling.
 6. **Device verification — pending:** install and test on Android 11 phone, a newer Android phone, and Android TV/Fire TV where available.
 7. **Release readiness — pending:** configure a persistent release signing key securely, versioning, privacy disclosures, and GPL source distribution.
@@ -30,11 +30,10 @@ PRYNCE TV is a premium, simple-to-use media player for Android phones, Android T
 ## Current verified status
 - GitHub repository write access: working.
 - Pinned Android source: committed as a Git submodule at `android/upstream`.
-- CI successfully checked out the repository and submodule and completed Java/SDK setup and branding on run `41563754758`.
-- The submodule-based Gradle test/build step is still running; APK upload has not yet completed for that run.
-- A prior temporary-checkout upstream baseline build passed and produced a debug artifact. That is not proof that the new submodule-based workflow has passed.
+- CI run `41563974420` successfully checked out the pinned submodule, applied black/gold branding and launcher icon, completed Gradle tests/build, and uploaded `prynce-tv-v0.11.10-debug` (28,884,976 bytes; artifact expires 17 November 2026).
+- A subsequent in-app navigation wordmark change is committed; its run `41564141621` was still in progress at the last check, so that change is not yet build-verified.
 - No physical-device testing has been completed.
-- Launcher artwork and final branded homepage are not complete.
+- Gold launcher artwork is applied through CI; custom TV banner and final branded homepage are not complete.
 
 ## Important constraints
 - Do not claim an APK or working app until the relevant build succeeds and the artifact is checked.
