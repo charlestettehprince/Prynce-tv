@@ -312,6 +312,13 @@ jobs:
           print("Prepared store icon and opaque Android TV banner dimensions passed.")
           PY
 
+      - name: Apply reviewed Android lint compatibility patches
+        working-directory: android/upstream
+        run: |
+          set -euo pipefail
+          python3 ../../scripts/apply_android_lint_fixes.py
+          cp ../../android/patches/lint.xml app/lint.xml
+
       - name: Run tests and build installable APK plus Play-format AAB
         working-directory: android/upstream
         run: |
