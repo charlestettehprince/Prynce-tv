@@ -108,8 +108,7 @@ jobs:
           text = text.replace("0xFF3B4FCC", "0xFF9A7820")
           theme.write_text(text)
 
-          # Keep the upstream launcher asset untouched until the user's exact
-          # original PRYNCE icon is integrated. Do not substitute or recolour it.
+          # PRYNCE launcher art is installed from committed source-derived assets.
 
           # Keep the in-app navigation brand consistent with the launcher and app label.
           main_screen = Path("app/src/main/java/app/opentv/ui/MainScreen.kt")
