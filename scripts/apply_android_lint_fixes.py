@@ -12,6 +12,8 @@ FILES = {
     "recording": ROOT / "java/app/opentv/recording/RecordingAlarmReceiver.kt",
     "reminder": ROOT / "java/app/opentv/reminders/ReminderAlarmReceiver.kt",
     "activity": ROOT / "java/app/opentv/MainActivity.kt",
+    "recording_settings": ROOT / "java/app/opentv/ui/settings/RecordingSettingsScreen.kt",
+    "recordings_screen": ROOT / "java/app/opentv/ui/recordings/RecordingsScreen.kt",
 }
 
 
@@ -22,6 +24,17 @@ def add_imports(path: Path, anchor: str, imports: str) -> None:
     if anchor not in text:
         raise SystemExit(f"Import anchor not found in {path}")
     path.write_text(text.replace(anchor, imports + anchor, 1))
+
+
+def add_locale_import(path: Path) -> None:
+    text = path.read_text()
+    if "import java.util.Locale" in text:
+        return
+    package_end = text.find("\\n\\n", text.find("package "))
+    if package_end < 0:
+        raise SystemExit(f"Package declaration not found in {path}")
+    text = text[:package_end + 2] + "import java.util.Locale\\n" + text[package_end + 2:]
+    path.write_text(text)
 
 
 def replace_once(path: Path, old: str, new: str) -> None:
@@ -83,4 +96,22 @@ replace_once(
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || !supportsPip()) return""",
 )
 
-print("Applied and verified Android notification-permission and PiP API guards.")
+
+for key in ("recording_settings", "recordings_screen"):
+    add_locale_import(FILES[key])
+
+replace_once(
+    FILES["recording_settings"],
+    """    return if (mb >= 1024) String.format("%.1f GB", mb / 1024.0) else String.format("%.0f MB", mb)""",
+    """    return if (mb >= 1024) String.format(Locale.ROOT, "%.1f GB", mb / 1024.0)
+    else String.format(Locale.ROOT, "%.0f MB", mb)""",
+)
+
+replace_once(
+    FILES["recordings_screen"],
+    """    return if (mb >= 1024) String.format("%.1f GB", mb / 1024.0) else String.format("%.0f MB", mb)""",
+    """    return if (mb >= 1024) String.format(Locale.ROOT, "%.1f GB", mb / 1024.0)
+    else String.format(Locale.ROOT, "%.0f MB", mb)""",
+)
+
+print("Applied and verified Android notification-permission, PiP API and locale-stable size-formatting patches.")
