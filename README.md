@@ -47,3 +47,7 @@ OpenTV is GPL-3.0-or-later. Preserve upstream notices and meet the licence's cor
 ## Device acceptance
 
 Use the [phone and TV device acceptance checklist](docs/DEVICE_ACCEPTANCE_CHECKLIST.md) before calling a release candidate ready. CI success alone does not establish physical-device compatibility or real-stream playback.
+
+## Project status
+
+See [the consolidated PRYNCE TV project status](docs/PROJECT_STATUS.md) for the current technical decisions, verified CI evidence, remaining acceptance gates and project estimate.
