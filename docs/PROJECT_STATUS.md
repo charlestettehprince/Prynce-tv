@@ -207,3 +207,15 @@ A feature is complete only with reproducible evidence: automated test output, ar
 - A new Android CI run was triggered by the workflow change: run `41624556618`. At the time of this update it was still running; no successful result is claimed yet.
 - Remaining brand tasks: dedicated monochrome notification icon, adaptive/themed launcher icon variants, and physical phone/Android TV/Fire TV screenshot review. Do not claim the brand is literally present in every UI surface until these are checked.
 - This is a build-time patch against the pinned upstream submodule; upstream source notices are preserved. No production release or device acceptance is claimed.
+
+
+## 3 November 2026 — Adaptive launcher and notification branding
+
+- Expanded `.github/workflows/android-baseline.yml` to derive Android icon layers from the original committed `branding/prynce_icon.svg`; no new logo was substituted.
+- The workflow now generates adaptive launcher foreground/background resources, an Android monochrome themed-icon layer, density-specific legacy launcher fallbacks, and a dedicated white monochrome notification glyph.
+- The Android manifest is patched to use `@mipmap/ic_launcher` and the matching round-icon resource. Notification builders are patched to use `R.drawable.ic_prynce_notification`.
+- CI includes checks for the adaptive icon XML, legacy fallback, notification asset and manifest references.
+- Workflow commit: `f7c58dfe0520644151266d158b26b17aae11659a`.
+- Build run `41625818584` was queued/pending at the time of this update. The earlier branding-only build `41624830375` was still in progress on the prior workflow revision; neither result is represented as a successful build here.
+- Documentation updated in commits `1f7eee6116aece875a18686666dde729277be669` and `c263f62b2c5d5191df68f8f4b525e7e3dae07a88`.
+- Real-device phone/Android TV/Fire TV visual acceptance, public store artwork, production signing and public distribution remain outstanding.
