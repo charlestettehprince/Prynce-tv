@@ -262,7 +262,17 @@ jobs:
           activity = Path("app/src/main/java/app/opentv/MainActivity.kt")
           activity_text = activity.read_text()
           marker = "                    activeProfileName = activeProfileName,"
-          callback = marker + "\\n                    onPlayLocalMedia = { uri ->\\n                        navController.navigate(\\n                            Routes.vodPlayer(key = \\"local:${'
+          callback = marker + "\\n                    onPlayLocalMedia = { uri ->\\n                        navController.navigate(\\n                            Routes.vodPlayer(key = \\"local:\\" + uri.toString(), url = uri.toString(), title = uri.lastPathSegment ?: \\"Local video\\", ua = \\"\\"),\\n                        )\\n                    },"
+          if "onPlayLocalMedia = { uri ->" not in activity_text:
+              if marker not in activity_text:
+                  raise SystemExit("Could not find MainActivity home-screen callback insertion point")
+              activity_text = activity_text.replace(marker, callback, 1)
+              activity.write_text(activity_text)
+
+          assert "Tab.LOCAL_MEDIA -> LocalMediaScreen(onPlayLocalMedia)" in main.read_text()
+          assert "onPlayLocalMedia = { uri ->" in activity.read_text()
+          assert 'name="nav_local_media"' in strings.read_text()
+          print("Ghana TV and local video picker connected to navigation and player.")
           PY
 
       - name: Validate committed artwork dimensions and opacity
