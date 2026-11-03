@@ -35,9 +35,9 @@ PRYNCE TV is being developed as one Android app for phones, Android TV and Fire 
 ## CI evidence
 
 Latest confirmed successful build:
-- Run `41589026255`, commit `89f8c2054762609aa15e963ad1bbf346fcb12908`.
+- Run `41589652107`, commit `1bc57ca62e9b74a97e842f6dd49f7cc17ecff0f2`.
 - All workflow steps passed: launcher artwork install, launcher resource validation, tests, debug APK build and artifact upload.
-- Artifact: `prynce-tv-v0.11.10-debug`, 28,885,353 bytes (about 28.9 MB), retained by GitHub Actions for 14 days.
+- Artifact: `prynce-tv-v0.11.10-debug`, 28,885,356 bytes (about 28.9 MB), retained by GitHub Actions for 14 days.
 - [Open successful GitHub Actions run](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41589026255).
 
 Earlier unsuccessful branding experiments were diagnosed and corrected; the latest run above is the passing build. CI success is not proof of physical-device playback or launcher appearance.
