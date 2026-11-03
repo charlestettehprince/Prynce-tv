@@ -317,7 +317,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 ../../scripts/apply_android_lint_fixes.py
-          cp ../../android/patches/lint.xml app/lint.xml
+          cp ../../android/patches/lint.xml lint.xml
 
       - name: Run tests and build installable APK plus Play-format AAB
         working-directory: android/upstream
