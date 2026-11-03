@@ -8,8 +8,6 @@ on:
       - ".gitmodules"
       - "android/**"
       - "branding/**"
-      - "docs/**"
-      - "README.md"
 
 concurrency:
   group: prynce-tv-android-${{ github.ref }}
