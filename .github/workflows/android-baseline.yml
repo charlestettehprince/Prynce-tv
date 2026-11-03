@@ -353,3 +353,21 @@ jobs:
             android/upstream/app/build/outputs/release-report/*.txt
           if-no-files-found: error
           retention-days: 90
+
+      - name: Run Android Gradle Lint
+        if: always()
+        working-directory: android/upstream
+        run: |
+          chmod +x gradlew
+          ./gradlew lint --no-daemon
+
+      - name: Upload Android Lint XML and HTML reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prynce-tv-android-lint-reports
+          path: |
+            android/upstream/app/build/reports/lint-results*.xml
+            android/upstream/app/build/reports/lint-results*.html
+          if-no-files-found: warn
+          retention-days: 30
