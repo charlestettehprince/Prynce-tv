@@ -305,3 +305,14 @@ A feature is complete only with reproducible evidence: automated test output, ar
 - Updated README with the free-use/no-mandatory-PRYNCE-login policy and clear separation between PRYNCE and third-party provider charges.
 - No app source, UI, authentication, website, credentials or binary was changed. No device test or benchmark was run.
 - Next: implement and CI-test Baseline Profiles/Macrobenchmark coverage, then measure first-run and returning-user startup on a low-end phone and Android TV device. Keep guest access and the existing Wix website; do not add paid infrastructure or a mandatory account gate.
+
+
+## 3 November 2026 — Repeatable Android startup smoke benchmark added
+
+- Added `.github/workflows/startup-smoke.yml`, a free GitHub Actions workflow that builds the pinned OpenTV debug app and measures five process-cold ActivityManager launches on an API 35 x86_64 Android emulator.
+- The first sample follows app-data clear; later samples retain local app data and force-stop between launches. Workflow records raw `am start -W` output, CSV and JSON summary, then uploads a 30-day artifact.
+- Added `docs/STARTUP_SMOKE_BENCHMARK.md` explaining the measurement, repeatability, artifact review and limitations.
+- This creates a baseline collection mechanism; no measured timings are claimed until the workflow actually runs and returns an artifact. Emulator timings are not physical phone/TV performance results.
+- This workflow does not yet generate a Baseline Profile or Macrobenchmark report. Those require a separate compatible benchmark module and verified dependency/plugin versions; no speed improvement is claimed.
+- No app runtime source, login/authentication flow, provider access, website or release signing was changed. No paid service or mandatory account was introduced.
+- Next: inspect the first successful CI timing artifact, collect multiple runs to understand variance, then add Baseline Profile/Macrobenchmark support in a separate tested change. Follow with physical low-end phone and Android TV acceptance.
