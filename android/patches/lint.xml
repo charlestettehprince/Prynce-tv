@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!--
+      OpenTV currently ships an intentionally partial translation set. Keep these
+      findings visible in CI as warnings rather than treating untranslated upstream
+      strings as compilation-blocking errors. Do not disable the check.
+    -->
+    <issue id="MissingTranslation" severity="warning" />
+</lint>
