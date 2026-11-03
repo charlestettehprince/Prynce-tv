@@ -24,11 +24,12 @@ The committed artwork is derived from the original assets supplied by the projec
 The GitHub Actions workflow checks out the pinned OpenTV submodule, installs the PRYNCE icon/banner into the Android drawable resources, applies the PRYNCE TV app label and theme, runs automated tests, builds a debug APK and uploads the artifact.
 
 - [Latest workflow runs](https://github.com/charlestettehprince/Prynce-tv/actions)
-- [Latest confirmed successful branded build](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41616019564)
-- Recovery build commit: `cec03131f17111f5cf990b1b17f3aba7b94da2ea`.
-- Artifact: `prynce-tv-v0.11.10-test-packages` (APK + AAB; GitHub Actions retention is temporary; artifact expires 1 February 2027).
-- Verified APK SHA-256: `82eae4d7fdc22aa6907e0e49c7462761da99c480f283ff233a1c4e614877c020`. Verified AAB SHA-256: `2c4d987cf3745423aa16c72c5055125c5251d4a491f23b6a752257fe5015929a`.
-- The latest APK and AAB passed archive-integrity and SHA-256 checks against the workflow checksum file. The debug APK report confirms package `app.opentv.debug`, version `0.11.10` (code 22), min SDK 23 and target SDK 35; it is signed with the Android Debug certificate, not a production key. **Android 16 / API 36 build verified:** CI run [41617047320](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41617047320) completed successfully on migration commit `29dbd77d28bf8180558d5f45166d76059965badc`. The workflow passed automated tests, built a debug APK and Play-format AAB, recorded package metadata/signing identity and checksums, and uploaded artifact `13222900025` (`prynce-tv-v0.11.10-test-packages`, expires 1 February 2027). APK: `app.opentv.debug`, version `0.11.10` / code `22`, min SDK `23`, compile SDK `36`, target SDK `36`; debug certificate only, not production signing. APK SHA-256: `db59de9f5e7ac6157dd934b0e127366cb75b34b674e3b6ee6e11489bc766f731`; AAB SHA-256: `d5a537f900acfb8f23d1a10c1e9a06aeb4b039f5de641286c7cdbc27d742e257`. Archive integrity and APK signature verification passed. This is a successful test build, not a public production release; physical-device tests, production signing and privacy/licence review remain required.
+- Latest successful Android 16 / API 36 build: [CI run 41617047320](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41617047320), migration commit `29dbd77d28bf8180558d5f45166d76059965badc`.
+- Artifact: `prynce-tv-v0.11.10-test-packages`, ID `13222900025`, expires 1 February 2027.
+- APK: `app.opentv.debug`, version `0.11.10` / code `22`, min SDK `23`, compile SDK `36`, target SDK `36`.
+- APK SHA-256: `db59de9f5e7ac6157dd934b0e127366cb75b34b674e3b6ee6e11489bc766f731`; AAB SHA-256: `d5a537f900acfb8f23d1a10c1e9a06aeb4b039f5de641286c7cdbc27d742e257`.
+- Independent verification: APK/AAB ZIP integrity and checksums passed; APK signature verified; all 8 native libraries in both packages have 16 KB ELF load-segment alignment, and all 8 uncompressed APK native libraries have 16 KB ZIP data alignment.
+- Both APK and AAB use the Android Debug certificate. They are controlled test/preparation artifacts, not production-signed release packages.
 
 **CI success is not device acceptance.** Physical Android phone, Android TV and Fire TV testing, authorised-source playback, launcher visual inspection, privacy/licence review and production signing remain required before public release.
 
