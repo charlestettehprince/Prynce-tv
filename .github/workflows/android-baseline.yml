@@ -37,6 +37,7 @@ jobs:
           grep -E 'compileSdk =|targetSdk =' app/build.gradle.kts
 
       - name: Install PRYNCE TV launcher artwork from original vector sources
+        run: |
           mkdir -p android/upstream/app/src/main/res/drawable
           rm -f android/upstream/app/src/main/res/drawable/ic_launcher.png android/upstream/app/src/main/res/drawable/banner.png
           python3 -m venv /tmp/prynce-art-venv
