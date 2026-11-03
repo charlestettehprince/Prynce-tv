@@ -109,3 +109,19 @@ No source files, backup settings, database schema, credentials or APKs were chan
 - `app/src/main/java/app/opentv/recording/SmbClient.kt`
 
 Pinned upstream commit: `443811904b6437720d37bb1064c0830906c3515f`.
+
+
+## Additional finding: local Channel Manager transmits credentials over HTTP
+
+A deeper review of the pinned `ManagerServer.kt` found that the LAN web manager is not strictly a credential-free feature:
+
+- The documented `POST /source` handler accepts provider URL, username, password and Stalker MAC fields, then saves the provider.
+- The `POST /recording` handler accepts NAS configuration including an optional password.
+- The server uses plain HTTP on a random high port, checks that the client address is private, and requires a random token in the request URL for each route.
+- The class-level security comment says the manager “handles no credentials,” which is inconsistent with the actual source-add and recording handlers.
+
+The private-network restriction and unguessable session token are useful protections, but they do not encrypt traffic. A device or observer able to inspect traffic on the same local network could potentially see the URL token and submitted credentials. A token in a URL can also be exposed through browser history or copied links. The manager is intentionally short-lived and only active while its screen is open, but this does not make HTTP confidential.
+
+**Recommended action before public distribution:** treat local-manager credential entry as a separate high-priority security item. Prefer HTTPS with a per-session certificate/fingerprint confirmation or a carefully designed one-time pairing secret and encrypted channel. If HTTPS cannot be implemented safely on the target TV/browser mix, disable credential-changing endpoints over HTTP and require users to add/edit providers directly on the TV; keep the web manager limited to non-secret channel management. Do not assume that the random token alone substitutes for TLS.
+
+Do not blindly change the server: the TV-to-phone manager is a core convenience feature and HTTPS certificate trust on consumer browsers/TV devices requires compatibility testing. No source changes or runtime LAN security tests were performed for this finding.
