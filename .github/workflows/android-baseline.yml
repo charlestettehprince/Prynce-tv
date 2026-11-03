@@ -69,6 +69,9 @@ jobs:
           icon_png = cairosvg.svg2png(url=str(icon_source), output_width=512, output_height=512)
           wordmark_png = cairosvg.svg2png(url=str(wordmark_source), output_width=165, output_height=52)
           (out / "ic_launcher.png").write_bytes(icon_png)
+          # Preserve the supplied PRYNCE icon and wordmark as separate in-app assets.
+          (out / "ic_prynce_brand.png").write_bytes(icon_png)
+          (out / "ic_prynce_wordmark.png").write_bytes(wordmark_png)
 
           icon_uri = "data:image/png;base64," + b64encode(icon_png).decode("ascii")
           wordmark_uri = "data:image/png;base64," + b64encode(wordmark_png).decode("ascii")
@@ -205,6 +208,42 @@ jobs:
           text = main_screen.read_text()
           text = text.replace('"OpenTV"', '"PRYNCE TV"')
           main_screen.write_text(text)
+          PY
+
+      - name: Apply original PRYNCE icon and wordmark inside the app
+        working-directory: android/upstream
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          screen = Path("app/src/main/java/app/opentv/ui/MainScreen.kt")
+          text = screen.read_text()
+          text = text.replace(
+              "painterResource(R.drawable.ic_opentv_logo)",
+              "painterResource(R.drawable.ic_prynce_brand)",
+          )
+          text = text.replace('contentDescription = "OpenTV"', 'contentDescription = "PRYNCE TV"')
+          old = """                Text(
+                    "PRYNCE TV",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )"""
+          new = """                Image(
+                    painter = painterResource(R.drawable.ic_prynce_wordmark),
+                    contentDescription = "PRYNCE TV wordmark",
+                    modifier = Modifier.size(width = 96.dp, height = 30.dp),
+                )"""
+          if old in text:
+              text = text.replace(old, new, 1)
+          elif "R.drawable.ic_prynce_wordmark" not in text:
+              raise SystemExit("Could not find the expanded navigation brand label to replace.")
+          if "R.drawable.ic_prynce_brand" not in text or "R.drawable.ic_prynce_wordmark" not in text:
+              raise SystemExit("PRYNCE icon/wordmark integration did not validate.")
+          screen.write_text(text)
+          print("Expanded navigation rail now shows the original PRYNCE icon and wordmark.")
           PY
 
       - name: Integrate the PRYNCE TV Ghana directory screen
