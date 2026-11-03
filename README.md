@@ -1,18 +1,23 @@
 # PRYNCE TV
 
-PRYNCE TV is planned as a premium Android media-player app for Android phones, Android TV, and Fire TV.
+PRYNCE TV is being developed as a premium Android media-player app for Android phones, Android TV, and Fire TV.
 
 **Design direction:** near-black interface, restrained gold accents, clear touch controls, and remote-friendly TV navigation.
 
-## Development status
+## Verified development status
 
-This repository is currently at the project-planning stage. The Android application source has not yet been imported, no APK has been built, and no device testing has been completed.
+- The OpenTV v0.11.10 upstream baseline has passed GitHub Actions tests and debug APK compilation.
+- A baseline debug APK was uploaded as a GitHub Actions artifact (run 41562771381).
+- A separate PRYNCE TV branding build is being validated; do not treat it as complete until its own build and artifact upload pass.
+- The upstream Android source is currently checked out temporarily during CI. It has not yet been permanently imported into this repository.
+- No physical Android phone, Android TV, or Fire TV testing has been completed.
 
-The selected open-source starting point for evaluation is [OpenTV](https://github.com/opentvproject/opentv). It is a media-player foundation, not a source of TV channels or subscriptions. Use only media sources you are authorised to access.
+The selected foundation is [OpenTV](https://github.com/opentvproject/opentv). It is a media-player foundation, not a source of TV channels or subscriptions. Use only media sources you are authorised to access.
 
 ## Project documentation
 
-See [PRYNCE TV Android Build Plan](docs/PRYNCE_TV_BUILD_PLAN.md) for the technical direction, feature requirements, delivery phases, testing checklist, and current status.
+- [Android build plan](docs/PRYNCE_TV_BUILD_PLAN.md)
+- [Open-source engine decision and fallback](docs/OPEN_SOURCE_ENGINE_DECISION.md)
 
 ## Licensing
 
