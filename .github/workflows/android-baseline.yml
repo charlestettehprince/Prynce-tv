@@ -211,6 +211,16 @@ jobs:
               text = text.replace(old_case, new_case, 1)
           main.write_text(text)
 
+          # Keep the new destination visible in the navigation rail.
+          text = main.read_text()
+          old_tabs = "            add(Tab.RECORDINGS)\n        }"
+          new_tabs = "            add(Tab.RECORDINGS)\n            add(Tab.GHANA_TV)\n        }"
+          if "add(Tab.GHANA_TV)" not in text:
+              if old_tabs not in text:
+                  raise SystemExit("Could not find visible navigation tab list")
+              text = text.replace(old_tabs, new_tabs, 1)
+              main.write_text(text)
+
           strings = Path("app/src/main/res/values/strings.xml")
           xml = strings.read_text()
           if 'name="nav_ghana_tv"' not in xml:
