@@ -43,3 +43,7 @@ All are player foundations, not entitlements to broadcast content. PRYNCE TV mus
 ## Licensing
 
 OpenTV is GPL-3.0-or-later. Preserve upstream notices and meet the licence's corresponding-source requirements before distributing modified builds. Include applicable licence and attribution materials.
+
+## Device acceptance
+
+Use the [phone and TV device acceptance checklist](docs/DEVICE_ACCEPTANCE_CHECKLIST.md) before calling a release candidate ready. CI success alone does not establish physical-device compatibility or real-stream playback.
