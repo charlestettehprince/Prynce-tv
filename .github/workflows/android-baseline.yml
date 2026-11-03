@@ -53,8 +53,8 @@ jobs:
 
           strings = Path("app/src/main/res/values/strings.xml")
           text = strings.read_text()
-          text = re.sub(r'(<string name="app_name">).*?(</string>)', r'\\1PRYNCE TV\\2', text, count=1)
-          text = re.sub(r'(<string name="exit_title">).*?(</string>)', r'\\1Leave PRYNCE TV?\\2', text, count=1)
+          text = re.sub(r'(<string name="app_name">).*?(</string>)', lambda m: m.group(1) + "PRYNCE TV" + m.group(2), text, count=1)
+          text = re.sub(r'(<string name="exit_title">).*?(</string>)', lambda m: m.group(1) + "Leave PRYNCE TV?" + m.group(2), text, count=1)
           strings.write_text(text)
 
           colors = Path("app/src/main/res/values/colors.xml")
