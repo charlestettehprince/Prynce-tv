@@ -9,7 +9,7 @@
 
 ## Executive summary
 
-PRYNCE TV is a single Android media-player project for compatible phones/tablets and Android TV/Fire TV devices. The branded debug APK and release AAB have been built successfully by CI. The current workflow artifact was downloaded and independently checked: both archives pass ZIP integrity checks, both checksums match the workflow checksum file, and native LOAD segments in both APK and AAB use 16 KB alignment. Physical-device acceptance, production signing and release compliance remain outstanding.
+PRYNCE TV is a single Android media-player project for compatible phones/tablets and Android TV/Fire TV devices. The branded debug APK and release AAB have been built successfully by CI. The latest workflow artifact was downloaded and independently checked: both archives pass ZIP integrity checks and both package checksums match the workflow checksum file. The workflow's package report confirms the debug APK package ID is `app.opentv.debug`, version `0.11.10` (code 22), min SDK 23 and target SDK 35. Its APK signature verifies but is the standard Android Debug certificate, not a production signing identity. The combined phone/TV Play submission is blocked by the current target API: as of 31 August 2026, new phone/tablet apps and updates must target API 36; Android TV has a separate API 34 minimum. Physical-device acceptance, production signing and release compliance remain outstanding.
 
 PRYNCE TV is a player, not a broadcaster or channel subscription service. Users must supply sources they are authorised to access. The app must not circumvent DRM, authentication, subscriptions, geographic restrictions or broadcaster controls.
 
@@ -43,11 +43,19 @@ PRYNCE TV is a player, not a broadcaster or channel subscription service. Users 
 
 The current OpenTV foundation remains the best fit for the stated one-app phone + TV requirement and the lowest-risk path because it is already integrated and building. OpenIPTV and OwnTV remain reference alternatives only; neither has demonstrated a reason to replace the current engine. The current decision and trade-offs are documented in `docs/OPEN_SOURCE_ALTERNATIVES_REVIEW.md`.
 
-## Build metadata and signing report — CI implementation added, verification pending
+## Latest build metadata and signing report — verified 3 November 2026
 
-- The workflow now runs Android `aapt dump badging` against the debug APK and records package ID, SDK declarations and launchable activity.
-- It runs `apksigner verify --verbose --print-certs` and archives the debug signing certificate identity.
-- The report is included in the test artifact. This change is not yet verified: the workflow run for commit `1f8c134936bace129c25425ccfd84e73d400ae6a` was queued at the last status check.
+- Workflow run `41614656611` completed successfully; artifact ID `13221765019` (`prynce-tv-v0.11.10-test-packages`), 38,796,617 bytes, expires 1 February 2027.
+- APK: `app.opentv.debug`, version `0.11.10` / code `22`, min SDK `23`, target SDK `35`, launch activity `app.opentv.MainActivity`.
+- APK signature verifies with v1 and v2 schemes. Signer is `C=US, O=Android, CN=Android Debug`; this is a test/debug certificate, not a production signing certificate.
+- APK SHA-256: `3132ca5e4bfac11b726d40f1908214ea47de106a968984ed563193b48a091a90`.
+- AAB SHA-256: `0cac469acb142b6267c223c0ee9636a154405e28702804ecabd92ac8a7197c14`.
+- Both package hashes match the checksum file in the artifact.
+- **Store submission blocker:** the current build targets API 35. Google Play requires new phone/tablet apps and updates to target API 36 or higher from 31 August 2026. Android TV's minimum is API 34; the current API 35 meets that TV minimum but does not meet the combined phone/tablet Play requirement. Raise compile/target SDK to 36, rebuild and re-test before a combined phone/TV Play submission.
+
+## Build metadata and signing report — CI implementation verified
+
+- The workflow runs Android `aapt dump badging` and `apksigner verify --verbose --print-certs`; the resulting report is included in the artifact.
 - This is debug-build inspection only; production signing remains pending.
 
 ## Universal update workstream — architecture selected, implementation pending
