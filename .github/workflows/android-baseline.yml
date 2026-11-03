@@ -7,6 +7,7 @@ on:
       - ".github/workflows/android-baseline.yml"
       - ".gitmodules"
       - "android/**"
+      - "branding/**"
       - "docs/**"
       - "README.md"
 
@@ -26,6 +27,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
+
+      - name: Install PRYNCE TV launcher artwork
+        run: |
+          mkdir -p android/upstream/app/src/main/res/drawable
+          cp branding/prynce_tv_icon.png android/upstream/app/src/main/res/drawable/ic_launcher.png
+          cp branding/prynce_tv_banner.png android/upstream/app/src/main/res/drawable/banner.png
 
       - name: Set up Java 17
         uses: actions/setup-java@v4
