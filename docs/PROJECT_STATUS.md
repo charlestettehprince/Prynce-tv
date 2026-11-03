@@ -7,6 +7,15 @@
 **Latest CI change (not yet verified):** `1f8c134936bace129c25425ccfd84e73d400ae6a`  
 **Project estimate:** **90%** (rough planning estimate, not a measured completion score)
 
+## Current Android 16 migration — authoritative latest status
+
+- Latest migration commit: `29dbd77d28bf8180558d5f45166d76059965badc` (CI workflow run [41617047320](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41617047320)).
+- The CI configuration migration to Android Gradle Plugin 8.9.1, compileSdk 36 and targetSdk 36 passed, as did SDK 36 installation, Ghana directory validation, phone/TV launcher resource checks, updater configuration, branding and navigation integration.
+- **The test/compile/build step is still reported in progress.** No API 36 APK/AAB artifact is available yet; do not treat the migration as a successful build or release.
+- The workflow log endpoint currently returns BlobNotFound, so no unverified failure diagnosis is recorded. Recheck run status and artifacts before proceeding.
+- The previous verified API 35 APK remains a test-only fallback; it does not meet the new phone/tablet Play target API 36 requirement.
+- README status note was updated in commit `0883e5383182e75f3de9937224c69ff3da5f406f`.
+
 ## Executive summary
 
 PRYNCE TV is a single Android media-player project for compatible phones/tablets and Android TV/Fire TV devices. The branded debug APK and release AAB have been built successfully by CI. The latest workflow artifact was downloaded and independently checked: both archives pass ZIP integrity checks and both package checksums match the workflow checksum file. The workflow's package report confirms the debug APK package ID is `app.opentv.debug`, version `0.11.10` (code 22), min SDK 23 and target SDK 35. Its APK signature verifies but is the standard Android Debug certificate, not a production signing identity. The combined phone/TV Play submission is blocked by the current target API: as of 31 August 2026, new phone/tablet apps and updates must target API 36; Android TV has a separate API 34 minimum. Physical-device acceptance, production signing and release compliance remain outstanding.
