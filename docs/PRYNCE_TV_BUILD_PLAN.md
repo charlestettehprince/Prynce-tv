@@ -2,6 +2,14 @@
 
 Last verified: 3 November 2026
 
+## Current Android 16 migration status — 3 November 2026
+
+- Migration commit: `29dbd77d28bf8180558d5f45166d76059965badc`; [GitHub Actions run 41617047320](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41617047320).
+- Passed in CI: AGP 8.9.1 / compileSdk 36 / targetSdk 36 migration step, Android SDK 36 installation, Ghana directory validation, phone/TV launcher checks, updater configuration, branding and navigation integration.
+- The automated test and APK/AAB build step remains in progress. There is no verified API 36 artifact yet.
+- Previous API 35 test APK remains available as fallback only; it is not a Play-ready phone/tablet package.
+- Next action: recheck workflow and artifacts, diagnose only from actual build logs, then independently verify package metadata, signature, checksums and 16 KB native alignment. Physical-device acceptance remains separate.
+
 ## Product direction
 
 A premium media-player experience for Android phones, Android TV and Fire TV. Design direction: near-black surfaces, restrained gold accents, readable typography, accessible touch targets and reliable remote navigation.
