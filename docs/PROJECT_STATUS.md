@@ -231,3 +231,15 @@ A feature is complete only with reproducible evidence: automated test output, ar
 - Build run `41625818584` was queued/pending at the time of this update. The earlier branding-only build `41624830375` was still in progress on the prior workflow revision; neither result is represented as a successful build here.
 - Documentation updated in commits `1f7eee6116aece875a18686666dde729277be669` and `c263f62b2c5d5191df68f8f4b525e7e3dae07a88`.
 - Real-device phone/Android TV/Fire TV visual acceptance, public store artwork, production signing and public distribution remain outstanding.
+
+
+## 3 November 2026 — consolidated owner direction and lint patch preparation
+
+- The owner has authorised use of genuine founder portrait imagery for appropriate owner/About/leadership surfaces across the PRYNCE project family. The logo remains the primary brand mark; portraits are not to be placed in launcher icons, player controls or unrelated content.
+- Portrait source files remain in the private Library and have not been copied into this public repository or an APK. Because this is a public identity asset, keep it out of public releases until a trusted adult has reviewed the privacy implications and the selected image/crop. The app can accurately credit the PRYNCE founder without embedding a portrait in the binary.
+- Reviewed the two locale-formatting lint locations in the pinned upstream source: RecordingSettingsScreen.kt and RecordingsScreen.kt. Both used String.format() without an explicit locale for storage/recording sizes.
+- Prepared a deterministic CI patch in scripts/apply_android_lint_fixes.py: imports java.util.Locale and uses Locale.ROOT for the numeric size strings, avoiding device-locale decimal formatting surprises. The patch is guarded and fails if the expected upstream source block changes.
+- Updated .github/workflows/android-baseline.yml so changes under scripts/** trigger the Android build workflow; otherwise the new patch would not be exercised automatically.
+- Changes are on branch fix/locale-formatting-lint; they are not merged into main. CI validation is required before merging. No new APK or AAB is claimed yet.
+- Deferred PiP auto-entry, orientation, language-split behavior and dependency upgrades because they need behavior-aware device testing rather than a speculative lint-only edit.
+- Public release gates remain: CI pass, physical phone and TV/Fire TV acceptance, stable production package identity, production signing, privacy/backup and cleartext-network review, and GPL-3.0-or-later notices/corresponding-source compliance.
