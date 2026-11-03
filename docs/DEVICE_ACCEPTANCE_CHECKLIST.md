@@ -44,8 +44,8 @@ This checklist separates automated build evidence from real-device acceptance. A
 Before any Google Play submission, re-check the live Play Console and Android requirements for the target release date.
 
 - [ ] Produce an Android App Bundle (AAB) for Play distribution; the current CI debug APK is not a Play release package.
-- [ ] Verify 32-bit and 64-bit ABI support and 16 KB page-size compatibility for native libraries, as required for TV apps from 1 August 2026.
-- [ ] Verify the manifest declares TV launcher support and does not require touchscreen hardware for TV use.
+- [ ] Verify 32-bit and 64-bit ABI support and 16 KB page-size compatibility for native libraries. Google Play has required 16 KB page-size support for new apps and updates targeting Android 15+ since 1 November 2025.
+- [ ] Verify the manifest declares TV launcher support and does not require touchscreen hardware for TV use.\n- [ ] Verify the TV launcher icon/banner resources are correctly referenced and visible on-device; the current 320×180 banner is the expected TV banner size.
 - [ ] Capture genuine, unaltered, high-resolution 16:9 screenshots from the actual TV app.
 - [ ] Confirm app title, launcher banner title and store listing name match exactly.
 - [ ] Complete privacy disclosures, support contact, content-source explanation and policy review.
