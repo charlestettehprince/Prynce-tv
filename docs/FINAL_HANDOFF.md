@@ -1,3 +1,41 @@
+# PRYNCE TV — latest verified handoff update
+**Updated: 3 November 2026**
+
+## Latest verified build: #107
+- Workflow: https://github.com/charlestettehprince/Prynce-tv/actions/runs/41629319388
+- Commit: `eb7af7bcb8892ccde353dc6ac7c966c6543501a2`
+- Build completed successfully: automated tests, APK/AAB build, metadata/signing capture, checksums, artifact uploads and Android Gradle Lint.
+- Build artifact ID: `13228535438`; Lint report artifact ID: `13227652811`.
+- APK package: `app.opentv.debug`; version `0.11.10`; versionCode `22`; min SDK 23; target/compile SDK 36.
+- APK SHA-256: `2c653ce3ff06e8a9fe32ca2eb53395b3f2b352c6fdc1dcb74aab57bae796a9c1`.
+- AAB SHA-256: `e3f0411fbed5e6d98736b58ebc5282a3fa8a5609ef0be8076846235798ec907e`.
+- Both artifact ZIPs passed integrity checks. APK signature verification passed for v1/v2, but the signer is the Android Debug certificate, not a production signing identity.
+- Lint report: 187 findings (184 warnings, 3 informational), zero errors/fatal findings.
+- PR #8 remains open and draft; it has not been merged.
+- Release/security issues #3, #4 and #5 remain open. Issue #7 now records Build #107 as the current Lint baseline.
+
+## What this proves — and what it does not
+The CI build proves that the source compiles and the automated build pipeline completes. It does **not** prove that live streams or movies play on a physical phone/TV, that a broadcaster has authorised a stream, that a public movie catalogue exists, or that the app is ready for public distribution.
+
+## Next implementation and verification sequence
+1. Review safe Build #107 Lint findings; fix correctness issues before cosmetic or dependency churn.
+2. Inspect provider credential storage, backup/restore behavior and cleartext-network compatibility; do not weaken provider security silently.
+3. Test local media playback and one explicitly authorised test stream on a physical Android phone.
+4. Test Android TV remote navigation and playback separately; test Fire TV separately.
+5. Verify update discovery, Android installer handoff, cancel/decline and in-place update using a production-signed test build.
+6. Confirm permanent package identity and production signing with the authorised release owner.
+7. Add only licensed/authorised channels and movie sources, with age-appropriate family controls.
+8. Prepare a stable download/distribution route and user-facing privacy/support information.
+
+## Current readiness statement
+- Engineering build: **CI passed**.
+- Physical-device playback: **not yet verified**.
+- Live TV/content rights: **not yet verified**.
+- Production signing/public release: **not complete**.
+- Do not distribute the debug APK as a production installer.
+
+---
+
 # PRYNCE TV — consolidated handoff and release readiness
 
 Last verified: 3 November 2026  
