@@ -296,6 +296,25 @@ jobs:
           chmod +x gradlew
           ./gradlew test assembleDebug bundleRelease --no-daemon
 
+      - name: Record APK package metadata and debug signing identity
+        run: |
+          set -euo pipefail
+          APK="android/upstream/app/build/outputs/apk/debug/app-debug.apk"
+          AAPT="$ANDROID_HOME/build-tools/35.0.0/aapt"
+          APKSIGNER="$ANDROID_HOME/build-tools/35.0.0/apksigner"
+          test -f "$APK"
+          mkdir -p android/upstream/app/build/outputs/release-report
+          {
+            echo "PRYNCE TV build metadata"
+            echo "Generated UTC: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo
+            echo "APK package metadata (aapt dump badging)"
+            "$AAPT" dump badging "$APK" | grep -E "^(package:|sdkVersion:|targetSdkVersion:|launchable-activity:)"
+            echo
+            echo "APK signature verification and certificate"
+            "$APKSIGNER" verify --verbose --print-certs "$APK"
+          } | tee android/upstream/app/build/outputs/release-report/apk-metadata-and-signing.txt
+
       - name: Record package checksums
         run: |
           cd android/upstream/app/build/outputs
@@ -309,5 +328,6 @@ jobs:
             android/upstream/app/build/outputs/apk/debug/*.apk
             android/upstream/app/build/outputs/bundle/release/*.aab
             android/upstream/app/build/outputs/prynce-tv-checksums.txt
+            android/upstream/app/build/outputs/release-report/*.txt
           if-no-files-found: error
           retention-days: 90
