@@ -35,6 +35,7 @@ The GitHub Actions workflow checks out the pinned OpenTV submodule, installs the
 - [Device acceptance checklist](docs/DEVICE_ACCEPTANCE_CHECKLIST.md)
 - [Channel source setup and troubleshooting](docs/CHANNEL_SOURCE_GUIDE.md)
 - [Open-source engine decision](docs/OPEN_SOURCE_ENGINE_DECISION.md)
+- [Open-source alternatives review](docs/OPEN_SOURCE_ALTERNATIVES_REVIEW.md)
 - [Branding integration guide](docs/BRANDING_ASSET_INTEGRATION.md)
 
 ## Build locally
