@@ -14,7 +14,9 @@ Core upstream capabilities include M3U/M3U8 playlists, Xtream-compatible provide
 - Visual direction: near-black/navy with restrained gold accents.
 - Original vector icon: `branding/prynce_icon.svg`
 - Original vector wordmark: `branding/prynce_wordmark.svg`
-- CI renders Android launcher artwork directly from these SVG sources.
+- CI renders the launcher icon, Android TV banner, in-app navigation icon and in-app wordmark directly from these original SVG sources.
+- The app label and theme accents also use the PRYNCE TV identity.
+- Notification glyphs and adaptive/themed launcher icon variants remain follow-up branding work; physical phone/TV screenshot checks are still required.
 - Branding integration and CI installation: [Branding asset integration guide](docs/BRANDING_ASSET_INTEGRATION.md).
 
 The committed artwork is derived from the original assets supplied by the project owner. It is resized/compressed for Android use, not redrawn or recoloured.
