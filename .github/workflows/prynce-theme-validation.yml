@@ -1,6 +1,15 @@
 name: PRYNCE yellow-black theme validation
 
 on:
+  push:
+    branches:
+      - "feature/prynce-yellow-black-theme"
+    paths:
+      - "branding/PRYNCE_YELLOW_BLACK_THEME.md"
+      - "branding/patches/prynce-yellow-black-theme.patch"
+      - ".github/workflows/prynce-theme-validation.yml"
+      - ".gitmodules"
+      - "android/upstream"
   pull_request:
     paths:
       - "branding/PRYNCE_YELLOW_BLACK_THEME.md"
