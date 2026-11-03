@@ -1,0 +1,55 @@
+name: PRYNCE TV Android baseline
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/android-baseline.yml"
+      - "docs/**"
+      - "README.md"
+
+permissions:
+  contents: read
+
+jobs:
+  build-upstream-baseline:
+    name: Build reviewed OpenTV baseline
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out PRYNCE TV project
+        uses: actions/checkout@v4
+
+      - name: Check out pinned OpenTV source
+        uses: actions/checkout@v4
+        with:
+          repository: opentvproject/opentv
+          ref: v0.11.10
+          path: upstream
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+          cache-dependency-path: upstream/**/*.gradle*
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Accept Android SDK licences
+        run: yes | sdkmanager --licenses
+
+      - name: Run tests and build baseline debug APK
+        working-directory: upstream
+        run: |
+          chmod +x gradlew
+          ./gradlew test assembleDebug --no-daemon
+
+      - name: Upload baseline APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: opentv-v0.11.10-baseline-debug
+          path: upstream/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 14
