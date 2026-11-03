@@ -33,6 +33,10 @@ The GitHub Actions workflow checks out the pinned OpenTV submodule, installs the
 
 **CI success is not device acceptance.** Physical Android phone, Android TV and Fire TV testing, authorised-source playback, launcher visual inspection, privacy/licence review and production signing remain required before public release.
 
+## Test the Android build
+
+For straightforward phone installation and a short first-launch checklist, see the [Android test installation guide](docs/ANDROID_TEST_INSTALL_GUIDE.md). This is a debug-signed test build; Android's normal installation security prompts remain in effect.
+
 ## Updates across phone and TV
 
 The selected update architecture is documented in [Universal update architecture](docs/UNIVERSAL_UPDATE_ARCHITECTURE.md). The intended design uses Play in-app updates on supported phones/tablets, store-managed updates for Android TV and Fire TV, and a secure remote manifest for non-executable feature/content configuration. The pinned OpenTV updater is configured by CI to check the PRYNCE TV GitHub release repository and uses PRYNCE TV update prompts. This source integration has passed a CI build; actual update installation and platform-specific store flows still require physical-device and store testing.
