@@ -2,14 +2,22 @@
 
 ## Purpose
 
-The `.github/workflows/startup-smoke.yml` workflow provides a repeatable, free CI emulator measurement for app launch. It builds the pinned OpenTV debug variant, installs it on an Android API 35 x86_64 emulator, clears app data for the first launch, and records five process-cold launch samples using `adb shell am start -W`.
+The `.github/workflows/startup-smoke.yml` workflow provides a repeatable, free CI emulator measurement for Android activity launch. It builds the pinned OpenTV debug variant, installs it on an Android API 35 x86_64 emulator, clears app data for the first launch, and records five process-cold launches using `adb shell am start -W`.
 
 ## What the measurements mean
 
-- `TotalTime` is ActivityManager's launch timing reported for the activity start.
+- `TotalTime` is ActivityManager's reported activity launch timing.
 - `WaitTime` is retained as supplementary output where the platform reports it.
+- These values are not a precise first-rendered-frame measurement, nor are they a substitute for Macrobenchmark's StartupTimingMetric/Perfetto traces.
 - The workflow writes raw output, CSV samples and a JSON summary as the `prynce-tv-startup-smoke-results` artifact.
-- The first sample follows an app-data clear; later samples force-stop the app between launches. Treat the first sample as a fresh-install cold-start observation and the remaining samples as process-cold repeat launches with local data retained.
+- The first sample follows an app-data clear; later samples force-stop the app between launches. Treat the first sample as a fresh-install observation and the remaining samples as process-cold repeat launches with local data retained.
+
+## CI troubleshooting history
+
+- Run `41682156895` initially failed during Android SDK setup because the action attempted to install the removed `tools` SDK package. The setup step was corrected to request `platform-tools`.
+- Run `41682368813` completed checkout, Java/SDK setup, emulator boot and debug build, but failed before measurement because the emulator action executes its script with POSIX `/usr/bin/sh`; Bash-only `set -o pipefail` is not supported there.
+- The workflow was corrected to use POSIX-compatible `set -eu`. The job label and JSON description were also corrected to say activity launch timing, not first-frame timing.
+- The next push-triggered run must pass the emulator step and upload a non-empty results artifact before any timing is reported.
 
 ## Limitations
 
@@ -25,11 +33,13 @@ The `.github/workflows/startup-smoke.yml` workflow provides a repeatable, free C
 1. Open the repository's Actions tab and select **PRYNCE TV startup smoke benchmark**.
 2. Open the completed run and download `prynce-tv-startup-smoke-results`.
 3. Review `startup.json`, `startup.csv` and `startup-raw.txt`.
-4. Compare median and spread across at least five runs on the same API/emulator profile before making performance changes.
+4. Compare median and spread across at least five successful runs on the same API/emulator profile before making performance changes.
 
 ## Next steps
 
-1. Capture several successful CI runs to establish normal timing variance.
-2. Add a Macrobenchmark module and Baseline Profile generator after verifying compatible AndroidX plugin/dependency versions against the pinned AGP/Kotlin setup.
-3. Measure real first-run and returning-user journeys on representative low-end phone and Android TV hardware.
-4. Optimise only after traces identify a specific bottleneck; preserve the no-mandatory-login and free basic-use requirements.
+1. Complete a successful emulator run and capture several runs to establish normal timing variance.
+2. Inspect the repository's actual Android Gradle Plugin/Kotlin versions before adding Macrobenchmark 1.5.0+ and Profile Installer 1.4.1+; do not blindly upgrade build tooling.
+3. Add a Macrobenchmark test using `StartupTimingMetric` and cold-start mode, then generate a Baseline Profile for real critical user journeys.
+4. Benchmark the profile on physical hardware before claiming user-visible speed improvements.
+5. Measure first-run and returning-user journeys on representative low-end phone and Android TV hardware.
+6. Optimise only after traces identify a specific bottleneck; preserve the no-mandatory-login and free basic-use requirements.
