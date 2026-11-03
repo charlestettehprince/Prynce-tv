@@ -45,6 +45,37 @@ jobs:
           yes | sdkmanager --licenses
           sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
+      - name: Verify Android phone and TV launcher resources
+        working-directory: android/upstream
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          manifest = Path("app/src/main/AndroidManifest.xml")
+          root = ET.parse(manifest).getroot()
+          android = "{http://schemas.android.com/apk/res/android}"
+          app = root.find("application")
+          assert app is not None, "Android application element is missing"
+
+          for attr in ("icon", "banner"):
+              value = app.get(android + attr, "")
+              assert value.startswith("@drawable/"), f"Missing drawable reference for application {attr}: {value}"
+              name = value.split("/", 1)[1]
+              matches = list(Path("app/src/main/res").glob(f"drawable*/{name}.*"))
+              assert matches, f"Referenced {attr} drawable not found: {value}"
+
+          categories = {
+              item.get(android + "name")
+              for activity in root.findall(".//activity")
+              for intent in activity.findall("intent-filter")
+              for item in intent.findall("category")
+          }
+          assert "android.intent.category.LAUNCHER" in categories, "Phone launcher category is missing"
+          assert "android.intent.category.LEANBACK_LAUNCHER" in categories, "Android TV launcher category is missing"
+          print("Phone and Android TV launcher declarations and referenced artwork are present.")
+          PY
+
       - name: Apply PRYNCE TV black-and-gold branding
         working-directory: android/upstream
         run: |
