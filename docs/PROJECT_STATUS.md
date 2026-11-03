@@ -10,11 +10,13 @@
 ## Current Android 16 migration — authoritative latest status
 
 - Latest migration commit: `29dbd77d28bf8180558d5f45166d76059965badc` (CI workflow run [41617047320](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41617047320)).
-- The CI configuration migration to Android Gradle Plugin 8.9.1, compileSdk 36 and targetSdk 36 passed, as did SDK 36 installation, Ghana directory validation, phone/TV launcher resource checks, updater configuration, branding and navigation integration.
-- **The test/compile/build step is still reported in progress.** No API 36 APK/AAB artifact is available yet; do not treat the migration as a successful build or release.
-- The workflow log endpoint currently returns BlobNotFound, so no unverified failure diagnosis is recorded. Recheck run status and artifacts before proceeding.
-- The previous verified API 35 APK remains a test-only fallback; it does not meet the new phone/tablet Play target API 36 requirement.
-- README status note was updated in commit `0883e5383182e75f3de9937224c69ff3da5f406f`.
+- **Build completed successfully:** automated tests, APK/AAB compilation, package metadata/signing report, checksums and artifact upload all passed.
+- Artifact: `prynce-tv-v0.11.10-test-packages`, ID `13222900025`, expires 1 February 2027.
+- APK metadata: `app.opentv.debug`, version `0.11.10` / code `22`, min SDK `23`, compile SDK `36`, target SDK `36`.
+- APK SHA-256: `db59de9f5e7ac6157dd934b0e127366cb75b34b674e3b6ee6e11489bc766f731`; AAB SHA-256: `d5a537f900acfb8f23d1a10c1e9a06aeb4b039f5de641286c7cdbc27d742e257`. Archive integrity and APK signature verification passed.
+- Signer is the Android Debug certificate. This is a test build, not a production-signed public release.
+- The workflow log endpoint returned BlobNotFound during follow-up, but the completed run, uploaded artifact, metadata report and checksum file were available and independently inspected.
+- Physical phone/TV testing, production signing and privacy/licence review remain open.
 
 ## Executive summary
 
