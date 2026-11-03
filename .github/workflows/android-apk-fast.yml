@@ -2,6 +2,9 @@ name: PRYNCE TV APK fast build
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/android-apk-fast.yml"
 
 concurrency:
   group: prynce-tv-apk-fast
