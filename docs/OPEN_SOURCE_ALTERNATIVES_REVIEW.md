@@ -20,6 +20,16 @@
 | OwnTV | Native Kotlin/Compose for TV; Media3 plus mpv; M3U/Xtream/Stalker features; GPLv3 | TV-focused, so it does not meet the single phone + TV app requirement as directly. |
 | Prysm | Publicly describes Android + Android TV, dual playback engines and MIT licensing | Interesting candidate, but its claims and repository/build maturity have not been independently validated in this project. Not selected. |
 
+## Fresh review — phone-first fork and current Android media stack
+
+**Checked:** 3 November 2026
+
+- OpenTV Mobile is a phone-oriented fork based on OpenTV. Its own project description says it reworks the interface around portrait browsing and touch controls. It is a useful reference for phone UX, but adopting it as the main codebase would not remove the need for TV-specific D-pad work and regression testing.
+- Android's official Media3 1.11 announcement describes Compose player controls with FocusRequester support for D-pad and keyboard navigation. Android's current TV playback guidance also recommends MediaSession integration and explains how to delegate remote key events to the player.
+- This is a technology review only. The current PRYNCE build is already compiling; there is no verified evidence yet that swapping engines or upgrading dependencies would improve playback on the user's actual devices. Do not make a dependency upgrade solely from a version announcement.
+
+**Updated recommendation:** Keep the pinned OpenTV base. Borrow phone-first interaction ideas from OpenTV Mobile only where they can be implemented as a small, separately tested UI improvement. Audit the current Media3 dependency version in the upstream submodule before planning any upgrade; do not assume it is already on 1.11.
+
 ## Quick alternative / best decision
 
 The quick, low-risk alternative is **not an engine migration**. Continue with OpenTV and improve the existing build and acceptance path:
@@ -42,6 +52,9 @@ This is a desk review of public project descriptions and Android documentation, 
 ## Sources
 
 - OpenTV project: https://github.com/opentvproject/opentv
+- OpenTV Mobile phone-first fork: https://github.com/opentv-mobile
+- Android Media3 1.11 announcement: https://android-developers.googleblog.com/2026/08/media3-1-11-whats-new.html
+- Android TV Media3 playback guidance: https://developer.android.com/media/media3/ui/androidtv
 - OpenIPTV project: https://github.com/Hunter-Clipper/OpenIPTV
 - OwnTV project: https://github.com/ahXN00/OwnTV
 - Prysm project site: https://www.prysmplayer.com/
