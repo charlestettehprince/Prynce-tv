@@ -6,11 +6,12 @@ PRYNCE TV is being developed as a premium Android media-player app for Android p
 
 ## Verified development status
 
-- The OpenTV v0.11.10 upstream baseline passed GitHub Actions tests and debug APK compilation in run 41562771381.
-- The pinned upstream source is now tracked permanently as a Git submodule at `android/upstream`, with its source commit fixed at `443811904b6437720d37bb1064c0830906c3515f`.
-- GitHub Actions now checks out the repository recursively and builds from that pinned submodule, rather than fetching a separate temporary copy.
-- The PRYNCE TV branded build using this new source layout is awaiting CI verification.
-- No physical Android phone, Android TV, or Fire TV testing has been completed.
+- OpenTV v0.11.10 is pinned as a Git submodule at `android/upstream`, source commit `443811904b6437720d37bb1064c0830906c3515f`.
+- GitHub Actions checks out the repository recursively, applies the current proof-of-concept PRYNCE TV branding, runs Gradle tests, and builds a debug APK.
+- Latest verified build: [GitHub Actions run 41565825331](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41565825331) — **success**.
+- Uploaded artifact: `prynce-tv-v0.11.10-debug` (about 28.9 MB); artifact retention ends 17 November 2026.
+- CI success confirms tests/build completed and the APK artifact uploaded. It does **not** establish physical-device playback, Android TV/Fire TV compatibility, or final brand-asset correctness.
+- Exact website/app logo and icon still require source-asset verification. Current upstream-derived launcher mark is provisional and must not be represented as the user's confirmed logo.
 
 The selected foundation is [OpenTV](https://github.com/opentvproject/opentv). It is a media-player foundation, not a source of TV channels or subscriptions. Use only media sources you are authorised to access.
 
@@ -21,4 +22,4 @@ The selected foundation is [OpenTV](https://github.com/opentvproject/opentv). It
 
 ## Licensing
 
-OpenTV is distributed under GPL-3.0-or-later. The upstream source remains separately identifiable as a pinned submodule. Before redistributing a modified build, preserve applicable notices and comply with the licence's corresponding-source requirements. The final distribution must include the applicable licence and attribution materials.
+OpenTV is distributed under GPL-3.0-or-later. Preserve applicable notices and comply with the licence's corresponding-source requirements before distributing modified builds. Include applicable licence and attribution materials with any distribution.
