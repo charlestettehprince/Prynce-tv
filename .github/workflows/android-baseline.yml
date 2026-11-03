@@ -164,7 +164,7 @@ jobs:
       - name: Record package checksums
         run: |
           cd android/upstream/app/build/outputs
-          find apk/debug bundle/release -type f \\( -name '*.apk' -o -name '*.aab' \\) -print0 | sort -z | xargs -0 sha256sum | tee prynce-tv-checksums.txt
+          { find apk/debug -type f -name '*.apk' -print0; find bundle/release -type f -name '*.aab' -print0; } | sort -z | xargs -0 sha256sum | tee prynce-tv-checksums.txt
 
       - name: Upload public-test APK and Play-format AAB
         uses: actions/upload-artifact@v4
