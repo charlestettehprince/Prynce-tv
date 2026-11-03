@@ -8,6 +8,14 @@ PRYNCE TV is a player, not a broadcaster or channel subscription service. Viewer
 
 Core upstream capabilities include M3U/M3U8 playlists, Xtream-compatible provider connections, XMLTV programme guides, search, favourites, history and remote-friendly navigation. Availability of individual playback features depends on the provider and device.
 
+## Free access and sign-in
+
+PRYNCE TV is intended to be free to download and use. Basic browsing, local profiles, favourites and settings must not require a paid PRYNCE membership or a mandatory PRYNCE account. The public PRYNCE website and official TV directory should also remain accessible without signing in.
+
+To watch provider-supplied content, a viewer may need credentials or a plan from their own authorised third-party TV provider. Any provider fees are separate from PRYNCE; PRYNCE does not promise that third-party channels or services are free. Provider credentials are not a PRYNCE website login.
+
+The current app uses local profiles rather than a mandatory PRYNCE cloud account. Any future account or cross-device sync feature should remain optional and preserve guest access.
+
 ## PRYNCE branding
 
 - App name: **PRYNCE TV**
