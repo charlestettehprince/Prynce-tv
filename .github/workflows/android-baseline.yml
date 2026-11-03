@@ -132,7 +132,7 @@ jobs:
 
       - name: Validate committed artwork dimensions and opacity
         run: |
-          python3 - <<'PY'
+          /tmp/prynce-art-venv/bin/python - <<'PY'
           from PIL import Image
           icon = Image.open("android/upstream/app/src/main/res/drawable/ic_launcher.png")
           banner = Image.open("android/upstream/app/src/main/res/drawable/banner.png")
