@@ -38,10 +38,10 @@ jobs:
           from PIL import Image, ImageOps
           from pathlib import Path
           out = Path("android/upstream/app/src/main/res/drawable")
-          icon = Image.open("branding/prynce_tv_icon.jpg").convert("RGBA")
+          icon = Image.open("branding/prynce_tv_icon.png").convert("RGBA")
           icon = ImageOps.fit(icon, (512, 512), method=Image.Resampling.LANCZOS)
           icon.save(out / "ic_launcher.png", optimize=True)
-          banner = Image.open("branding/prynce_tv_banner.jpg").convert("RGBA")
+          banner = Image.open("branding/prynce_tv_banner.png").convert("RGBA")
           banner = ImageOps.fit(banner, (320, 180), method=Image.Resampling.LANCZOS)
           background = Image.new("RGB", (320, 180), "#080B14")
           background.paste(banner, mask=banner.getchannel("A"))
