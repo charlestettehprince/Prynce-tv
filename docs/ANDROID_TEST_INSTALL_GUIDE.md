@@ -12,6 +12,10 @@ This guide is for the **debug-signed API 36 test APK**, not a public production 
 
 Android's security prompts are expected for a sideloaded test APK. Do not try to disable Android security protections or install files from unknown sources.
 
+## Record your test result
+
+Use the [device test report template](DEVICE_TEST_REPORT_TEMPLATE.md) to record phone and TV results separately.
+
 ## First-launch checks
 
 - [ ] Installation completes without an error.
