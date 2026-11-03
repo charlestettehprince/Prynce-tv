@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "product": "PRYNCE TV",
+  "purpose": "Directory of official broadcaster destinations. These are website destinations, not extracted stream URLs or blanket retransmission permissions.",
+  "lastReviewed": "2026-11-03",
+  "entries": [
+    {
+      "id": "gbc",
+      "name": "Ghana Broadcasting Corporation",
+      "country": "GH",
+      "category": "Public broadcaster",
+      "destination": "https://www.gbcghanaonline.com/",
+      "destinationType": "official_website",
+      "channels": [
+        "GTV",
+        "GTV 24",
+        "GTV Govern",
+        "GTV Life",
+        "GTV Sports+"
+      ],
+      "playback": "Open official destination; individual live availability varies.",
+      "streamRights": "No online retransmission permission implied.",
+      "verifiedOn": "2026-11-03"
+    },
+    {
+      "id": "joy-news",
+      "name": "Joy News",
+      "country": "GH",
+      "category": "News",
+      "destination": "https://www.multitvworld.com/joynews/",
+      "destinationType": "official_channel_page",
+      "channels": [
+        "Joy News"
+      ],
+      "playback": "Use broadcaster's own live player where offered.",
+      "streamRights": "Do not extract or proxy the stream.",
+      "verifiedOn": "2026-11-03"
+    },
+    {
+      "id": "myjoy-live",
+      "name": "MyJoyOnline Live",
+      "country": "GH",
+      "category": "News",
+      "destination": "https://www.myjoyonline.com/live/",
+      "destinationType": "official_live_page",
+      "channels": [
+        "Joy News live programming"
+      ],
+      "playback": "Open official live page.",
+      "streamRights": "Do not extract or proxy the stream.",
+      "verifiedOn": "2026-11-03"
+    },
+    {
+      "id": "max-tv",
+      "name": "Max TV",
+      "country": "GH",
+      "category": "General entertainment",
+      "destination": "https://max.com.gh/tv/",
+      "destinationType": "official_live_page",
+      "channels": [
+        "Max TV"
+      ],
+      "playback": "Open official live page; availability may vary.",
+      "streamRights": "Do not extract or proxy the stream.",
+      "verifiedOn": "2026-11-03"
+    },
+    {
+      "id": "dstv-ghana",
+      "name": "DStv Ghana",
+      "country": "GH",
+      "category": "Authorised pay-TV provider",
+      "destination": "https://www.dstv.com/en-gh/",
+      "destinationType": "official_provider_website",
+      "channels": [],
+      "playback": "Subscription/provider access only where eligible.",
+      "streamRights": "Use provider's authorised app/service; no channel links bundled.",
+      "verifiedOn": "2026-11-03"
+    }
+  ],
+  "policy": {
+    "playerOnly": true,
+    "noBundledPlaylists": true,
+    "noScrapedStreams": true,
+    "noDRMOrSubscriptionCircumvention": true,
+    "offline": "Only user-owned local files or provider/content-owner-authorised downloads.",
+    "recheckBeforeRelease": true
+  }
+}
