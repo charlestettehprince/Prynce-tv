@@ -34,13 +34,13 @@ jobs:
           cache: gradle
           cache-dependency-path: upstream/**/*.gradle*
 
-      - name: Set up Android SDK
+      - name: Set up Android SDK command-line tools
         uses: android-actions/setup-android@v3
-        with:
-          packages: |
-            platform-tools
-            platforms;android-35
-            build-tools;35.0.0
+
+      - name: Install required Android SDK packages
+        run: |
+          yes | sdkmanager --licenses
+          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
       - name: Run tests and build baseline debug APK
         working-directory: upstream
