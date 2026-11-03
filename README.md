@@ -37,7 +37,8 @@ The selected update architecture is documented in [Universal update architecture
 
 ## Project documentation
 
-- [Universal update architecture](docs/UNIVERSAL_UPDATE_ARCHITECTURE.md)\n- [Project status and remaining acceptance gates](docs/PROJECT_STATUS.md)
+- [Universal update architecture](docs/UNIVERSAL_UPDATE_ARCHITECTURE.md)
+- [Project status and remaining acceptance gates](docs/PROJECT_STATUS.md)
 - [Build plan](docs/PRYNCE_TV_BUILD_PLAN.md)
 - [Device acceptance checklist](docs/DEVICE_ACCEPTANCE_CHECKLIST.md)
 - [Channel source setup and troubleshooting](docs/CHANNEL_SOURCE_GUIDE.md)
