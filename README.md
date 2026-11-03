@@ -29,7 +29,7 @@ The GitHub Actions workflow checks out the pinned OpenTV submodule, installs the
 - Artifact: `prynce-tv-v0.11.10-test-packages` (APK + AAB; GitHub Actions retention is temporary).
 - The current APK and AAB passed independent archive-integrity and SHA-256 checks against the workflow checksum file. Both APK and AAB native libraries were inspected; all LOAD segments use 16 KB alignment across ARM64, ARMv7, x86 and x86_64.
 
-**CI success is not device acceptance.** Physical Android phone, Android TV and Fire TV testing, authorised-source playback, launcher visual inspection, AAB native-library inspection, privacy/licence review and production signing remain required before public release.
+**CI success is not device acceptance.** Physical Android phone, Android TV and Fire TV testing, authorised-source playback, launcher visual inspection, privacy/licence review and production signing remain required before public release.
 
 ## Updates across phone and TV
 
