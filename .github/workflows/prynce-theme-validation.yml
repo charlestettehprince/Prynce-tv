@@ -1,0 +1,85 @@
+name: PRYNCE yellow-black theme validation
+
+on:
+  pull_request:
+    paths:
+      - "branding/PRYNCE_YELLOW_BLACK_THEME.md"
+      - "branding/patches/prynce-yellow-black-theme.patch"
+      - ".github/workflows/prynce-theme-validation.yml"
+      - ".gitmodules"
+      - "android/upstream"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: prynce-theme-validation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  theme-build:
+    name: Apply PRYNCE theme patch and build Android app
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout PRYNCE TV and pinned engine
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Verify pinned upstream revision
+        shell: bash
+        run: |
+          expected="443811904b6437720d37bb1064c0830906c3515f"
+          actual="$(git -C android/upstream rev-parse HEAD)"
+          echo "Expected upstream: $expected"
+          echo "Actual upstream:   $actual"
+          test "$actual" = "$expected"
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+          cache-dependency-path: android/upstream/**/*.gradle*
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+
+      - name: Install Android SDK packages
+        shell: bash
+        run: |
+          yes | sdkmanager --licenses
+          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Validate and apply PRYNCE theme patch
+        shell: bash
+        run: |
+          patch="$GITHUB_WORKSPACE/branding/patches/prynce-yellow-black-theme.patch"
+          git -C android/upstream apply --check "$patch"
+          git -C android/upstream apply "$patch"
+          git -C android/upstream diff --check
+          git -C android/upstream diff -- app/src/main/java/app/opentv/ui/theme/Theme.kt
+
+      - name: Build debug APK and run lint
+        working-directory: android/upstream
+        shell: bash
+        run: |
+          chmod +x gradlew
+          ./gradlew :app:assembleDebug :app:lintDebug --no-daemon
+          test -s app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Upload themed test APK and lint report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prynce-tv-yellow-black-theme-test
+          path: |
+            android/upstream/app/build/outputs/apk/debug/app-debug.apk
+            android/upstream/app/build/reports/lint-results-debug.html
+          if-no-files-found: warn
+          retention-days: 14
