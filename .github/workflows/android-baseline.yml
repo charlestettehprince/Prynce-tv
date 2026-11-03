@@ -32,8 +32,20 @@ jobs:
         run: |
           mkdir -p android/upstream/app/src/main/res/drawable
           rm -f android/upstream/app/src/main/res/drawable/ic_launcher.png android/upstream/app/src/main/res/drawable/banner.png
-          cp branding/prynce_tv_icon.jpg android/upstream/app/src/main/res/drawable/ic_launcher.jpg
-          cp branding/prynce_tv_banner.jpg android/upstream/app/src/main/res/drawable/banner.jpg
+          python3 -m pip install --quiet Pillow
+          python3 - <<'PY'
+          from PIL import Image, ImageOps
+          from pathlib import Path
+          out = Path("android/upstream/app/src/main/res/drawable")
+          icon = Image.open("branding/prynce_tv_icon.png").convert("RGBA")
+          icon = ImageOps.fit(icon, (512, 512), method=Image.Resampling.LANCZOS)
+          icon.save(out / "ic_launcher.png", optimize=True)
+          banner = Image.open("branding/prynce_tv_banner.png").convert("RGBA")
+          banner = ImageOps.fit(banner, (320, 180), method=Image.Resampling.LANCZOS)
+          background = Image.new("RGB", (320, 180), "#080B14")
+          background.paste(banner, mask=banner.getchannel("A"))
+          background.save(out / "banner.png", optimize=True)
+          PY
 
       - name: Set up Java 17
         uses: actions/setup-java@v4
@@ -119,16 +131,14 @@ jobs:
 
       - name: Validate committed artwork dimensions and opacity
         run: |
-          python3 -m pip install --quiet Pillow
           python3 - <<'PY'
           from PIL import Image
-          from pathlib import Path
-          icon = Image.open("branding/prynce_tv_icon.png")
-          banner = Image.open("branding/prynce_tv_banner.png")
-          assert icon.size == (512, 512), f"Store icon must be 512x512; found {icon.size}"
-          assert banner.size == (320, 180), f"TV banner must be 320x180; found {banner.size}"
-          assert banner.mode in ("RGB", "L"), f"TV banner must be opaque; found mode {banner.mode}"
-          print("Store icon and opaque Android TV banner dimensions passed.")
+          icon = Image.open("android/upstream/app/src/main/res/drawable/ic_launcher.png")
+          banner = Image.open("android/upstream/app/src/main/res/drawable/banner.png")
+          assert icon.size == (512, 512), f"Prepared launcher icon must be 512x512; found {icon.size}"
+          assert banner.size == (320, 180), f"Prepared TV banner must be 320x180; found {banner.size}"
+          assert banner.mode == "RGB", f"Prepared TV banner must be opaque RGB; found {banner.mode}"
+          print("Prepared store icon and opaque Android TV banner dimensions passed.")
           PY
 
       - name: Run tests and build installable APK plus Play-format AAB
