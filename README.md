@@ -24,9 +24,10 @@ The committed artwork is derived from the original assets supplied by the projec
 The GitHub Actions workflow checks out the pinned OpenTV submodule, installs the PRYNCE icon/banner into the Android drawable resources, applies the PRYNCE TV app label and theme, runs automated tests, builds a debug APK and uploads the artifact.
 
 - [Latest workflow runs](https://github.com/charlestettehprince/Prynce-tv/actions)
-- [Latest confirmed successful branded build](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41614656611)
-- Build commit: `1f8c134936bace129c25425ccfd84e73d400ae6a`.
-- Artifact: `prynce-tv-v0.11.10-test-packages` (APK + AAB; GitHub Actions retention is temporary).
+- [Latest confirmed successful branded build](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41616019564)
+- Recovery build commit: `cec03131f17111f5cf990b1b17f3aba7b94da2ea`.
+- Artifact: `prynce-tv-v0.11.10-test-packages` (APK + AAB; GitHub Actions retention is temporary; artifact expires 1 February 2027).
+- Verified APK SHA-256: `82eae4d7fdc22aa6907e0e49c7462761da99c480f283ff233a1c4e614877c020`. Verified AAB SHA-256: `2c4d987cf3745423aa16c72c5055125c5251d4a491f23b6a752257fe5015929a`.
 - The latest APK and AAB passed archive-integrity and SHA-256 checks against the workflow checksum file. The debug APK report confirms package `app.opentv.debug`, version `0.11.10` (code 22), min SDK 23 and target SDK 35; it is signed with the Android Debug certificate, not a production key. **Store blocker:** new phone/tablet Google Play submissions require target API 36 from 31 August 2026. Android TV's minimum is API 34. Upgrade the combined app to API 36 and re-test before Play submission.
 
 **CI success is not device acceptance.** Physical Android phone, Android TV and Fire TV testing, authorised-source playback, launcher visual inspection, privacy/licence review and production signing remain required before public release.
