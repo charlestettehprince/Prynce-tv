@@ -49,7 +49,8 @@ The current OpenTV foundation remains the best fit for the stated one-app phone 
 - Android TV: use Google Play store-managed delivery; the official Play in-app update API is documented for phones, tablets and ChromeOS, not Android TV.
 - Fire TV: use the store channel through which the app is distributed; do not assume Google Play services are present.
 - All devices: remotely refresh only validated, non-executable content/configuration; native player changes still require a signed app release.
-- **Not yet implemented:** no in-app update code, remote manifest client, store release configuration or device update tests have been added. This remains a planned workstream until source integration and device evidence exist.
+- **Initial source integration:** the pinned OpenTV source already includes a release checker, APK downloader, system-installer handoff and update gate. CI now configures the checker to read releases from `charlestettehprince/Prynce-tv` and uses PRYNCE TV prompt branding. This change has not yet passed a new build or physical-device update test.
+- **Still pending:** signed PRYNCE releases, Play/Amazon store release configuration, remote non-executable configuration manifest, and separate phone/Android TV/Fire TV acceptance tests.
 
 ## Acceptance status
 
@@ -61,7 +62,7 @@ The current OpenTV foundation remains the best fit for the stated one-app phone 
 | APK and AAB archive integrity | Independent ZIP checks passed | Verified |
 | APK/AAB checksums | Match recorded SHA-256 values | Verified |
 | APK native 16 KB alignment | Native LOAD segments inspected | Verified for APK |
-| AAB native 16 KB alignment | Not independently inspected | Pending |\n| Phone in-app update integration | Architecture documented; code not integrated | Pending |\n| Android TV store update path | Architecture documented; store/device validation pending | Pending |\n| Fire TV store update path | Architecture documented; store/device validation pending | Pending |\n| Remote content/config manifest | Architecture documented; client/server not integrated | Pending |
+| AAB native 16 KB alignment | Not independently inspected | Pending |\n| Phone sideload update integration | Existing updater configured in CI for PRYNCE releases; build/device test pending | In progress |\n| Android TV store update path | Store-managed architecture documented; store/device validation pending | Pending |\n| Fire TV store update path | Architecture documented; store/device validation pending | Pending |\n| Remote content/config manifest | Architecture documented; client/server not integrated | Pending |
 | Phone launcher declaration/resources | CI manifest/resource checks passed | CI only; device pending |
 | Android TV launcher declaration/banner resources | CI checks passed | CI only; visual device check pending |
 | Physical Android phone installation | No recorded device result | Pending |
