@@ -3,9 +3,9 @@
 **Last consolidated:** 3 November 2026  
 **Repository:** `charlestettehprince/Prynce-tv`  
 **Primary Android engine:** OpenTV v0.11.10, pinned upstream commit `443811904b6437720d37bb1064c0830906c3515f`  
-**Latest verified CI commit:** `85755852ecb5dbb285578bf4ce7d42469b7c33cb`  
-**Latest CI change (not yet verified):** `1f8c134936bace129c25425ccfd84e73d400ae6a`  
-**Project estimate:** **90%** (rough planning estimate, not a measured completion score)
+**Latest verified CI commit:** `29dbd77d28bf8180558d5f45166d76059965badc`  
+**Latest status-documentation commits:** `5455814a30fdbed4af3bdef359b83941f2762aec`  
+**Project estimate:** **92%** (rough planning estimate, not a measured completion score)
 
 ## Current Android 16 migration — authoritative latest status
 
@@ -16,11 +16,12 @@
 - APK SHA-256: `db59de9f5e7ac6157dd934b0e127366cb75b34b674e3b6ee6e11489bc766f731`; AAB SHA-256: `d5a537f900acfb8f23d1a10c1e9a06aeb4b039f5de641286c7cdbc27d742e257`. Archive integrity and APK signature verification passed.
 - Signer is the Android Debug certificate. This is a test build, not a production-signed public release.
 - The workflow log endpoint returned BlobNotFound during follow-up, but the completed run, uploaded artifact, metadata report and checksum file were available and independently inspected.
+- Independent follow-up verification: APK and AAB ZIP integrity passed; all 8 native libraries in each package have ELF PT_LOAD alignment of 16 KB; all 8 uncompressed native libraries inside the APK also start at 16 KB-aligned ZIP data offsets. APK/AAB checksums match the CI checksum manifest.
 - Physical phone/TV testing, production signing and privacy/licence review remain open.
 
 ## Executive summary
 
-PRYNCE TV is a single Android media-player project for compatible phones/tablets and Android TV/Fire TV devices. The branded debug APK and release AAB have been built successfully by CI. The latest workflow artifact was downloaded and independently checked: both archives pass ZIP integrity checks and both package checksums match the workflow checksum file. The workflow's package report confirms the debug APK package ID is `app.opentv.debug`, version `0.11.10` (code 22), min SDK 23 and target SDK 35. Its APK signature verifies but is the standard Android Debug certificate, not a production signing identity. The combined phone/TV Play submission is blocked by the current target API: as of 31 August 2026, new phone/tablet apps and updates must target API 36; Android TV has a separate API 34 minimum. Physical-device acceptance, production signing and release compliance remain outstanding.
+PRYNCE TV is a single Android media-player project for compatible phones/tablets and Android TV/Fire TV devices. The branded debug APK and release AAB have been built successfully by CI. The latest workflow artifact was downloaded and independently checked: both archives pass ZIP integrity checks and both package checksums match the workflow checksum file. The latest API 36 workflow package report confirms debug package `app.opentv.debug`, version `0.11.10` (code 22), min SDK 23, compile SDK 36 and target SDK 36. APK signature verification passed, but the signer is the standard Android Debug certificate, not a production signing identity. The combined phone/TV Play target API requirement is met by this test build; public submission is still blocked by production signing, physical-device acceptance, privacy and licence review. Physical-device acceptance, production signing and release compliance remain outstanding.
 
 PRYNCE TV is a player, not a broadcaster or channel subscription service. Users must supply sources they are authorised to access. The app must not circumvent DRM, authentication, subscriptions, geographic restrictions or broadcaster controls.
 
@@ -46,6 +47,7 @@ PRYNCE TV is a player, not a broadcaster or channel subscription service. Users 
 - APK SHA-256: `259ff4b0ae159061990d8a6e42d9f419e20ec3994e3c44e4d03983feabf898b0`.
 - AAB SHA-256: `be554bca6a2efd57d1ea4cf1c529c6a8a82d857c6f285d06ea3e97dc152bb39e`.
 - APK and AAB ZIP integrity checks passed; computed checksums match the included workflow checksum file.
+- Latest API 36 package follow-up: all eight native libraries in the APK and all eight embedded in the AAB have ELF PT_LOAD segment alignment of 16,384 bytes. All eight uncompressed APK native-library ZIP data offsets are also 16,384-byte aligned.
 - APK contains ARM64, ARMv7, x86 and x86_64 native libraries. The APK's native LOAD segments were inspected and use 16 KB alignment. The AAB's embedded native libraries were also extracted and inspected; all LOAD segments across ARM64, ARMv7, x86 and x86_64 libraries use 16 KB alignment.
 - CI checks both standard `LAUNCHER` and `LEANBACK_LAUNCHER` categories and validates launcher artwork resources.
 - The debug APK is for controlled testing, not production distribution. The AAB is for Play submission preparation, not direct installation.
@@ -54,7 +56,7 @@ PRYNCE TV is a player, not a broadcaster or channel subscription service. Users 
 
 The current OpenTV foundation remains the best fit for the stated one-app phone + TV requirement and the lowest-risk path because it is already integrated and building. OpenIPTV and OwnTV remain reference alternatives only; neither has demonstrated a reason to replace the current engine. The current decision and trade-offs are documented in `docs/OPEN_SOURCE_ALTERNATIVES_REVIEW.md`.
 
-## Latest build metadata and signing report — verified 3 November 2026
+## Earlier API 35 build metadata and signing report — superseded by API 36
 
 - Workflow run `41614656611` completed successfully; artifact ID `13221765019` (`prynce-tv-v0.11.10-test-packages`), 38,796,617 bytes, expires 1 February 2027.
 - APK: `app.opentv.debug`, version `0.11.10` / code `22`, min SDK `23`, target SDK `35`, launch activity `app.opentv.MainActivity`.
