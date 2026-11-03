@@ -44,7 +44,7 @@ This checklist separates automated build evidence from real-device acceptance. A
 Before any Google Play submission, re-check the live Play Console and Android requirements for the target release date.
 
 - [ ] Produce an Android App Bundle (AAB) for Play distribution; the current CI debug APK is not a Play release package.
-- [ ] Verify 32-bit and 64-bit ABI support and 16 KB page-size compatibility for native libraries. Google Play has required 16 KB page-size support for new apps and updates targeting Android 15+ since 1 November 2025.
+- [x] Verify 32-bit and 64-bit ABI presence and 16 KB native compatibility for the API 36 test artifact. Follow-up inspection found all 8 native libraries in the APK and all 8 embedded in the AAB have ELF PT_LOAD alignment of 16,384 bytes; all 8 uncompressed APK native-library ZIP data offsets are 16,384-byte aligned. Recheck the final production-signed artifact before submission.
 - [ ] Verify the manifest declares TV launcher support and does not require touchscreen hardware for TV use.
 - [ ] Verify the TV launcher icon/banner resources are correctly referenced and visible on-device; the current 320×180 banner is the expected TV banner size.
 - [ ] Capture genuine, unaltered, high-resolution 16:9 screenshots from the actual TV app.
