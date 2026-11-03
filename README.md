@@ -16,9 +16,10 @@ Core upstream capabilities include M3U/M3U8 playlists, Xtream-compatible provide
 - Original vector wordmark: `branding/prynce_wordmark.svg`
 - CI renders the launcher icon, Android TV banner, in-app navigation icon and in-app wordmark directly from these original SVG sources.
 - The app label and theme accents also use the PRYNCE TV identity.
-- CI now generates PRYNCE adaptive and legacy launcher icon resources, including a monochrome themed layer, plus a dedicated white notification glyph.
-- The new icon resources are wired through the Android manifest and notification builders; the updated CI build is pending verification.
+- CI generates PRYNCE adaptive and legacy launcher icon resources, including a monochrome themed layer, plus a dedicated white notification glyph.
+- The adaptive icon, round icon, monochrome layer and notification glyph are wired through the manifest and notification builders; this integration passed CI run [41625818584](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41625818584).
 - Physical phone/TV screenshot checks and store/public download artwork remain outstanding.
+- Master identity rules: [PRYNCE Master Brand & Founder Identity Standard](docs/PRYNCE_MASTER_BRAND_STANDARD.md).
 - Branding integration and CI installation: [Branding asset integration guide](docs/BRANDING_ASSET_INTEGRATION.md).
 
 The committed artwork is derived from the original assets supplied by the project owner. It is resized/compressed for Android use, not redrawn or recoloured.
@@ -28,11 +29,12 @@ The committed artwork is derived from the original assets supplied by the projec
 The GitHub Actions workflow checks out the pinned OpenTV submodule, installs the PRYNCE icon/banner into the Android drawable resources, applies the PRYNCE TV app label and theme, runs automated tests, builds a debug APK and uploads the artifact.
 
 - [Latest workflow runs](https://github.com/charlestettehprince/Prynce-tv/actions)
-- Latest successful Android 16 / API 36 build: [CI run 41617047320](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41617047320), migration commit `29dbd77d28bf8180558d5f45166d76059965badc`.
-- Artifact: `prynce-tv-v0.11.10-test-packages`, ID `13222900025`, expires 1 February 2027.
+- Latest successful branded adaptive-icon build: [CI run 41625818584](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41625818584), commit `f7c58dfe0520644151266d158b26b17aae11659a`.
+- Artifact: `prynce-tv-v0.11.10-test-packages`, ID `13226525916`, expires 1 February 2027.
 - APK: `app.opentv.debug`, version `0.11.10` / code `22`, min SDK `23`, compile SDK `36`, target SDK `36`.
-- APK SHA-256: `db59de9f5e7ac6157dd934b0e127366cb75b34b674e3b6ee6e11489bc766f731`; AAB SHA-256: `d5a537f900acfb8f23d1a10c1e9a06aeb4b039f5de641286c7cdbc27d742e257`.
-- Independent verification: APK/AAB ZIP integrity and checksums passed; APK signature verified; all 8 native libraries in both packages have 16 KB ELF load-segment alignment, and all 8 uncompressed APK native libraries have 16 KB ZIP data alignment.
+- APK SHA-256: `5fac9671ee89d245f50e5deb924c74a4e3a1fa64f766f8fd011767279ba7be88`; AAB SHA-256: `05c9a557ddd2daa422945d9440a502a1065725913294954d65fffec0be562abc`.
+- Artifact ZIP SHA-256: `04da2dce25fd3e85696f0d8108786d5ed2ea3ba49bd069a033cc2cf562b77b60`. APK/AAB ZIP integrity and checksums passed; APK signature verified using v1/v2. The signer is the Android Debug certificate, not a production signing identity.
+- Android Lint completed with 0 errors, 188 warnings and 3 informational findings. Reports are in artifact `13225353950`.
 - Both APK and AAB use the Android Debug certificate. They are controlled test/preparation artifacts, not production-signed release packages.
 
 **CI success is not device acceptance.** Physical Android phone, Android TV and Fire TV testing, authorised-source playback, launcher visual inspection, privacy/licence review and production signing remain required before public release.
@@ -65,6 +67,7 @@ The selected update architecture is documented in [Universal update architecture
 - [Open-source engine decision](docs/OPEN_SOURCE_ENGINE_DECISION.md)
 - [Open-source alternatives review](docs/OPEN_SOURCE_ALTERNATIVES_REVIEW.md)
 - [Branding integration guide](docs/BRANDING_ASSET_INTEGRATION.md)
+- [PRYNCE Master Brand & Founder Identity Standard](docs/PRYNCE_MASTER_BRAND_STANDARD.md)
 
 ## Build locally
 
