@@ -49,7 +49,7 @@ The current OpenTV foundation remains the best fit for the stated one-app phone 
 - Android TV: use Google Play store-managed delivery; the official Play in-app update API is documented for phones, tablets and ChromeOS, not Android TV.
 - Fire TV: use the store channel through which the app is distributed; do not assume Google Play services are present.
 - All devices: remotely refresh only validated, non-executable content/configuration; native player changes still require a signed app release.
-- **Initial source integration:** the pinned OpenTV source already includes a release checker, APK downloader, system-installer handoff and update gate. CI now configures the checker to read releases from `charlestettehprince/Prynce-tv` and uses PRYNCE TV prompt branding. This change has not yet passed a new build or physical-device update test.
+- **Initial source integration:** the pinned OpenTV source already includes a release checker, APK downloader, system-installer handoff and update gate. CI now configures the checker to read releases from `charlestettehprince/Prynce-tv` and uses PRYNCE TV prompt branding. The PRYNCE release-repository configuration and branded updater prompts passed the latest successful CI build; actual update installation and platform store flows remain untested on physical devices.
 - **Still pending:** signed PRYNCE releases, Play/Amazon store release configuration, remote non-executable configuration manifest, and separate phone/Android TV/Fire TV acceptance tests.
 
 ## Acceptance status
