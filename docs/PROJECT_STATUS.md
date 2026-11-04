@@ -168,3 +168,12 @@ A feature is complete only with reproducible evidence: automated test output, ar
 3. Validate yellow/black contrast, focus indicators, selection states and light/dark modes on phone and Android TV hardware.
 4. Continue the security review tracked in issue #4: credential-bearing provider URLs, local sync/NAS exports, backup/device-transfer behavior and cleartext HTTP compatibility. Do not change backup exclusions or storage formats until data-preservation behavior is tested.
 5. Keep issue #3 updater signing/release identity and issue #5 public installer checks blocked until a stable production signing identity, release assets and device installation tests are available.
+
+## 4 November 2026 — Android 13+ notification-permission safety patch (CI pending)
+
+- Added `branding/patches/prynce-notification-permission.patch` against the exact pinned OpenTV v0.11.10 source. It checks the Android 13+ `POST_NOTIFICATIONS` runtime permission before the scheduled-recording and programme-reminder receivers attempt to post notifications. If permission is not granted, the background receiver safely skips the notification instead of relying on a call that may throw; it does not prompt from a background receiver.
+- The patch is kept outside the upstream submodule and is applied only inside the isolated validation workflow. No upstream submodule pointer or user data was changed.
+- Updated `.github/workflows/prynce-theme-validation.yml` to validate/apply this additional patch and trigger validation when the patch changes.
+- New validation run for the current branch head `da17f40d7e83ade6cd7bbea09f8f6f674fdd2cb4`: [41846359542](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41846359542). At the time of this status update, its result is not yet available. An earlier push run is also in progress; do not claim the permission patch compiles until the current-head run completes.
+- The previous successful themed debug APK does not include this new permission patch. It must not be described as containing this fix.
+- The 16 MissingTranslation lint errors are deliberately not silenced or marked non-translatable. They require accurate translations/fallback decisions; bulk copying English into other languages would mislead users. The current patch addresses only the two MissingPermission findings.
