@@ -148,3 +148,23 @@ A feature is complete only with reproducible evidence: automated test output, ar
 - Do not store provider credentials, signing keys, passwords or private API tokens in source control.
 - Keep signing keys outside the repository and use a secure release process.
 - Preserve authentication, DRM, subscription, broadcaster and regional restrictions.
+
+## 4 November 2026 — PRYNCE yellow/black theme CI verification
+
+- Theme validation workflow run [41845244555](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41845244555) completed with **success** on commit `8faeae1c93b330880b89a34b5c010f857b17308a`.
+- All workflow steps succeeded: checkout, pinned OpenTV revision verification, Java/Android SDK setup, theme patch validation/application, themed debug APK build, lint diagnostic/report step and artifact upload.
+- The patch applies successfully to the pinned OpenTV v0.11.10 source at `443811904b6437720d37bb1064c0830906c3515f` during CI. It remains a separate patch artifact; the upstream submodule pointer and upstream source are not rewritten in the repository.
+- Artifact: `prynce-tv-yellow-black-theme-test`, ID `13331431176`, 28,927,830 bytes, expires 18 November 2026. Artifact ZIP SHA-256: `72141645959b95b0d8da5cb9c88b2cbdd880c5e8b9ffce51224e0d1e41d20e0f`.
+- Downloaded artifact ZIP passed `unzip -t`. It contains `outputs/apk/debug/app-debug.apk` (30,589,383 bytes) and `reports/lint-results-debug.html`.
+- Debug APK SHA-256: `a99291e6ee176fc5530d6c318644e7348f2ecd6d70f9d3f774c9a935fac01a22`. APK ZIP integrity check passed. This is a **debug test APK**, not a production-signed release.
+- Lint diagnostic report still contains **18 errors and 121 warnings** (including 2 MissingPermission and 16 MissingTranslation errors). Lint is deliberately non-blocking in this theme build workflow so the separately successful APK build and diagnostic report remain available. This does not mean lint is clean or release-ready.
+- PR #10 remains open and draft. No merge, release, production signing or public distribution has occurred.
+- The actual screen layout, contrast, accessibility and D-pad focus behavior still require visual inspection and physical phone/Android TV testing. CI compilation alone does not prove the theme is usable on hardware.
+
+## Immediate next steps after theme build
+
+1. Inspect the lint report and resolve permission findings only with correct runtime permission/state checks; do not suppress errors blindly.
+2. Review missing translations and add accurate translations or a documented fallback without changing app behavior unexpectedly.
+3. Validate yellow/black contrast, focus indicators, selection states and light/dark modes on phone and Android TV hardware.
+4. Continue the security review tracked in issue #4: credential-bearing provider URLs, local sync/NAS exports, backup/device-transfer behavior and cleartext HTTP compatibility. Do not change backup exclusions or storage formats until data-preservation behavior is tested.
+5. Keep issue #3 updater signing/release identity and issue #5 public installer checks blocked until a stable production signing identity, release assets and device installation tests are available.
