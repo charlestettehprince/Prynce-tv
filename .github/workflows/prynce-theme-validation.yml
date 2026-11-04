@@ -88,6 +88,10 @@ jobs:
           git -C android/upstream diff --check
           git -C android/upstream diff -- app/src/main/java/app/opentv/recording/RecordingAlarmReceiver.kt app/src/main/java/app/opentv/reminders/ReminderAlarmReceiver.kt
 
+      - name: Add explicit English fallbacks for untranslated resources
+        working-directory: android/upstream
+        run: python3 "$GITHUB_WORKSPACE/scripts/apply_translation_fallbacks.py"
+
       - name: Build themed debug APK
         working-directory: android/upstream
         shell: bash
@@ -95,10 +99,6 @@ jobs:
           chmod +x gradlew
           ./gradlew :app:assembleDebug --no-daemon
           test -s app/build/outputs/apk/debug/app-debug.apk
-
-      - name: Add explicit English fallbacks for untranslated resources
-        working-directory: android/upstream
-        run: python3 "$GITHUB_WORKSPACE/scripts/apply_translation_fallbacks.py"
 
       - name: Run lint diagnostics (known upstream findings are non-blocking)
         id: lint
