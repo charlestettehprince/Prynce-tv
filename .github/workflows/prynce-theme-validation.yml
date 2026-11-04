@@ -1,17 +1,6 @@
 name: PRYNCE yellow-black theme validation
 
 on:
-  push:
-    branches:
-      - "feature/prynce-yellow-black-theme"
-    paths:
-      - "branding/PRYNCE_YELLOW_BLACK_THEME.md"
-      - "branding/patches/prynce-yellow-black-theme.patch"
-      - "branding/patches/prynce-notification-permission.patch"
-      - ".github/workflows/prynce-theme-validation.yml"
-      - ".gitmodules"
-      - "android/upstream"
-      - "scripts/apply_translation_fallbacks.py"
   pull_request:
     paths:
       - "branding/PRYNCE_YELLOW_BLACK_THEME.md"
@@ -87,10 +76,6 @@ jobs:
           git -C android/upstream apply --recount "$patch"
           git -C android/upstream diff --check
           git -C android/upstream diff -- app/src/main/java/app/opentv/recording/RecordingAlarmReceiver.kt app/src/main/java/app/opentv/reminders/ReminderAlarmReceiver.kt
-
-      - name: Add explicit English fallbacks for untranslated resources
-        working-directory: android/upstream
-        run: python3 "$GITHUB_WORKSPACE/scripts/apply_translation_fallbacks.py"
 
       - name: Build themed debug APK
         working-directory: android/upstream
