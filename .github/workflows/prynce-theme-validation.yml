@@ -15,6 +15,7 @@ on:
     paths:
       - "branding/PRYNCE_YELLOW_BLACK_THEME.md"
       - "branding/patches/prynce-yellow-black-theme.patch"
+      - "branding/patches/prynce-notification-permission.patch"
       - ".github/workflows/prynce-theme-validation.yml"
       - ".gitmodules"
       - "android/upstream"
