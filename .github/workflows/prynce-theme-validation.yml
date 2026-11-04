@@ -7,6 +7,7 @@ on:
     paths:
       - "branding/PRYNCE_YELLOW_BLACK_THEME.md"
       - "branding/patches/prynce-yellow-black-theme.patch"
+      - "branding/patches/prynce-notification-permission.patch"
       - ".github/workflows/prynce-theme-validation.yml"
       - ".gitmodules"
       - "android/upstream"
@@ -75,6 +76,15 @@ jobs:
           git -C android/upstream apply --recount "$patch"
           git -C android/upstream diff --check
           git -C android/upstream diff -- app/src/main/java/app/opentv/ui/theme/Theme.kt
+
+      - name: Validate and apply notification permission safety patch
+        shell: bash
+        run: |
+          patch="$GITHUB_WORKSPACE/branding/patches/prynce-notification-permission.patch"
+          git -C android/upstream apply --recount --check "$patch"
+          git -C android/upstream apply --recount "$patch"
+          git -C android/upstream diff --check
+          git -C android/upstream diff -- app/src/main/java/app/opentv/recording/RecordingAlarmReceiver.kt app/src/main/java/app/opentv/reminders/ReminderAlarmReceiver.kt
 
       - name: Build themed debug APK
         working-directory: android/upstream
