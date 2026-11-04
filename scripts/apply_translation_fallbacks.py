@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Fill known untranslated OpenTV strings with explicit English fallbacks.
-
-The pinned upstream submodule is never committed or modified in Git. This script
-runs only inside the CI checkout before lint/build, adding fallback entries only
-where a locale currently lacks one. Existing translations are preserved.
-"""
+"""Add explicit English fallbacks for known missing upstream locale resources."""
 from pathlib import Path
 import re
 
@@ -17,12 +12,11 @@ KEYS = {
     "rec_live_warn_watch", "rec_live_warn_keep",
 }
 
-default = RES / "values/strings.xml"
-source = default.read_text(encoding="utf-8")
+source = (RES / "values/strings.xml").read_text(encoding="utf-8")
 fallbacks = {}
 for key in KEYS:
     match = re.search(
-        rf'^\\s*<string\\s+name="{re.escape(key)}"[^>]*>.*?</string>\\s*$',
+        rf'^\s*<string\s+name="{re.escape(key)}"[^>]*>.*?</string>\s*$',
         source, re.MULTILINE,
     )
     if not match:
@@ -35,14 +29,16 @@ for folder in sorted(RES.glob("values-*")):
     if not target.is_file():
         continue
     text = target.read_text(encoding="utf-8")
-    additions = [fallbacks[key] for key in sorted(KEYS)
-                 if not re.search(rf'<string\\s+name="{re.escape(key)}"', text)]
+    additions = [
+        fallbacks[key] for key in sorted(KEYS)
+        if not re.search(rf'<string\s+name="{re.escape(key)}"', text)
+    ]
     if not additions:
         continue
     block = (
-        "\\n    <!-- English fallback for strings not yet translated in this locale. -->\\n"
-        + "\\n".join("    " + item for item in additions)
-        + "\\n"
+        "\n    <!-- English fallback for strings not yet translated in this locale. -->\n"
+        + "\n".join("    " + item for item in additions)
+        + "\n"
     )
     if "</resources>" not in text:
         raise SystemExit(f"Malformed resource file: {target}")
