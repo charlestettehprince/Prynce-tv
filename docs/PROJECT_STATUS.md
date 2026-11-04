@@ -177,3 +177,13 @@ A feature is complete only with reproducible evidence: automated test output, ar
 - New validation run for the current branch head `da17f40d7e83ade6cd7bbea09f8f6f674fdd2cb4`: [41846349681](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41846349681). CI has successfully validated and applied both the theme patch and the notification-permission patch. The themed APK build step is still in progress; do not claim the permission patch compiles until the run completes.
 - The previous successful themed debug APK does not include this new permission patch. It must not be described as containing this fix.
 - The 16 MissingTranslation lint errors are deliberately not silenced or marked non-translatable. They require accurate translations/fallback decisions; bulk copying English into other languages would mislead users. The current patch addresses only the two MissingPermission findings.
+
+
+## PRYNCE yellow/black theme validation — 4 November 2026
+
+- Draft PR #10 remains open and unmerged. Feature branch: `feature/prynce-yellow-black-theme`; latest verified build commit before the follow-up workflow cleanup: `d695f12727c392989817f184379b09d7d7aeedf7`.
+- GitHub Actions run [#31](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41916547388) completed successfully. The pinned OpenTV commit was verified, PRYNCE theme and notification-permission patches applied in the CI workspace, Android debug APK compiled, and lint report uploaded.
+- Run #31 produced a debug/test APK only. It is not production-signed and has not passed physical phone, Android TV or Fire TV acceptance testing.
+- Lint completed with 122 warnings. The previous workflow copied default English strings into translated locale folders solely to suppress MissingTranslation findings. That is not a proper translation; the follow-up removes that workaround so Android can use its normal default-resource fallback. The next lint run may again report missing locale translations, which will be tracked honestly rather than disguised as completed translations.
+- The workflow is being narrowed to pull-request and manual runs to avoid redundant push + pull-request builds. OpenTV remains pinned; no engine replacement, production signing, merge or release is authorized by this update.
+- Still required: inspect new lint report, phone playback/navigation tests, Android TV remote/focus tests, legal/privacy/licence review, production signing configuration, and a separately approved release process.
