@@ -11,6 +11,7 @@ on:
       - ".github/workflows/prynce-theme-validation.yml"
       - ".gitmodules"
       - "android/upstream"
+      - "scripts/apply_translation_fallbacks.py"
   pull_request:
     paths:
       - "branding/PRYNCE_YELLOW_BLACK_THEME.md"
