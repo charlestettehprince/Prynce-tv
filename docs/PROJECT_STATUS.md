@@ -1,9 +1,11 @@
 # PRYNCE TV — Single Project Status
 
-**Last consolidated:** 3 November 2026  
+**Last consolidated:** 6 November 2026  
 **Repository:** `charlestettehprince/Prynce-tv`  
 **Primary Android engine:** OpenTV v0.11.10, pinned upstream commit `443811904b6437720d37bb1064c0830906c3515f`  
-**Latest verified CI commit:** `eb7af7bcb8892ccde353dc6ac7c966c6543501a2`  
+**Latest inspected main commit:** `b1ffab64b21f52125d780f8a946cd36f64b5a338`  
+**Latest successful Android build CI:** run `41629319388` at `eb7af7bcb8892ccde353dc6ac7c966c6543501a2` (Build 107; debug-signed test build)  
+**Latest startup smoke CI attempt:** run `41686013998` at `b1ffab64b21f52125d780f8a946cd36f64b5a338` (build/install succeeded; activity launch measurement failed)  
 **Latest status-documentation commits:** `66133b00fae56689769ea0a04fa441bf16c15ac5`  
 **Project estimate:** **70%** (rough planning estimate; build automation and branding are progressing, but device acceptance, privacy/licence review and production release remain open)
 
@@ -148,3 +150,15 @@ A feature is complete only with reproducible evidence: automated test output, ar
 - Do not store provider credentials, signing keys, passwords or private API tokens in source control.
 - Keep signing keys outside the repository and use a secure release process.
 - Preserve authentication, DRM, subscription, broadcaster and regional restrictions.
+
+
+## Run review addendum — 6 November 2026
+
+- Repository default branch is `main`; inspected head is `b1ffab64b21f52125d780f8a946cd36f64b5a338`. The pinned OpenTV submodule remains `443811904b6437720d37bb1064c0830906c3515f`.
+- PR #8 remains open and draft, head `f9356f9e70938a39d999cf8eda9d39873075fa48`; GitHub reports `mergeable=false`, `mergeable_state=dirty`, and no requested reviewers. It has not been merged.
+- Issues #3, #4, #5 and #7 were rechecked; all remain open.
+- Latest startup smoke run reviewed: [41686013998](https://github.com/charlestettehprince/Prynce-tv/actions/runs/41686013998), commit `b1ffab64b21f52125d780f8a946cd36f64b5a338`. Checkout, pinned submodule retrieval, SDK setup, debug build and APK installation succeeded. The emulator booted. The activity launch command returned `Status: timeout`, `LaunchState: UNKNOWN (-1)`, and `WaitTime: 40397`; the script could not parse `TotalTime` and exited non-zero. This is not evidence of a crash or of a measured startup time.
+- The workflow uploaded artifact `13256300683` (416 bytes; SHA-256 `5612bdf71807ce88ae77710db51fe0b6911e4ac44e7b19fc44369ef89e3aae51`). It contains failure diagnostics/raw output rather than a valid startup timing dataset. No median or startup benchmark is reported.
+- The current script calls `adb shell am start -W` and exits immediately when `TotalTime` is absent. The next diagnostic improvement should preserve the emulator state long enough to collect filtered Logcat, activity/process state and ANR evidence on timeout, without treating a timeout as a timing sample.
+- Official Android documentation defines `am start -W` as waiting for launch completion. Android recommends Macrobenchmark `StartupTimingMetric` for initial-frame and fully-drawn startup metrics; the current shell script is only an activity-launch smoke check and must not be described as first-frame timing.
+- No app runtime source, credentials, database, backup rules, signing configuration, PR merge state or public release was changed in this review. Physical-device playback, backup/restore, updater installation, production signing and store release remain unverified.
