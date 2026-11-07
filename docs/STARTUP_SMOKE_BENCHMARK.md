@@ -43,3 +43,17 @@ The `.github/workflows/startup-smoke.yml` workflow provides a repeatable, free C
 4. Benchmark the profile on physical hardware before claiming user-visible speed improvements.
 5. Measure first-run and returning-user journeys on representative low-end phone and Android TV hardware.
 6. Optimise only after traces identify a specific bottleneck; preserve the no-mandatory-login and free basic-use requirements.
+
+
+## Timeout diagnostic capture — 7 November 2026
+
+When `adb shell am start -W` fails, returns a non-numeric `TotalTime`, or reports `Status: timeout`, the smoke script now:
+
+- Preserves the launch output in `startup-raw.txt`.
+- Writes `launch-diagnostics.txt` with ADB device/state information, app process state, filtered resumed-activity and focused-window state, the last ANR report, the crash log buffer, and filtered activity/ANR system messages.
+- Exits non-zero and does not add a failed launch to the timing CSV. A timeout is never converted into a performance sample.
+- Uses the existing `if: always()` artifact upload step so failure diagnostics can be inspected after the emulator job ends.
+
+The workflow path filter now includes `scripts/startup-smoke.sh`, so changes to the diagnostic script trigger this workflow. Diagnostics are produced by the ephemeral CI emulator; no personal playlists or user provider credentials are configured for this test. Review diagnostic artifacts before sharing them outside the project because runtime traces can contain application or device details.
+
+The code change has passed local POSIX shell syntax validation and a mocked-ADB failure-path test. A new GitHub Actions emulator run is still required to verify the commands against a real CI emulator.
