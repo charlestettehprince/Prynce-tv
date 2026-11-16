@@ -190,7 +190,7 @@ jobs:
       - name: Install required Android SDK packages
         run: |
           yes | sdkmanager --licenses
-          sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
+          sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0" "emulator"
 
       - name: Package and validate the official Ghana TV directory
         run: |
@@ -454,6 +454,29 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew test assembleDebug bundleRelease --no-daemon
+
+      - name: Run startup smoke test against the branded PRYNCE TV APK
+        uses: ReactiveCircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: default
+          arch: x86_64
+          profile: pixel_2
+          disable-animations: true
+          script: |
+            set -euo pipefail
+            mkdir -p performance-results
+            sha256sum android/upstream/app/build/outputs/apk/debug/app-debug.apk > performance-results/tested-apk.sha256
+            sh scripts/startup-smoke.sh
+
+      - name: Upload branded startup diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prynce-tv-branded-startup-evidence
+          path: performance-results/
+          if-no-files-found: warn
+          retention-days: 30
 
       - name: Record APK package metadata and debug signing identity
         run: |
