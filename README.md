@@ -2,6 +2,13 @@
 
 **Beyond ordinary.** A branded Android media player for Android phones, Android TV and Fire TV, built on the pinned OpenTV v0.11.10 open-source foundation.
 
+## Official PRYNCE ecosystem
+
+- Main gateway: [Prynceonline — Beyond Ordinary](https://headless-bkznydlmefs-johnniiamudodoo-140f.wix-site-host.com/)
+- Project directory: [PRYNCE ecosystem directory](https://headless-bkznydlmefs-johnniiamudodoo-140f.wix-site-host.com/projects.html)
+
+PRYNCE TV is listed on the gateway as an in-development Android media-player project. The gateway links here for development status; it does not advertise an unverified public installer. A production download will be linked only after the release gates below are met.
+
 ## Product scope
 
 PRYNCE TV is a player, not a broadcaster or channel subscription service. Viewers add playlists or provider details they are authorised to use. The app must not circumvent DRM, authentication, subscriptions, geographic restrictions or broadcaster controls.
